@@ -467,7 +467,7 @@ export const teamData = [
     id: 2,
     name: "Amy",
     position: "#",
-    imageUrl: "./images/team/amy-placeholder.jpg",
+    imageUrl: "./images/team/amy.png",
   },
   {
     id: 3,
