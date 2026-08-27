@@ -32,12 +32,27 @@ export default function Clients() {
             </h3>
             <div className="flex flex-wrap gap-4">
               {clientsData.media.map((client, index) => (
-                <div
+                <a
                   key={index}
-                  className="px-6 py-4 bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 text-neutral-800 dark:text-neutral-200 font-bold uppercase tracking-wider text-sm shadow-sm hover:border-yellow-500 dark:hover:border-yellow-500 transition-colors cursor-default"
+                  href={client.websiteUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="group flex items-center justify-center px-6 py-4 bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 shadow-sm hover:border-yellow-500 dark:hover:border-yellow-500 transition-colors cursor-pointer min-w-[140px] h-20"
+                  title={client.name}
                 >
-                  {client}
-                </div>
+                  <img
+                    src={client.logoUrl}
+                    alt={client.name}
+                    className="max-h-full max-w-full object-contain filter grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
+                    onError={(e) => {
+                      e.target.style.display = "none";
+                      e.target.nextSibling.style.display = "block";
+                    }}
+                  />
+                  <span className="hidden text-xs font-bold uppercase tracking-wider text-center text-neutral-800 dark:text-neutral-200 group-hover:text-yellow-500 transition-colors">
+                    {client.name}
+                  </span>
+                </a>
               ))}
             </div>
           </div>
@@ -49,12 +64,27 @@ export default function Clients() {
             </h3>
             <div className="flex flex-wrap gap-4">
               {clientsData.brands.map((client, index) => (
-                <div
+                <a
                   key={index}
-                  className="px-6 py-4 bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 text-neutral-800 dark:text-neutral-200 font-bold uppercase tracking-wider text-sm shadow-sm hover:border-yellow-500 dark:hover:border-yellow-500 transition-colors cursor-default"
+                  href={client.websiteUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="group flex items-center justify-center px-6 py-4 bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 shadow-sm hover:border-yellow-500 dark:hover:border-yellow-500 transition-colors cursor-pointer min-w-[140px] h-20"
+                  title={client.name}
                 >
-                  {client}
-                </div>
+                  <img
+                    src={client.logoUrl}
+                    alt={client.name}
+                    className="max-h-full max-w-full object-contain filter grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
+                    onError={(e) => {
+                      e.target.style.display = "none";
+                      e.target.nextSibling.style.display = "block";
+                    }}
+                  />
+                  <span className="hidden text-xs font-bold uppercase tracking-wider text-center text-neutral-800 dark:text-neutral-200 group-hover:text-yellow-500 transition-colors">
+                    {client.name}
+                  </span>
+                </a>
               ))}
             </div>
           </div>
@@ -66,12 +96,27 @@ export default function Clients() {
             </h3>
             <div className="flex flex-wrap gap-4">
               {clientsData.organizations.map((client, index) => (
-                <div
+                <a
                   key={index}
-                  className="px-6 py-4 bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 text-neutral-800 dark:text-neutral-200 font-bold uppercase tracking-wider text-sm shadow-sm hover:border-yellow-500 dark:hover:border-yellow-500 transition-colors cursor-default"
+                  href={client.websiteUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="group flex items-center justify-center px-6 py-4 bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 shadow-sm hover:border-yellow-500 dark:hover:border-yellow-500 transition-colors cursor-pointer min-w-[140px] h-20"
+                  title={client.name}
                 >
-                  {client}
-                </div>
+                  <img
+                    src={client.logoUrl}
+                    alt={client.name}
+                    className="max-h-full max-w-full object-contain filter grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
+                    onError={(e) => {
+                      e.target.style.display = "none";
+                      e.target.nextSibling.style.display = "block";
+                    }}
+                  />
+                  <span className="hidden text-xs font-bold uppercase tracking-wider text-center text-neutral-800 dark:text-neutral-200 group-hover:text-yellow-500 transition-colors">
+                    {client.name}
+                  </span>
+                </a>
               ))}
             </div>
           </div>
@@ -83,12 +128,27 @@ export default function Clients() {
             </h3>
             <div className="flex flex-wrap gap-4">
               {clientsData.institutions.map((client, index) => (
-                <div
+                <a
                   key={index}
-                  className="px-6 py-4 bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 text-neutral-800 dark:text-neutral-200 font-bold uppercase tracking-wider text-sm shadow-sm hover:border-yellow-500 dark:hover:border-yellow-500 transition-colors cursor-default"
+                  href={client.websiteUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="group flex items-center justify-center px-6 py-4 bg-white dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 shadow-sm hover:border-yellow-500 dark:hover:border-yellow-500 transition-colors cursor-pointer min-w-[140px] h-20"
+                  title={client.name}
                 >
-                  {client}
-                </div>
+                  <img
+                    src={client.logoUrl}
+                    alt={client.name}
+                    className="max-h-full max-w-full object-contain filter grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
+                    onError={(e) => {
+                      e.target.style.display = "none";
+                      e.target.nextSibling.style.display = "block";
+                    }}
+                  />
+                  <span className="hidden text-xs font-bold uppercase tracking-wider text-center text-neutral-800 dark:text-neutral-200 group-hover:text-yellow-500 transition-colors">
+                    {client.name}
+                  </span>
+                </a>
               ))}
             </div>
           </div>

@@ -433,70 +433,320 @@ export const teamData = [
 // --- CLIENTS DATA ---
 export const clientsData = {
   media: [
-    "GMA",
-    "Kapuso Mo, Jessica Soho",
-    "i Witness",
-    "The Atom Araullo Specials",
-    "The Freeman",
-    "Channel NewsAsia",
-    "France 2",
-    "The Japan News",
-    "journalismfund.eu",
-    "Scottish Documentary Institute",
-    "PCIJ",
+    {
+      name: "GMA",
+      logoUrl: "./images/clients/gma.png",
+      websiteUrl: "https://www.gmanetwork.com/",
+    },
+    {
+      name: "Kapuso Mo, Jessica Soho",
+      logoUrl: "./images/clients/kmjs.png",
+      websiteUrl:
+        "https://www.gmanetwork.com/gmaplay/home/kapusomojessicasoho?o=1",
+    },
+    {
+      name: "i Witness",
+      logoUrl: "./images/clients/i-witness.png",
+      websiteUrl: "https://www.gmanetwork.com/gmaplay/home/iwitness?o=1",
+    },
+    {
+      name: "The Atom Araullo Specials",
+      logoUrl: "./images/clients/atom-specials.png",
+      websiteUrl:
+        "https://www.gmanetwork.com/entertainment/tv/the_atom_araullo_specials_full_episodes/videos/full_episodes/",
+    },
+    {
+      name: "The Freeman",
+      logoUrl: "./images/clients/the-freeman.png",
+      websiteUrl: "https://www.philstar.com/the-freeman",
+    },
+    {
+      name: "Channel NewsAsia",
+      logoUrl: "./images/clients/channel-news-asia.png",
+      websiteUrl: "https://www.channelnewsasia.com/",
+    }, //[cite: 4]
+    {
+      name: "France 2",
+      logoUrl: "./images/clients/france-2.png",
+      websiteUrl: "https://www.france.tv/france-2/",
+    },
+    {
+      name: "The Japan News",
+      logoUrl: "./images/clients/the-japan-news.png",
+      websiteUrl: "https://japannews.yomiuri.co.jp/",
+    },
+    {
+      name: "journalismfund.eu",
+      logoUrl: "./images/clients/journalism-fund.png",
+      websiteUrl: "https://www.journalismfund.eu/",
+    },
+    {
+      name: "Scottish Documentary Institute",
+      logoUrl: "./images/clients/sdi.png",
+      websiteUrl: "https://www.scottishdocinstitute.com/",
+    },
+    {
+      name: "PCIJ",
+      logoUrl: "./images/clients/pcij.png",
+      websiteUrl: "https://pcij.org/",
+    },
+    {
+      name: "Arte",
+      logoUrl: "./images/clients/arte.png",
+      websiteUrl: "https://www.arte.tv/",
+    },
   ],
   brands: [
-    "Universal Robina",
-    "Grab",
-    "Lazada",
-    "Ajinomoto",
-    "Enervon",
-    "UNILAB",
-    "Selecta",
-    "McDonald's",
-    "Puregold",
-    "inDrive",
+    {
+      name: "Universal Robina",
+      logoUrl: "./images/clients/urc.png",
+      websiteUrl: "https://www.urc.com.ph/",
+    },
+    {
+      name: "Grab",
+      logoUrl: "./images/clients/grab.png",
+      websiteUrl: "https://www.grab.com/ph/",
+    },
+    {
+      name: "Lazada",
+      logoUrl: "./images/clients/lazada.png",
+      websiteUrl: "https://www.lazada.com.ph/",
+    },
+    {
+      name: "Ajinomoto",
+      logoUrl: "./images/clients/ajinomoto.png",
+      websiteUrl: "https://ajinomotoph.com/",
+    },
+    {
+      name: "Enervon",
+      logoUrl: "./images/clients/enervon.png",
+      websiteUrl: "https://www.unilab.com.ph/products/enervon",
+    }, //[cite: 2]
+    {
+      name: "UNILAB",
+      logoUrl: "./images/clients/unilab.png",
+      websiteUrl: "https://www.unilab.com.ph/",
+    },
+    {
+      name: "Selecta",
+      logoUrl: "./images/clients/selecta.png",
+      websiteUrl: "https://www.selectaphilippines.com/",
+    },
+    {
+      name: "McDonald's",
+      logoUrl: "./images/clients/mcdonalds.png",
+      websiteUrl: "https://www.mcdonalds.com.ph/",
+    },
+    {
+      name: "Puregold",
+      logoUrl: "./images/clients/puregold.png",
+      websiteUrl: "https://www.puregold.com.ph/",
+    },
+    {
+      name: "inDrive",
+      logoUrl: "./images/clients/indrive.png",
+      websiteUrl: "https://indrive.com/",
+    },
+    {
+      name: "SM Seaside City",
+      logoUrl: "./images/clients/sm-seaside.png",
+      websiteUrl:
+        "https://www.smsupermalls.com/mall-locator/sm-seaside-city-cebu/",
+    },
   ],
   organizations: [
-    "Thomson Reuters Foundation",
-    "Business Insider",
-    "European Union",
-    "ChildFund",
-    "Miss Universe Philippines",
+    {
+      name: "Thomson Reuters Foundation",
+      logoUrl: "./images/clients/thomson-reuters.png",
+      websiteUrl: "https://www.trust.org/",
+    },
+    {
+      name: "Business Insider",
+      logoUrl: "./images/clients/business-insider.png",
+      websiteUrl: "https://www.businessinsider.com/",
+    }, //[cite: 6]
+    {
+      name: "European Union",
+      logoUrl: "./images/clients/european-union.png",
+      websiteUrl: "https://commission.europa.eu/",
+    }, //
+    {
+      name: "ChildFund",
+      logoUrl: "./images/clients/childfund.png",
+      websiteUrl: "https://www.childfund.org/where-we-work/philippines",
+    }, //[cite: 8]
+    {
+      name: "Miss Universe Philippines",
+      logoUrl: "./images/clients/miss-universe.png",
+      websiteUrl: "https://smuph.com/",
+    },
   ],
-  institutions: ["DepEd", "DOST", "Sault College"],
+  institutions: [
+    {
+      name: "DepEd",
+      logoUrl: "./images/clients/deped.png",
+      websiteUrl: "https://training.deped.gov.ph/",
+    }, //[cite: 9]
+    {
+      name: "DOST",
+      logoUrl: "./images/clients/dost.png",
+      websiteUrl: "https://www.dost.gov.ph/",
+    }, //[cite: 10]
+    {
+      name: "Sault College",
+      logoUrl: "./images/clients/sault-college.png",
+      websiteUrl: "https://www.saultcollege.ca/",
+    },
+  ],
 };
 
 export const partnershipsData = [
-  "GMA",
-  "Kapuso Mo, Jessica Soho",
-  "i Witness",
-  "Channel NewsAsia",
-  "France 2",
-  "The Japan News",
-  "Thomson Reuters Foundation",
-  "Business Insider",
-  "Scottish Documentary Institute",
-  "journalismfund.eu",
-  "PCIJ",
-  "Universal Robina",
-  "Miss Universe Philippines",
-  "UNILAB",
-  "SM Seaside City",
-  "DepEd",
-  "DOST",
-  "Enervon",
-  "Selecta",
-  "Arte",
-  "European Union",
-  "McDonald's",
-  "Lazada",
-  "Ajinomoto",
-  "Puregold",
-  "ChildFund",
-  "Sault College",
-  "inDrive",
-  "Grab",
+  {
+    name: "GMA",
+    logoUrl: "./images/clients/gma.png",
+    websiteUrl: "https://www.gmanetwork.com/",
+  },
+  {
+    name: "Kapuso Mo, Jessica Soho",
+    logoUrl: "./images/clients/kmjs.png",
+    websiteUrl: "https://www.gmanetwork.com/",
+  },
+  {
+    name: "i Witness",
+    logoUrl: "./images/clients/i-witness.png",
+    websiteUrl: "https://www.gmanetwork.com/",
+  },
+  {
+    name: "Channel NewsAsia",
+    logoUrl: "./images/clients/channel-news-asia.png",
+    websiteUrl: "https://www.channelnewsasia.com/",
+  },
+  {
+    name: "France 2",
+    logoUrl: "./images/clients/france-2.png",
+    websiteUrl: "https://www.france.tv/france-2/",
+  },
+  {
+    name: "The Japan News",
+    logoUrl: "./images/clients/the-japan-news.png",
+    websiteUrl: "https://japannews.yomiuri.co.jp/",
+  },
+  {
+    name: "Thomson Reuters Foundation",
+    logoUrl: "./images/clients/thomson-reuters.png",
+    websiteUrl: "https://www.trust.org/",
+  },
+  {
+    name: "Business Insider",
+    logoUrl: "./images/clients/business-insider.png",
+    websiteUrl: "https://www.businessinsider.com/",
+  },
+  {
+    name: "Scottish Documentary Institute",
+    logoUrl: "./images/clients/sdi.png",
+    websiteUrl: "https://www.scottishdocinstitute.com/",
+  },
+  {
+    name: "journalismfund.eu",
+    logoUrl: "./images/clients/journalism-fund.png",
+    websiteUrl: "https://www.journalismfund.eu/",
+  },
+  {
+    name: "PCIJ",
+    logoUrl: "./images/clients/pcij.png",
+    websiteUrl: "https://pcij.org/",
+  },
+  {
+    name: "Universal Robina",
+    logoUrl: "./images/clients/urc.png",
+    websiteUrl: "https://www.urc.com.ph/",
+  },
+  {
+    name: "Miss Universe Philippines",
+    logoUrl: "./images/clients/miss-universe.png",
+    websiteUrl: "https://smuph.com/",
+  },
+  {
+    name: "UNILAB",
+    logoUrl: "./images/clients/unilab.png",
+    websiteUrl: "https://www.unilab.com.ph/",
+  },
+  {
+    name: "SM Seaside City",
+    logoUrl: "./images/clients/sm-seaside.png",
+    websiteUrl:
+      "https://www.smsupermalls.com/mall-locator/sm-seaside-city-cebu/",
+  },
+  {
+    name: "DepEd",
+    logoUrl: "./images/clients/deped.png",
+    websiteUrl: "https://training.deped.gov.ph/",
+  },
+  {
+    name: "DOST",
+    logoUrl: "./images/clients/dost.png",
+    websiteUrl: "https://www.dost.gov.ph/",
+  },
+  {
+    name: "Enervon",
+    logoUrl: "./images/clients/enervon.png",
+    websiteUrl: "https://www.unilab.com.ph/products/enervon",
+  },
+  {
+    name: "Selecta",
+    logoUrl: "./images/clients/selecta.png",
+    websiteUrl: "https://www.selectaphilippines.com/",
+  },
+  {
+    name: "Arte",
+    logoUrl: "./images/clients/arte.png",
+    websiteUrl: "https://www.arte.tv/",
+  },
+  {
+    name: "European Union",
+    logoUrl: "./images/clients/european-union.png",
+    websiteUrl: "https://commission.europa.eu/",
+  },
+  {
+    name: "McDonald's",
+    logoUrl: "./images/clients/mcdonalds.png",
+    websiteUrl: "https://www.mcdonalds.com.ph/",
+  },
+  {
+    name: "Lazada",
+    logoUrl: "./images/clients/lazada.png",
+    websiteUrl: "https://www.lazada.com.ph/",
+  },
+  {
+    name: "Ajinomoto",
+    logoUrl: "./images/clients/ajinomoto.png",
+    websiteUrl: "https://ajinomotoph.com/",
+  },
+  {
+    name: "Puregold",
+    logoUrl: "./images/clients/puregold.png",
+    websiteUrl: "https://www.puregold.com.ph/",
+  },
+  {
+    name: "ChildFund",
+    logoUrl: "./images/clients/childfund.png",
+    websiteUrl: "https://www.childfund.org/where-we-work/philippines",
+  },
+  {
+    name: "Sault College",
+    logoUrl: "./images/clients/sault-college.png",
+    websiteUrl: "https://www.saultcollege.ca/",
+  },
+  {
+    name: "inDrive",
+    logoUrl: "./images/clients/indrive.png",
+    websiteUrl: "https://indrive.com/",
+  },
+  {
+    name: "Grab",
+    logoUrl: "./images/clients/grab.png",
+    websiteUrl: "https://www.grab.com/ph/",
+  },
 ];
 
 // --- ADVOCACIES DATA ---
