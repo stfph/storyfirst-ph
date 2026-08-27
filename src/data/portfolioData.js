@@ -312,7 +312,7 @@ export const awardsData = [
     recognition: "Nominee for Current Affairs (2025)",
     project: "Philippines: Les Petits Forcats de l'or",
     role: "News Fixer, Local Producer, Researcher",
-    logoUrl: "./images/awards/emmy-logo-placeholder.png",
+    logoUrl: "./images/awards/emmy.png",
     verificationLink: "https://www.iemmys.tv/",
   },
   {
@@ -321,7 +321,7 @@ export const awardsData = [
     recognition: "Gold World Medalist (2024)",
     project: "Batas Bata (Child's Game)",
     role: "Field Producer, Edit Supervisor",
-    logoUrl: "./images/awards/ny-festivals-placeholder.png",
+    logoUrl: "./images/awards/new-york.png",
     verificationLink: "https://tvfilm.newyorkfestivals.com/",
   },
   {
@@ -330,7 +330,7 @@ export const awardsData = [
     recognition: "Gold Winner for Health Documentary (2023)",
     project: "Kapuso Mo, Jessica Soho: Wounds of Woes",
     role: "Field Producer, Writer, Edit Supervisor, Director",
-    logoUrl: "./images/awards/ny-festivals-placeholder.png",
+    logoUrl: "./images/awards/new-york.png",
     verificationLink: "https://tvfilm.newyorkfestivals.com/",
   },
   {
@@ -339,7 +339,7 @@ export const awardsData = [
     recognition: "Silver World Medalist (2024)",
     project: "Hingang Malalim (One Deep Breath)",
     role: "Segment Producer, Edit Supervisor",
-    logoUrl: "./images/awards/ny-festivals-placeholder.png",
+    logoUrl: "./images/awards/new-york.png",
     verificationLink: "https://tvfilm.newyorkfestivals.com/",
   },
   {
@@ -348,8 +348,8 @@ export const awardsData = [
     recognition: "National Winner Best Documentary (One-Off)",
     project: "Lost Sabungeros",
     role: "Co-writer and co-director",
-    logoUrl: "./images/awards/aaca-logo-placeholder.png",
-    verificationLink: "#",
+    logoUrl: "./images/awards/asian-academy.png",
+    verificationLink: "https://www.asianacademycreativeawards.com/",
   },
   {
     id: 6,
@@ -357,8 +357,8 @@ export const awardsData = [
     recognition: "Best Current Affairs Programme Made in Asia (2024)",
     project: "Channel News Asia: The Negotiators",
     role: "Assistant Producer (PH), News Fixer, Researcher",
-    logoUrl: "./images/awards/contentasia-logo-placeholder.png",
-    verificationLink: "#",
+    logoUrl: "./images/awards/content-asia.png",
+    verificationLink: "https://contentasiaawards.com/",
   },
   {
     id: 7,
@@ -366,7 +366,7 @@ export const awardsData = [
     recognition: "Winner for Best Investigative Story (2024)",
     project: "Wombs for Rent",
     role: "Reporter, Researcher, Director, Edit Supervisor, Writer",
-    logoUrl: "./images/awards/cmma-logo-placeholder.png",
+    logoUrl: "./images/awards/cmma.png",
     verificationLink: "https://cmma.ph/",
   },
   {
@@ -375,8 +375,8 @@ export const awardsData = [
     recognition: "Awardee",
     project: "Batas Bata & Hingang Malalim",
     role: "Field/Segment Producer, Edit Supervisor",
-    logoUrl: "./images/awards/cannes-corporate-placeholder.png",
-    verificationLink: "#",
+    logoUrl: "./images/awards/cannes.png",
+    verificationLink: "https://www.cannescorporate.com/",
   },
   {
     id: 9,
@@ -384,7 +384,7 @@ export const awardsData = [
     recognition: "Nominee (2024)",
     project: "Philippines: Les Petits Forcats de l'or",
     role: "News Fixer, Local Producer, Researcher",
-    logoUrl: "./images/awards/figra-logo-placeholder.png",
+    logoUrl: "./images/awards/figra.png",
     verificationLink: "https://www.figra.fr/",
   },
   {
@@ -393,7 +393,7 @@ export const awardsData = [
     recognition: "Nominee (2024)",
     project: "Philippines: Les Petits Forcats de l'or",
     role: "News Fixer, Local Producer, Researcher",
-    logoUrl: "./images/awards/dig-awards-placeholder.png",
+    logoUrl: "./images/awards/dig.png",
     verificationLink: "https://dig-awards.org/",
   },
   {
@@ -402,8 +402,9 @@ export const awardsData = [
     recognition: "Best Regional Entry (2021)",
     project: "Ang Pinanggang Anak ni Julieta",
     role: "Director, Writer, Edit Supervisor",
-    logoUrl: "./images/awards/gawad-alternatibo-placeholder.png",
-    verificationLink: "#",
+    logoUrl: "./images/awards/ccp.png",
+    verificationLink:
+      "https://culturalcenter.gov.ph/programs/gawad-ccp-para-sa-alternatibong-pelikula-at-video/",
   },
 ];
 
