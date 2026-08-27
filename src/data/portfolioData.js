@@ -308,7 +308,7 @@ export const projectsData = [
 export const awardsData = [
   {
     id: 1,
-    title: "International Emmy Awards",
+    title: "International Emmy Awards (New York, USA)",
     recognition: "Nominee for Current Affairs (2025)",
     project: "Philippines: Les Petits Forcats de l'or",
     role: "News Fixer, Local Producer, Researcher",
@@ -317,7 +317,7 @@ export const awardsData = [
   },
   {
     id: 2,
-    title: "New York Festivals TV & Film Awards",
+    title: "New York Festivals TV & Film Awards (New York, USA)",
     recognition: "Gold World Medalist (2024)",
     project: "Batas Bata (Child's Game)",
     role: "Field Producer, Edit Supervisor",
@@ -326,7 +326,7 @@ export const awardsData = [
   },
   {
     id: 3,
-    title: "New York Festivals TV & Film Awards",
+    title: "New York Festivals TV & Film Awards (New York, USA)",
     recognition: "Gold Winner for Health Documentary (2023)",
     project: "Kapuso Mo, Jessica Soho: Wounds of Woes",
     role: "Field Producer, Writer, Edit Supervisor, Director",
@@ -335,7 +335,7 @@ export const awardsData = [
   },
   {
     id: 4,
-    title: "New York Festivals TV & Film Awards",
+    title: "New York Festivals TV & Film Awards (New York, USA)",
     recognition: "Silver World Medalist (2024)",
     project: "Hingang Malalim (One Deep Breath)",
     role: "Segment Producer, Edit Supervisor",
@@ -344,7 +344,7 @@ export const awardsData = [
   },
   {
     id: 5,
-    title: "Asian Academy Creative Awards",
+    title: "Asian Academy Creative Awards (Philippines)",
     recognition: "National Winner Best Documentary (One-Off)",
     project: "Lost Sabungeros",
     role: "Co-writer and co-director",
@@ -353,7 +353,7 @@ export const awardsData = [
   },
   {
     id: 6,
-    title: "ContentAsia Awards",
+    title: "ContentAsia Awards (Taipei, Taiwan)",
     recognition: "Best Current Affairs Programme Made in Asia (2024)",
     project: "Channel News Asia: The Negotiators",
     role: "Assistant Producer (PH), News Fixer, Researcher",
@@ -362,7 +362,7 @@ export const awardsData = [
   },
   {
     id: 7,
-    title: "Catholic Mass Media Awards",
+    title: "Catholic Mass Media Awards (Philippines)",
     recognition: "Winner for Best Investigative Story (2024)",
     project: "Wombs for Rent",
     role: "Reporter, Researcher, Director, Edit Supervisor, Writer",
@@ -371,7 +371,7 @@ export const awardsData = [
   },
   {
     id: 8,
-    title: "Cannes Corporate Media & TV Awards",
+    title: "Cannes Corporate Media & TV Awards (Cannes, France)",
     recognition: "Awardee",
     project: "Batas Bata & Hingang Malalim",
     role: "Field/Segment Producer, Edit Supervisor",
@@ -405,6 +405,53 @@ export const awardsData = [
     logoUrl: "./images/awards/ccp.png",
     verificationLink:
       "https://culturalcenter.gov.ph/programs/gawad-ccp-para-sa-alternatibong-pelikula-at-video/",
+  },
+  {
+    id: 12,
+    title: "Gawad Urian (Philippines)",
+    recognition: "Nominee for Best Documentary (2025)",
+    project: "Lost Sabungeros",
+    role: "Co-writer and co-director",
+    logoUrl: "./images/awards/gawad-urian.png",
+    verificationLink: "https://manunuripelikula.com/the-gawad-urian-awards/",
+  },
+  {
+    id: 13,
+    title: "Albert Londres Prize (Paris, France)",
+    recognition: "Official Selection (2024)",
+    project: "Philippines: Les Petits Forcats de l'or",
+    role: "News Fixer, Local Producer, Researcher",
+    logoUrl: "./images/awards/albert-londres.png",
+    verificationLink: "https://prix-albert-londres.scam.fr/en/",
+  },
+  {
+    id: 14,
+    title: "Association for International Broadcasting (London, UK)",
+    recognition: "Highly Commended",
+    project: "Philippines: Les Petits Forcats de l'or",
+    role: "News Fixer, Local Producer, Researcher",
+    logoUrl: "./images/awards/aib.png",
+    verificationLink: "https://theaib.tv/",
+  },
+  {
+    id: 15,
+    title: "ACA and Global OTT Awards (Busan, South Korea)",
+    recognition: "Nominee for Best Reality Show (2023)",
+    project: "Kapuso Mo, Jessica Soho: Wounds of Woes",
+    role: "Field Producer, Writer, Edit Supervisor, Director",
+    logoUrl: "./images/awards/aca.png",
+    verificationLink:
+      "https://www.biff.kr/eng/artyboard/mboard.asp?Action=view&strBoardID=9611_05&intSeq=90934",
+  },
+  {
+    id: 16,
+    title: "UPLB Gandingan Awards (Philippines)",
+    recognition: "Most Development-Oriented Public Service Program (2024)",
+    project: "Kapuso Mo, Jessica Soho: Wounds of Woes",
+    role: "Field Producer, Writer, Edit Supervisor, Director",
+    logoUrl: "./images/awards/gandingan.png",
+    verificationLink:
+      "https://uplb.edu.ph/academic/20th-up-combroadsoc-gandingan-awards-to-amplify-environmental-stewardship/",
   },
 ];
 
@@ -464,7 +511,7 @@ export const clientsData = {
       name: "Channel NewsAsia",
       logoUrl: "./images/clients/channel-news-asia.png",
       websiteUrl: "https://www.channelnewsasia.com/",
-    }, //[cite: 4]
+    }, //
     {
       name: "France 2",
       logoUrl: "./images/clients/france-2.png",
@@ -564,7 +611,7 @@ export const clientsData = {
       name: "Business Insider",
       logoUrl: "./images/clients/business-insider.png",
       websiteUrl: "https://www.businessinsider.com/",
-    }, //[cite: 6]
+    }, //
     {
       name: "European Union",
       logoUrl: "./images/clients/european-union.png",
@@ -574,7 +621,7 @@ export const clientsData = {
       name: "ChildFund",
       logoUrl: "./images/clients/childfund.png",
       websiteUrl: "https://www.childfund.org/where-we-work/philippines",
-    }, //[cite: 8]
+    }, //
     {
       name: "Miss Universe Philippines",
       logoUrl: "./images/clients/miss-universe.png",
@@ -586,12 +633,12 @@ export const clientsData = {
       name: "DepEd",
       logoUrl: "./images/clients/deped.png",
       websiteUrl: "https://training.deped.gov.ph/",
-    }, //[cite: 9]
+    }, //
     {
       name: "DOST",
       logoUrl: "./images/clients/dost.png",
       websiteUrl: "https://www.dost.gov.ph/",
-    }, //[cite: 10]
+    }, //
     {
       name: "Sault College",
       logoUrl: "./images/clients/sault-college.png",
@@ -809,8 +856,6 @@ export const collaboratorsData = [
     name: "Mark Wiens",
     context: "Food Vlogger | Philippines Culinary Tour",
     imageUrl: "./images/collaborators/mark-wiens.jpg",
-    websiteUrl:
-      "https://www.gmanetwork.com/gmaplay/home/kapusomojessicasoho?o=1",
   },
   {
     id: 2,

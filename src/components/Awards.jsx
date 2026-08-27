@@ -1,15 +1,59 @@
 import React from "react";
+import { motion } from "framer-motion";
 import { awardsData } from "../data/portfolioData";
 import { Award, ExternalLink } from "lucide-react";
 
 export default function Awards() {
+  // Framer Motion variants for bi-directional enter/exit scroll animation
+  const containerVariants = {
+    hidden: {
+      opacity: 0,
+      y: 20,
+      transition: { staggerChildren: 0.05, staggerDirection: -1 },
+    },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        staggerChildren: 0.08,
+        delayChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 15, scale: 0.95, transition: { duration: 0.2 } },
+    show: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: { type: "spring", stiffness: 200, damping: 20 },
+    },
+  };
+
   return (
     <section
       id="awards"
-      className="py-24 bg-white dark:bg-neutral-950 border-t border-neutral-200 dark:border-neutral-900 transition-colors duration-500 px-6"
+      className="py-24 bg-white dark:bg-neutral-950 border-t border-neutral-200 dark:border-neutral-900 transition-colors duration-500 px-6 overflow-hidden"
     >
+      {/* Hide scrollbar for mobile swipeable gallery */}
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+      `,
+        }}
+      />
+
       <div className="max-w-7xl mx-auto">
-        <div className="mb-16 flex flex-col md:flex-row md:items-end justify-between gap-8">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, margin: "-100px" }}
+          transition={{ duration: 0.6 }}
+          className="mb-16 flex flex-col md:flex-row md:items-end justify-between gap-8"
+        >
           <div>
             <span className="bg-yellow-500 text-black uppercase font-black px-3 py-1 text-[10px] tracking-[0.2em] inline-block mb-4 shadow-sm">
               Global & Local Excellence
@@ -29,27 +73,35 @@ export default function Awards() {
               the honor to work alongside.
             </p>
           </div>
-        </div>
+        </motion.div>
 
-        {/* Awards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {/* Awards Gallery: Horizontal Swipe on Mobile, Grid on Desktop, with Bi-directional Animations */}
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          exit="hidden"
+          viewport={{ once: false, amount: 0.1 }}
+          variants={containerVariants}
+          className="flex md:grid overflow-x-auto md:overflow-x-visible snap-x md:snap-none hide-scrollbar gap-6 pb-8 md:pb-0 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+        >
           {awardsData.map((award) => (
-            <div
+            <motion.div
+              variants={itemVariants}
               key={award.id}
-              className="group flex flex-col bg-neutral-50 dark:bg-[#0a0a0a] border border-neutral-200 dark:border-neutral-800 p-8 hover:-translate-y-1 transition-all duration-300 hover:shadow-xl hover:shadow-neutral-200/50 dark:hover:shadow-yellow-500/5"
+              className="group flex flex-col bg-neutral-50 dark:bg-[#0a0a0a] border border-neutral-200 dark:border-neutral-800 p-8 hover:-translate-y-1 transition-all duration-300 hover:shadow-xl hover:shadow-neutral-200/50 dark:hover:shadow-yellow-500/5 shrink-0 w-[80vw] sm:w-[50vw] md:w-auto snap-center md:snap-align-none"
             >
-              {/* Clickable Logo Area */}
+              {/* Clickable Logo Area with Smart Monochrome Canvas */}
               <a
                 href={award.verificationLink}
                 target={award.verificationLink !== "#" ? "_blank" : "_self"}
                 rel="noreferrer"
-                className="block relative h-32 mb-8 bg-white dark:bg-neutral-900 p-4 border border-neutral-100 dark:border-neutral-800 rounded-lg overflow-hidden cursor-pointer"
+                className="block relative h-32 mb-8 bg-white/80 dark:bg-neutral-900/80 p-4 border border-neutral-100 dark:border-neutral-800 rounded-lg overflow-hidden cursor-pointer"
                 title={`Verify ${award.title} recognition`}
               >
                 <img
                   src={award.logoUrl}
                   alt={`${award.title} logo`}
-                  className="w-full h-full object-contain filter dark:brightness-200 dark:contrast-125 transition-transform duration-500 group-hover:scale-105"
+                  className="w-full h-full object-contain filter brightness-0 opacity-60 dark:invert dark:opacity-70 group-hover:!brightness-100 group-hover:!invert-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-105"
                   onError={(e) => {
                     e.target.style.display = "none";
                     e.target.nextSibling.style.display = "flex";
@@ -87,9 +139,9 @@ export default function Awards() {
                   </p>
                 </div>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
