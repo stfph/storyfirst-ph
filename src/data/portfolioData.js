@@ -807,8 +807,10 @@ export const collaboratorsData = [
   {
     id: 1,
     name: "Mark Wiens",
-    context: "International Food Vlogger | Philippines Culinary Tour",
+    context: "Food Vlogger | Philippines Culinary Tour",
     imageUrl: "./images/collaborators/mark-wiens.jpg",
+    websiteUrl:
+      "https://www.gmanetwork.com/gmaplay/home/kapusomojessicasoho?o=1",
   },
   {
     id: 2,
