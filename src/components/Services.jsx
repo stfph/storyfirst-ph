@@ -5,7 +5,6 @@ import { servicesData } from "../data/portfolioData";
 export default function Services() {
   const [hoveredService, setHoveredService] = useState(null);
 
-  // Framer Motion variants for bi-directional enter/exit scroll animation
   const containerVariants = {
     hidden: {
       opacity: 0,
@@ -35,20 +34,23 @@ export default function Services() {
   return (
     <section
       id="services"
-      className="relative py-32 bg-neutral-50 dark:bg-neutral-900 overflow-hidden min-h-[80vh] flex items-center transition-colors duration-500"
+      // Added subtle light mode background tint to help the background template stand out
+      className="relative py-32 bg-neutral-100 dark:bg-neutral-900 overflow-hidden min-h-[80vh] flex items-center transition-colors duration-500"
     >
-      {/* Background Media Reveal with a dynamic default background template when nothing is hovered */}
+      {/* Background Media Reveal with enhanced light/dark mode opacities and gradient fading */}
       <div className="absolute inset-0 w-full h-full pointer-events-none transition-opacity duration-1000 ease-in-out">
-        {/* Default background template image when not hovering (using service index 0 or a generic atmospheric template) */}
+        {/* Default background template image when not hovering */}
         <div
           className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${hoveredService === null ? "opacity-100" : "opacity-0"}`}
         >
           <img
             src={servicesData[4]?.mediaUrl || "./images/services/default.jpg"}
             alt="default services background"
-            className="w-full h-full object-cover opacity-10 dark:opacity-20 grayscale contrast-125 saturate-100 scale-105"
+            // Increased opacity for light mode (0.15) and dark mode (0.25) so it's clearly noticeable
+            className="w-full h-full object-cover opacity-15 dark:opacity-25 contrast-125 saturate-100 scale-105"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-neutral-50 via-neutral-50/80 to-neutral-50 dark:from-neutral-900 dark:via-neutral-900/80 dark:to-neutral-900 opacity-95"></div>
+          {/* Adjusted gradient overlay for light mode to prevent washout */}
+          <div className="absolute inset-0 bg-gradient-to-b from-neutral-100 via-neutral-100/75 to-neutral-100 dark:from-neutral-900 dark:via-neutral-900/80 dark:to-neutral-900 opacity-95"></div>
         </div>
 
         {/* Hovered service specific background images */}
@@ -60,9 +62,9 @@ export default function Services() {
             <img
               src={service.mediaUrl}
               alt="service background"
-              className="w-full h-full object-cover opacity-20 dark:opacity-35 contrast-125 saturate-110 scale-105"
+              className="w-full h-full object-cover opacity-25 dark:opacity-35 contrast-125 saturate-110 scale-105"
             />
-            <div className="absolute inset-0 bg-gradient-to-b from-neutral-50 via-transparent to-neutral-50 dark:from-neutral-900 dark:via-transparent dark:to-neutral-900 opacity-90"></div>
+            <div className="absolute inset-0 bg-gradient-to-b from-neutral-100 via-neutral-100/50 to-neutral-100 dark:from-neutral-900 dark:via-transparent dark:to-neutral-900 opacity-90"></div>
           </div>
         ))}
       </div>
