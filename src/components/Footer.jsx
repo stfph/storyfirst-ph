@@ -1,14 +1,24 @@
 import React from "react";
+import { motion } from "framer-motion";
 import { FaFacebook, FaInstagram, FaTiktok } from "react-icons/fa6";
 
 export default function Footer() {
   return (
-    <footer className="bg-white dark:bg-neutral-950 border-t border-neutral-200 dark:border-neutral-900 py-12 px-6 text-center text-xs text-neutral-500 font-mono transition-colors duration-500">
+    <motion.footer
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 20 }}
+      viewport={{ once: false, amount: 0.1 }}
+      transition={{ duration: 0.6 }}
+      className="bg-white dark:bg-neutral-950 border-t border-neutral-200 dark:border-neutral-900 py-12 px-6 text-center sm:text-left text-xs text-neutral-500 font-mono transition-colors duration-500 overflow-hidden"
+    >
       <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-8">
         <div className="flex flex-col items-center sm:items-start">
           <a
             href="#identity"
-            className="flex flex-col text-black dark:text-white leading-[0.85] tracking-tighter transition-colors w-fit items-center sm:items-start mb-2"
+            // Fixed mobile alignment by switching items-center to items-start with left alignment,
+            // while keeping the multi-line layout intact.
+            className="flex flex-col text-black dark:text-white leading-[0.85] tracking-tighter transition-colors w-fit items-start text-left mb-2"
           >
             <span className="text-3xl font-black uppercase tracking-tight">
               Story
@@ -58,6 +68,6 @@ export default function Footer() {
           </a>
         </div>
       </div>
-    </footer>
+    </motion.footer>
   );
 }
