@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Mail, Phone, MapPin, Send } from "lucide-react";
+import { motion } from "framer-motion";
+import { Mail, Phone, MapPin } from "lucide-react";
 
 export default function Contact() {
   const [isSent, setIsSent] = useState(false);
@@ -39,11 +40,17 @@ export default function Contact() {
   return (
     <section
       id="contact"
-      className="py-24 bg-neutral-50 dark:bg-neutral-900 border-t border-neutral-200 dark:border-neutral-800 px-6 transition-colors duration-500"
+      className="py-24 bg-neutral-50 dark:bg-neutral-900 border-t border-neutral-200 dark:border-neutral-800 px-6 transition-colors duration-500 overflow-hidden"
     >
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
-        {/* Left Column: Direct Info & Editorial Pitch */}
-        <div className="lg:col-span-5 space-y-6">
+        <motion.div
+          initial={{ opacity: 0, x: -30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -30 }}
+          viewport={{ once: false, amount: 0.1 }}
+          transition={{ duration: 0.6 }}
+          className="lg:col-span-5 space-y-6"
+        >
           <span className="bg-yellow-500 text-black uppercase font-black px-3 py-1 text-[10px] tracking-[0.2em] inline-block shadow-sm">
             Work With StoryFirst PH
           </span>
@@ -63,7 +70,6 @@ export default function Contact() {
           </p>
 
           <div className="pt-6 space-y-6 select-text">
-            {/* Email Contact */}
             <div className="flex items-center gap-5">
               <div className="flex items-center justify-center w-12 h-12 bg-yellow-500 text-black rounded-full shadow-lg shadow-yellow-500/20 shrink-0">
                 <Mail size={20} strokeWidth={2.5} />
@@ -81,7 +87,6 @@ export default function Contact() {
               </div>
             </div>
 
-            {/* Phone Contact */}
             <div className="flex items-center gap-5">
               <div className="flex items-center justify-center w-12 h-12 bg-yellow-500 text-black rounded-full shadow-lg shadow-yellow-500/20 shrink-0">
                 <Phone size={20} strokeWidth={2.5} />
@@ -96,7 +101,6 @@ export default function Contact() {
               </div>
             </div>
 
-            {/* Location Tag */}
             <div className="flex items-center gap-5">
               <div className="flex items-center justify-center w-12 h-12 bg-yellow-500 text-black rounded-full shadow-lg shadow-yellow-500/20 shrink-0">
                 <MapPin size={20} strokeWidth={2.5} />
@@ -111,10 +115,16 @@ export default function Contact() {
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
 
-        {/* Right Column: Inquiry Form with Category Selector */}
-        <div className="lg:col-span-7">
+        <motion.div
+          initial={{ opacity: 0, x: 30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: 30 }}
+          viewport={{ once: false, amount: 0.1 }}
+          transition={{ duration: 0.6 }}
+          className="lg:col-span-7"
+        >
           <form
             onSubmit={handleSubmit}
             className="bg-white dark:bg-neutral-950 p-8 sm:p-10 border border-neutral-200 dark:border-neutral-800 space-y-6 shadow-xl"
@@ -151,7 +161,6 @@ export default function Contact() {
               </div>
             </div>
 
-            {/* Category Dropdown */}
             <div>
               <label className="block text-[10px] font-black tracking-[0.2em] uppercase text-neutral-500 dark:text-neutral-400 mb-2">
                 Inquiry Category *
@@ -185,25 +194,19 @@ export default function Contact() {
               ></textarea>
             </div>
 
+            {/* Removed the Send icon entirely as requested, keeping text only */}
             <button
               type="submit"
-              className={`w-full font-black uppercase py-4 text-xs tracking-[0.2em] flex items-center justify-center gap-3 transition-all duration-300 active:scale-98 cursor-pointer ${
+              className={`w-full font-black uppercase py-4 text-xs tracking-[0.2em] flex items-center justify-center transition-all duration-300 active:scale-98 cursor-pointer ${
                 isSent
                   ? "bg-emerald-600 text-white"
                   : "bg-yellow-500 hover:bg-yellow-400 text-black shadow-lg shadow-yellow-500/20"
               }`}
             >
-              {isSent ? (
-                "INQUIRY SENT SUCCESSFULLY!"
-              ) : (
-                <>
-                  <span>Send Inquiry</span>
-                  <Send size={15} />
-                </>
-              )}
+              {isSent ? "INQUIRY SENT SUCCESSFULLY!" : "SEND INQUIRY"}
             </button>
           </form>
-        </div>
+        </motion.div>
       </div>
     </section>
   );
