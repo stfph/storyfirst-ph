@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Sun, Moon } from "lucide-react";
 
 export default function Navbar({ isDark, toggleTheme }) {
@@ -16,7 +17,12 @@ export default function Navbar({ isDark, toggleTheme }) {
   ];
 
   return (
-    <nav className="fixed top-0 left-0 w-full bg-white/90 dark:bg-neutral-950/90 backdrop-blur-md z-40 border-b border-neutral-200 dark:border-neutral-900 transition-colors duration-500">
+    <motion.nav
+      initial={{ y: -100, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      className="fixed top-0 left-0 w-full bg-white/90 dark:bg-neutral-950/90 backdrop-blur-md z-40 border-b border-neutral-200 dark:border-neutral-900 transition-colors duration-500"
+    >
       <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
         <a
           href="#hero"
@@ -68,20 +74,29 @@ export default function Navbar({ isDark, toggleTheme }) {
         </div>
       </div>
 
-      {isOpen && (
-        <div className="lg:hidden bg-white dark:bg-neutral-900 border-b border-neutral-200 dark:border-neutral-800 px-6 py-6 flex flex-col gap-4 text-center font-bold uppercase tracking-widest">
-          {navLinks.map((link) => (
-            <a
-              key={link.name}
-              href={link.href}
-              onClick={() => setIsOpen(false)}
-              className="text-neutral-800 dark:text-neutral-200 hover:text-yellow-500 py-2 border-b border-neutral-100 dark:border-neutral-800"
-            >
-              {link.name}
-            </a>
-          ))}
-        </div>
-      )}
-    </nav>
+      {/* Mobile Menu with Framer Motion slide-down enter/exit animation */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="lg:hidden bg-white dark:bg-neutral-900 border-b border-neutral-200 dark:border-neutral-800 px-6 py-6 flex flex-col gap-4 text-center font-bold uppercase tracking-widest overflow-hidden"
+          >
+            {navLinks.map((link) => (
+              <a
+                key={link.name}
+                href={link.href}
+                onClick={() => setIsOpen(false)}
+                className="text-neutral-800 dark:text-neutral-200 hover:text-yellow-500 py-2 border-b border-neutral-100 dark:border-neutral-800"
+              >
+                {link.name}
+              </a>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.nav>
   );
 }

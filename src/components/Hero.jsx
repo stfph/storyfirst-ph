@@ -1,4 +1,5 @@
 import React from "react";
+import { motion } from "framer-motion";
 import { identityData } from "../data/portfolioData";
 
 export default function Hero() {
@@ -21,7 +22,15 @@ export default function Hero() {
         </video>
       </div>
 
-      <div className="relative z-20 text-center px-6 max-w-5xl mx-auto flex flex-col items-center mt-16">
+      {/* Hero Content with bi-directional entry/exit scroll animation */}
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 30 }}
+        viewport={{ once: false, amount: 0.1 }}
+        transition={{ duration: 0.8 }}
+        className="relative z-20 text-center px-6 max-w-5xl mx-auto flex flex-col items-center mt-16"
+      >
         <span className="text-yellow-500 font-black tracking-[0.3em] text-[10px] md:text-xs uppercase mb-6 drop-shadow-md">
           Creative Communications & Production
         </span>
@@ -30,7 +39,6 @@ export default function Hero() {
         <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black text-white uppercase tracking-tighter leading-[0.9] drop-shadow-2xl">
           Stories First.
           <br />
-          {/* Applied the solid yellow block with black text here */}
           <span className="bg-yellow-500 text-black px-6 py-2 inline-block mt-4 shadow-xl">
             Always.
           </span>
@@ -55,7 +63,7 @@ export default function Hero() {
             Work With Us
           </a>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }

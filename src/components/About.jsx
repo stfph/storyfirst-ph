@@ -1,15 +1,23 @@
 import React from "react";
+import { motion } from "framer-motion";
 
 export default function About() {
   return (
     <section
       id="about"
-      className="py-32 bg-white dark:bg-neutral-950 transition-colors duration-500 px-6"
+      className="py-32 bg-white dark:bg-neutral-950 transition-colors duration-500 px-6 overflow-hidden"
     >
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24">
-          {/* Left Column: Core Philosophy */}
-          <div className="lg:col-span-5 flex flex-col justify-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 items-center">
+          {/* Left Column: Core Philosophy with Bi-directional Animation */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -30 }}
+            viewport={{ once: false, amount: 0.1 }}
+            transition={{ duration: 0.6 }}
+            className="lg:col-span-5 flex flex-col justify-center"
+          >
             <span className="bg-yellow-500 text-black uppercase font-black px-3 py-1 text-[10px] tracking-[0.2em] inline-block w-fit mb-6 shadow-sm">
               Our Philosophy
             </span>
@@ -20,10 +28,17 @@ export default function About() {
                 Comes First.
               </span>
             </h2>
-          </div>
+          </motion.div>
 
-          {/* Right Column: Agency Narrative */}
-          <div className="lg:col-span-7 flex flex-col justify-center space-y-8 text-neutral-600 dark:text-neutral-400 text-lg leading-relaxed font-medium">
+          {/* Right Column: Agency Narrative with Bi-directional Animation */}
+          <motion.div
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 30 }}
+            viewport={{ once: false, amount: 0.1 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="lg:col-span-7 flex flex-col justify-center space-y-8 text-neutral-600 dark:text-neutral-400 text-lg leading-relaxed font-medium"
+          >
             <p className="text-2xl text-neutral-900 dark:text-neutral-200 font-bold leading-snug">
               Meaningful communication begins with understanding people,
               context, and the story that needs to be told.
@@ -45,7 +60,7 @@ export default function About() {
               human-centered visual narratives that resonate, educate, and
               inspire.
             </p>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
