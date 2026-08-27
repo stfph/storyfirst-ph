@@ -41,6 +41,7 @@ export default function Navbar({ isDark, toggleTheme }) {
           </div>
         </a>
 
+        {/* Desktop Menu */}
         <div className="hidden lg:flex items-center gap-8 text-xs font-black uppercase tracking-[0.1em]">
           {navLinks.map((link) => (
             <a
@@ -55,46 +56,96 @@ export default function Navbar({ isDark, toggleTheme }) {
 
           <button
             onClick={toggleTheme}
-            className="ml-4 p-2 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors text-black dark:text-white cursor-pointer"
+            className="ml-4 p-2 rounded-full hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors text-black dark:text-white cursor-pointer flex items-center justify-center"
+            aria-label="Toggle Theme"
           >
             {isDark ? <Sun size={18} /> : <Moon size={18} />}
           </button>
         </div>
 
+        {/* Mobile Navbar Controls */}
         <div className="lg:hidden flex items-center gap-4 text-black dark:text-white">
-          <button onClick={toggleTheme} className="p-2 cursor-pointer">
+          <button
+            onClick={toggleTheme}
+            className="p-2 cursor-pointer flex items-center justify-center"
+            aria-label="Toggle Theme"
+          >
             {isDark ? <Sun size={24} /> : <Moon size={24} />}
           </button>
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="focus:outline-none cursor-pointer"
+            className="focus:outline-none cursor-pointer p-2 flex items-center justify-center"
+            aria-label="Toggle Menu"
           >
-            {isOpen ? <X size={28} /> : <Menu size={28} />}
+            <Menu size={28} />
           </button>
         </div>
       </div>
 
-      {/* Mobile Menu with Framer Motion slide-down enter/exit animation */}
+      {/* Mobile Slide-Out Drawer & Backdrop Overlay */}
       <AnimatePresence>
         {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="lg:hidden bg-white dark:bg-neutral-900 border-b border-neutral-200 dark:border-neutral-800 px-6 py-6 flex flex-col gap-4 text-center font-bold uppercase tracking-widest overflow-hidden"
-          >
-            {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                onClick={() => setIsOpen(false)}
-                className="text-neutral-800 dark:text-neutral-200 hover:text-yellow-500 py-2 border-b border-neutral-100 dark:border-neutral-800"
+          <>
+            {/* Backdrop Dimmer Overlay */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              onClick={() => setIsOpen(false)}
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden"
+            />
+
+            {/* Right-to-Left Slide-Out Drawer Panel */}
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              className="fixed top-0 right-0 h-screen w-[80%] max-w-sm bg-white dark:bg-neutral-950 border-l border-neutral-200 dark:border-neutral-800 shadow-2xl z-50 flex flex-col justify-between py-8 px-8 lg:hidden overflow-y-auto"
+            >
+              {/* Drawer Header with Close Button */}
+              <div className="flex justify-between items-center pb-6 border-b border-neutral-200 dark:border-neutral-800">
+                <span className="text-xs font-black uppercase tracking-[0.2em] text-neutral-400">
+                  Navigation
+                </span>
+                <button
+                  onClick={() => setIsOpen(false)}
+                  className="p-2 text-black dark:text-white cursor-pointer hover:bg-neutral-100 dark:hover:bg-neutral-900 rounded-full transition-colors flex items-center justify-center"
+                  aria-label="Close Menu"
+                >
+                  <X size={24} />
+                </button>
+              </div>
+
+              {/* Navigation Links List */}
+              <div className="flex flex-col gap-6 text-left py-6 my-auto">
+                {navLinks.map((link, index) => (
+                  <motion.a
+                    key={link.name}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.05 + 0.1 }}
+                    href={link.href}
+                    onClick={() => setIsOpen(false)}
+                    className="text-xl font-black uppercase tracking-wider text-neutral-900 dark:text-white hover:text-yellow-500 dark:hover:text-yellow-500 transition-colors border-b border-neutral-100 dark:border-neutral-900 pb-4"
+                  >
+                    {link.name}
+                  </motion.a>
+                ))}
+              </div>
+
+              {/* Drawer Footer info */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.4 }}
+                className="pt-6 border-t border-neutral-200 dark:border-neutral-800 text-xs font-mono text-neutral-500 uppercase tracking-widest"
               >
-                {link.name}
-              </a>
-            ))}
-          </motion.div>
+                <p>StoryFirst PH © {new Date().getFullYear()}</p>
+              </motion.div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </motion.nav>
