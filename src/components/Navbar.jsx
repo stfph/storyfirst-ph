@@ -28,21 +28,21 @@ export default function Navbar({ isDark, toggleTheme }) {
           href="#hero"
           className="flex flex-col text-black dark:text-white leading-[0.85] tracking-tighter transition-colors w-fit"
         >
-          <span className="text-4xl font-black uppercase tracking-tight">
+          <span className="text-4xl font-anton font-normal uppercase tracking-wide">
             Story
           </span>
           <div className="flex items-end">
-            <span className="text-4xl font-black uppercase tracking-tight">
+            <span className="text-4xl font-anton font-normal uppercase tracking-wide">
               First
             </span>
-            <span className="text-sm font-bold uppercase mb-[2px] ml-1 tracking-normal">
+            <span className="text-sm font-spartan font-bold uppercase mb-[4px] ml-1 tracking-normal">
               PH
             </span>
           </div>
         </a>
 
         {/* Desktop Menu */}
-        <div className="hidden lg:flex items-center gap-8 text-xs font-black uppercase tracking-[0.1em]">
+        <div className="hidden lg:flex items-center gap-8 text-[11px] font-spartan font-bold uppercase tracking-widest">
           {navLinks.map((link) => (
             <a
               key={link.name}
@@ -86,7 +86,6 @@ export default function Navbar({ isDark, toggleTheme }) {
       <AnimatePresence>
         {isOpen && (
           <>
-            {/* Backdrop Dimmer Overlay */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -96,7 +95,6 @@ export default function Navbar({ isDark, toggleTheme }) {
               className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden"
             />
 
-            {/* Right-to-Left Slide-Out Drawer Panel */}
             <motion.div
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
@@ -104,9 +102,8 @@ export default function Navbar({ isDark, toggleTheme }) {
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
               className="fixed top-0 right-0 h-screen w-[80%] max-w-sm bg-white dark:bg-neutral-950 border-l border-neutral-200 dark:border-neutral-800 shadow-2xl z-50 flex flex-col justify-between py-8 px-8 lg:hidden overflow-y-auto"
             >
-              {/* Drawer Header with Close Button */}
               <div className="flex justify-between items-center pb-6 border-b border-neutral-200 dark:border-neutral-800">
-                <span className="text-xs font-black uppercase tracking-[0.2em] text-neutral-400">
+                <span className="text-xs font-spartan font-bold uppercase tracking-widest text-neutral-400">
                   Navigation
                 </span>
                 <button
@@ -118,7 +115,6 @@ export default function Navbar({ isDark, toggleTheme }) {
                 </button>
               </div>
 
-              {/* Navigation Links List */}
               <div className="flex flex-col gap-6 text-left py-6 my-auto">
                 {navLinks.map((link, index) => (
                   <motion.a
@@ -128,19 +124,18 @@ export default function Navbar({ isDark, toggleTheme }) {
                     transition={{ delay: index * 0.05 + 0.1 }}
                     href={link.href}
                     onClick={() => setIsOpen(false)}
-                    className="text-xl font-black uppercase tracking-wider text-neutral-900 dark:text-white hover:text-yellow-500 dark:hover:text-yellow-500 transition-colors border-b border-neutral-100 dark:border-neutral-900 pb-4"
+                    className="text-xl font-spartan font-bold uppercase tracking-widest text-neutral-900 dark:text-white hover:text-yellow-500 dark:hover:text-yellow-500 transition-colors border-b border-neutral-100 dark:border-neutral-900 pb-4"
                   >
                     {link.name}
                   </motion.a>
                 ))}
               </div>
 
-              {/* Drawer Footer info */}
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.4 }}
-                className="pt-6 border-t border-neutral-200 dark:border-neutral-800 text-xs font-mono text-neutral-500 uppercase tracking-widest"
+                className="pt-6 border-t border-neutral-200 dark:border-neutral-800 text-[10px] font-spartan font-bold text-neutral-500 uppercase tracking-widest"
               >
                 <p>StoryFirst PH © {new Date().getFullYear()}</p>
               </motion.div>

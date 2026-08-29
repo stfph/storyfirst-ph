@@ -28,7 +28,8 @@ export default function App() {
   const toggleTheme = () => setIsDark(!isDark);
 
   return (
-    <div className="select-none bg-white dark:bg-neutral-950 text-neutral-900 dark:text-white min-h-screen selection:bg-yellow-500 selection:text-black transition-colors duration-500 relative">
+    /* Applied Montserrat Light globally */
+    <div className="select-none font-montserrat font-light bg-white dark:bg-neutral-950 text-neutral-900 dark:text-white min-h-screen selection:bg-yellow-500 selection:text-black transition-colors duration-500 relative">
       <div
         className="fixed inset-0 w-full h-full pointer-events-none z-0 opacity-30 mix-blend-multiply dark:invert dark:mix-blend-screen dark:opacity-15 transition-all duration-500"
         style={{

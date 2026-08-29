@@ -14,10 +14,7 @@ export default function Services() {
     show: {
       opacity: 1,
       y: 0,
-      transition: {
-        staggerChildren: 0.12,
-        delayChildren: 0.1,
-      },
+      transition: { staggerChildren: 0.12, delayChildren: 0.1 },
     },
   };
 
@@ -34,26 +31,20 @@ export default function Services() {
   return (
     <section
       id="services"
-      // Added subtle light mode background tint to help the background template stand out
       className="relative py-32 bg-neutral-100 dark:bg-neutral-900 overflow-hidden min-h-[80vh] flex items-center transition-colors duration-500"
     >
-      {/* Background Media Reveal with enhanced light/dark mode opacities and gradient fading */}
+      {/* Background Media Component (unchanged) */}
       <div className="absolute inset-0 w-full h-full pointer-events-none transition-opacity duration-1000 ease-in-out">
-        {/* Default background template image when not hovering */}
         <div
           className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${hoveredService === null ? "opacity-100" : "opacity-0"}`}
         >
           <img
-            src={servicesData[4]?.mediaUrl || "./images/services/default.jpg"}
+            src={servicesData[0]?.mediaUrl || "./images/services/01.jpg"}
             alt="default services background"
-            // Increased opacity for light mode (0.15) and dark mode (0.25) so it's clearly noticeable
             className="w-full h-full object-cover opacity-15 dark:opacity-25 contrast-125 saturate-100 scale-105"
           />
-          {/* Adjusted gradient overlay for light mode to prevent washout */}
           <div className="absolute inset-0 bg-gradient-to-b from-neutral-100 via-neutral-100/75 to-neutral-100 dark:from-neutral-900 dark:via-neutral-900/80 dark:to-neutral-900 opacity-95"></div>
         </div>
-
-        {/* Hovered service specific background images */}
         {servicesData.map((service) => (
           <div
             key={`media-${service.id}`}
@@ -77,10 +68,10 @@ export default function Services() {
           transition={{ duration: 0.6 }}
           className="mb-16"
         >
-          <span className="bg-yellow-500 text-black uppercase font-black px-3 py-1 text-[10px] tracking-[0.2em] inline-block mb-4 shadow-sm">
+          <span className="bg-yellow-500 text-black uppercase font-spartan font-bold px-3 py-1 text-[10px] tracking-[0.2em] inline-block mb-4 shadow-sm">
             What We Do
           </span>
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-neutral-950 dark:text-white uppercase tracking-tight drop-shadow-xl">
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-anton font-normal text-neutral-950 dark:text-white uppercase tracking-wide leading-[1.1] drop-shadow-xl">
             Our Expertise
           </h2>
         </motion.div>
@@ -109,18 +100,18 @@ export default function Services() {
                 }`}
               >
                 <div className="md:w-[50%]">
-                  <h3 className="text-2xl sm:text-3xl lg:text-4xl font-black text-neutral-900 dark:text-neutral-100 group-hover:text-black transition-colors duration-500 uppercase drop-shadow-md group-hover:drop-shadow-none">
+                  <h3 className="text-2xl sm:text-3xl lg:text-4xl font-anton font-normal text-neutral-900 dark:text-neutral-100 group-hover:text-black transition-colors duration-500 uppercase tracking-wide drop-shadow-md group-hover:drop-shadow-none">
                     {service.title}
                   </h3>
                 </div>
 
                 <div className="md:w-[50%] flex flex-col items-start md:items-end text-left md:text-right">
-                  <p className="text-neutral-700 dark:text-neutral-300 group-hover:text-black/90 text-sm leading-relaxed font-bold transition-colors duration-500 drop-shadow-md group-hover:drop-shadow-none mb-6">
+                  <p className="text-neutral-700 dark:text-neutral-300 group-hover:text-black/90 text-sm leading-relaxed font-montserrat font-medium transition-colors duration-500 drop-shadow-md group-hover:drop-shadow-none mb-6">
                     {service.description}
                   </p>
                   <a
                     href="#work"
-                    className="inline-block bg-neutral-950 dark:bg-white text-white dark:text-black group-hover:bg-black group-hover:text-white px-6 py-3 text-[10px] font-black uppercase tracking-[0.2em] transition-colors shadow-lg cursor-pointer"
+                    className="inline-block bg-neutral-950 dark:bg-white text-white dark:text-black group-hover:bg-black group-hover:text-white px-6 py-3 text-[10px] font-spartan font-bold uppercase tracking-[0.2em] transition-colors shadow-lg cursor-pointer"
                   >
                     Learn More / View Projects
                   </a>

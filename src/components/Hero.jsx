@@ -8,7 +8,6 @@ export default function Hero() {
       id="hero"
       className="relative h-screen flex items-center justify-center overflow-hidden bg-neutral-950"
     >
-      {/* Background Video */}
       <div className="absolute inset-0 w-full h-full z-0">
         <div className="absolute inset-0 bg-black/70 z-10"></div>
         <video
@@ -22,7 +21,6 @@ export default function Hero() {
         </video>
       </div>
 
-      {/* Hero Content with bi-directional entry/exit scroll animation */}
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -31,12 +29,11 @@ export default function Hero() {
         transition={{ duration: 0.8 }}
         className="relative z-20 text-center px-6 max-w-5xl mx-auto flex flex-col items-center mt-16"
       >
-        <span className="text-yellow-500 font-black tracking-[0.3em] text-[10px] md:text-xs uppercase mb-6 drop-shadow-md">
+        <span className="text-yellow-500 font-spartan font-bold tracking-[0.3em] text-[10px] md:text-xs uppercase mb-6 drop-shadow-md">
           Creative Communications & Production
         </span>
 
-        {/* Massive Cinematic Headline */}
-        <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black text-white uppercase tracking-tighter leading-[0.9] drop-shadow-2xl">
+        <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-anton font-normal text-white uppercase tracking-wide leading-[1.1] drop-shadow-2xl">
           Stories First.
           <br />
           <span className="bg-yellow-500 text-black px-6 py-2 inline-block mt-4 shadow-xl">
@@ -44,21 +41,20 @@ export default function Hero() {
           </span>
         </h1>
 
-        <p className="mt-8 text-sm sm:text-base md:text-lg text-neutral-300 font-medium max-w-3xl leading-relaxed drop-shadow-md">
+        <p className="mt-8 text-sm sm:text-base md:text-lg text-neutral-300 font-montserrat font-light max-w-3xl leading-relaxed drop-shadow-md">
           {identityData.subTagline}
         </p>
 
-        {/* Call to Action Buttons */}
         <div className="mt-12 flex flex-col sm:flex-row gap-6">
           <a
             href="#work"
-            className="bg-yellow-500 text-black px-10 py-4 font-black uppercase tracking-widest text-sm hover:bg-yellow-400 transition-colors shadow-xl shadow-yellow-500/20"
+            className="bg-yellow-500 text-black px-10 py-4 font-spartan font-bold uppercase tracking-widest text-sm hover:bg-yellow-400 transition-colors shadow-xl shadow-yellow-500/20"
           >
             View Projects
           </a>
           <a
             href="#contact"
-            className="bg-transparent border-2 border-white/30 text-white px-10 py-4 font-black uppercase tracking-widest text-sm hover:bg-white hover:text-black transition-colors backdrop-blur-sm"
+            className="bg-transparent border-2 border-white/30 text-white px-10 py-4 font-spartan font-bold uppercase tracking-widest text-sm hover:bg-white hover:text-black transition-colors backdrop-blur-sm"
           >
             Work With Us
           </a>

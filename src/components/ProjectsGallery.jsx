@@ -6,7 +6,6 @@ import { ExternalLink } from "lucide-react";
 export default function ProjectsGallery() {
   const [filter, setFilter] = useState("Documentaries");
   const [hoveredProject, setHoveredProject] = useState(null);
-
   const categories = ["Documentaries", "Content", "Events", "Workshops"];
   const filteredProjects = projectsData.filter((p) => p.category === filter);
 
@@ -19,10 +18,7 @@ export default function ProjectsGallery() {
     show: {
       opacity: 1,
       y: 0,
-      transition: {
-        staggerChildren: 0.08,
-        delayChildren: 0.1,
-      },
+      transition: { staggerChildren: 0.08, delayChildren: 0.1 },
     },
   };
 
@@ -39,25 +35,20 @@ export default function ProjectsGallery() {
   return (
     <section
       id="work"
-      // Added neutral-100 background tint in light mode so background templates have a solid canvas to render on
       className="relative py-24 bg-neutral-100 dark:bg-neutral-900 transition-colors duration-500 overflow-hidden border-t border-neutral-200 dark:border-neutral-900"
     >
-      {/* Dynamic Background Template Layer with refined light/dark mode opacities */}
+      {/* Background Template Layer (unchanged code blocks hidden for brevity) */}
       <div className="absolute inset-0 w-full h-full pointer-events-none transition-opacity duration-1000 ease-in-out z-0">
-        {/* Default background template image when no project is hovered */}
         <div
           className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${hoveredProject === null ? "opacity-100" : "opacity-0"}`}
         >
           <img
             src={filteredProjects[0]?.imageUrl || "./images/services/01.jpg"}
             alt="default projects background"
-            // Increased opacity for light mode visibility
             className="w-full h-full object-cover opacity-15 dark:opacity-25 grayscale contrast-125 saturate-100 scale-105"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-neutral-100 via-neutral-100/75 to-neutral-100 dark:from-neutral-900 dark:via-neutral-900/80 dark:to-neutral-900 opacity-95"></div>
         </div>
-
-        {/* Hovered project specific atmospheric background templates */}
         {filteredProjects.map((project) => (
           <div
             key={`bg-${project.id}`}
@@ -75,10 +66,7 @@ export default function ProjectsGallery() {
 
       <style
         dangerouslySetInnerHTML={{
-          __html: `
-        .hide-scrollbar::-webkit-scrollbar { display: none; }
-        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-      `,
+          __html: ` .hide-scrollbar::-webkit-scrollbar { display: none; } .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; } `,
         }}
       />
 
@@ -91,10 +79,10 @@ export default function ProjectsGallery() {
           className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-8"
         >
           <div>
-            <span className="bg-yellow-500 text-black uppercase font-black px-3 py-1 text-[10px] tracking-[0.2em] inline-block mb-3 shadow-sm">
+            <span className="bg-yellow-500 text-black uppercase font-spartan font-bold px-3 py-1 text-[10px] tracking-widest inline-block mb-3 shadow-sm">
               Selected Work
             </span>
-            <h2 className="text-4xl sm:text-5xl font-black text-neutral-950 dark:text-white uppercase tracking-tight">
+            <h2 className="text-4xl sm:text-5xl font-anton font-normal text-neutral-950 dark:text-white uppercase tracking-wide leading-[1.1]">
               Featured Projects
             </h2>
           </div>
@@ -107,14 +95,10 @@ export default function ProjectsGallery() {
                   setFilter(cat);
                   setHoveredProject(null);
                 }}
-                className="relative px-5 py-3 text-[10px] font-black uppercase tracking-[0.2em] transition-colors focus:outline-none whitespace-nowrap snap-start shrink-0 cursor-pointer"
+                className="relative px-5 py-3 text-[10px] font-spartan font-bold uppercase tracking-[0.2em] transition-colors focus:outline-none whitespace-nowrap snap-start shrink-0 cursor-pointer"
               >
                 <span
-                  className={`relative z-10 transition-colors duration-300 ${
-                    filter === cat
-                      ? "text-black dark:text-black"
-                      : "text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white"
-                  }`}
+                  className={`relative z-10 transition-colors duration-300 ${filter === cat ? "text-black dark:text-black" : "text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white"}`}
                 >
                   {cat}
                 </span>
@@ -165,11 +149,11 @@ export default function ProjectsGallery() {
                   </div>
 
                   <div className="relative z-10 flex items-center justify-between gap-3 mb-auto">
-                    <span className="inline-block bg-yellow-500 text-black text-[10px] font-black tracking-[0.2em] uppercase px-3 py-1 shadow-sm">
+                    <span className="inline-block bg-yellow-500 text-black text-[10px] font-spartan font-bold tracking-[0.2em] uppercase px-3 py-1 shadow-sm">
                       {project.badge}
                     </span>
                     {project.year && (
-                      <span className="text-[11px] font-mono font-bold text-neutral-400 dark:text-neutral-500 tracking-wider">
+                      <span className="text-[11px] font-spartan font-bold text-neutral-400 dark:text-neutral-500 tracking-widest">
                         {project.year}
                       </span>
                     )}
@@ -177,27 +161,27 @@ export default function ProjectsGallery() {
 
                   <div className="relative z-10 mt-6 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
                     <div className="flex items-start justify-between gap-2">
-                      <h3 className="text-xl sm:text-2xl font-black text-white uppercase group-hover:text-yellow-500 transition-colors leading-tight drop-shadow-md">
+                      <h3 className="text-2xl sm:text-3xl font-anton font-normal text-white uppercase tracking-wide group-hover:text-yellow-500 transition-colors leading-[1.1] drop-shadow-md">
                         {project.title}
                       </h3>
                       <ExternalLink
                         size={16}
-                        className="text-neutral-400 group-hover:text-yellow-500 transition-colors shrink-0 mt-1"
+                        className="text-neutral-400 group-hover:text-yellow-500 transition-colors shrink-0 mt-2"
                       />
                     </div>
 
-                    <p className="text-yellow-400/90 text-xs font-bold uppercase tracking-wider mt-2">
+                    <p className="text-yellow-400/90 text-xs font-spartan font-bold uppercase tracking-widest mt-3">
                       {project.role}
                     </p>
 
                     {project.shortDescription && (
-                      <p className="text-neutral-300 text-sm mt-3 leading-relaxed line-clamp-3 group-hover:text-white transition-colors">
+                      <p className="text-neutral-300 text-sm mt-3 leading-relaxed line-clamp-3 font-montserrat font-light group-hover:text-white transition-colors">
                         {project.shortDescription}
                       </p>
                     )}
 
                     {project.client && (
-                      <p className="text-neutral-500 text-[10px] font-black tracking-[0.15em] uppercase border-t border-neutral-800/80 pt-4 mt-5 group-hover:text-neutral-400 transition-colors">
+                      <p className="text-neutral-500 text-[10px] font-spartan font-bold tracking-[0.15em] uppercase border-t border-neutral-800/80 pt-4 mt-5 group-hover:text-neutral-400 transition-colors">
                         {project.client}
                       </p>
                     )}
