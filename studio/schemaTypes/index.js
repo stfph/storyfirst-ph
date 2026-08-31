@@ -1,7 +1,15 @@
 import globalSettings from './globalSettings'
 import heroSettings from './heroSettings'
 import aboutSettings from './aboutSettings'
+import servicesSettings from './servicesSettings'
+import projectsSettings from './projectsSettings'
+import awardsSettings from './awardsSettings'
+import clientsSettings from './clientsSettings'
+import advocaciesSettings from './advocaciesSettings'
+import testimonialsSettings from './testimonialsSettings'
 import teamSettings from './teamSettings'
+import contactSettings from './contactSettings'
+
 import service from './service'
 import project from './project'
 import award from './award'
@@ -12,16 +20,11 @@ import client from './client'
 import collaborator from './collaborator'
 
 export const schemaTypes = [
-  globalSettings,
-  heroSettings,
-  aboutSettings,
-  teamSettings,
-  service,
-  project,
-  award,
-  teamMember,
-  advocacy,
-  testimonial,
-  client,
-  collaborator,
+  // Singletons
+  globalSettings, heroSettings, aboutSettings, servicesSettings,
+  projectsSettings, awardsSettings, clientsSettings, advocaciesSettings,
+  testimonialsSettings, teamSettings, contactSettings,
+
+  // Content Arrays
+  service, project, award, teamMember, advocacy, testimonial, client, collaborator,
 ]
