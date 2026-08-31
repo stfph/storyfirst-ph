@@ -34,26 +34,36 @@ export default function Clients() {
 
   const activeClients = clients.filter((c) => c.category === activeTab);
 
+  // Unified Cinematic Swirl Animation Variants
   const containerVariants = {
     hidden: {
       opacity: 0,
-      y: 20,
-      transition: { staggerChildren: 0.05, staggerDirection: -1 },
+      rotate: 2,
+      scale: 0.96,
+      transition: { duration: 0.4 },
     },
     show: {
       opacity: 1,
-      y: 0,
-      transition: { staggerChildren: 0.08, delayChildren: 0.1 },
+      rotate: 0,
+      scale: 1,
+      transition: {
+        staggerChildren: 0.06,
+        delayChildren: 0.1,
+        duration: 0.8,
+        ease: [0.16, 1, 0.3, 1],
+      },
     },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 15, scale: 0.95, transition: { duration: 0.2 } },
+    hidden: { opacity: 0, scale: 0.9, rotate: -2, y: 20, filter: "blur(3px)" },
     show: {
       opacity: 1,
-      y: 0,
       scale: 1,
-      transition: { type: "spring", stiffness: 200, damping: 20 },
+      rotate: 0,
+      y: 0,
+      filter: "blur(0px)",
+      transition: { type: "spring", stiffness: 140, damping: 18 },
     },
   };
 
@@ -71,10 +81,10 @@ export default function Clients() {
       />
       <div className="max-w-7xl mx-auto">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 30, rotate: 1 }}
+          whileInView={{ opacity: 1, y: 0, rotate: 0 }}
           viewport={{ once: false, margin: "-100px" }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           className="mb-12"
         >
           <span className="bg-yellow-500 text-black uppercase font-spartan font-bold px-3 py-1 text-[10px] tracking-[0.2em] inline-block mb-4 shadow-sm">
@@ -128,7 +138,7 @@ export default function Clients() {
               exit="hidden"
               viewport={{ once: false, amount: 0.1 }}
               variants={containerVariants}
-              className="flex flex-wrap justify-center gap-4 pb-6 md:pb-0"
+              className="flex md:flex-wrap md:justify-center overflow-x-auto md:overflow-x-visible snap-x md:snap-none hide-scrollbar gap-4 pb-6 md:pb-0"
             >
               {activeClients.map((clientData) => (
                 <motion.a
@@ -137,7 +147,7 @@ export default function Clients() {
                   href={clientData.websiteUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="group relative flex flex-col items-center justify-center p-8 bg-white/80 dark:bg-neutral-950/80 backdrop-blur-sm border border-neutral-200 dark:border-neutral-800 hover:bg-gradient-to-br hover:from-yellow-400 hover:to-yellow-500 hover:border-yellow-400 transition-all duration-300 cursor-pointer h-40 shrink-0 w-[45vw] sm:w-[30vw] md:w-[calc(20%-16px)] shadow-sm hover:shadow-xl hover:-translate-y-1 overflow-hidden"
+                  className="group relative flex flex-col items-center justify-center p-8 bg-white/80 dark:bg-neutral-950/80 backdrop-blur-sm border border-neutral-200 dark:border-neutral-800 hover:bg-gradient-to-br hover:from-yellow-400 hover:to-yellow-500 hover:border-yellow-400 transition-all duration-300 cursor-pointer h-40 shrink-0 w-[65vw] sm:w-[45vw] md:w-[calc(20%-16px)] snap-center md:snap-align-none shadow-sm hover:shadow-xl hover:-translate-y-1 overflow-hidden"
                   title={clientData.name}
                 >
                   {clientData.logo && (
@@ -164,10 +174,10 @@ export default function Clients() {
 
         <div className="mt-24 md:mt-32">
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, y: 30, rotate: -1 }}
+            whileInView={{ opacity: 1, y: 0, rotate: 0 }}
             viewport={{ once: false, margin: "-100px" }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             className="mb-12"
           >
             <span className="bg-yellow-500 text-black uppercase font-spartan font-bold px-3 py-1 text-[10px] tracking-[0.2em] inline-block mb-4 shadow-sm">
@@ -184,13 +194,13 @@ export default function Clients() {
             exit="hidden"
             viewport={{ once: false, amount: 0.1 }}
             variants={containerVariants}
-            className="flex flex-wrap justify-center gap-6 md:gap-8 pb-8 md:pb-0"
+            className="flex md:flex-wrap md:justify-center overflow-x-auto md:overflow-x-visible snap-x md:snap-none hide-scrollbar gap-6 md:gap-8 pb-8 md:pb-0"
           >
             {collaborators.map((person) => (
               <motion.div
                 variants={itemVariants}
                 key={person._id}
-                className="group relative overflow-hidden bg-neutral-200 dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 aspect-square shadow-md hover:shadow-2xl transition-shadow duration-500 cursor-default shrink-0 w-full sm:w-[calc(50%-16px)] lg:w-[calc(33.333%-22px)] max-w-sm"
+                className="group relative overflow-hidden bg-neutral-200 dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 aspect-square shadow-md hover:shadow-2xl transition-shadow duration-500 cursor-default shrink-0 w-[80vw] sm:w-[50vw] md:w-[calc(33.333%-22px)] max-w-sm snap-center md:snap-align-none"
               >
                 {person.image && (
                   <motion.img

@@ -23,23 +23,32 @@ export default function Awards() {
   const containerVariants = {
     hidden: {
       opacity: 0,
-      y: 20,
-      transition: { staggerChildren: 0.05, staggerDirection: -1 },
+      rotate: 2,
+      scale: 0.96,
+      transition: { duration: 0.4 },
     },
     show: {
       opacity: 1,
-      y: 0,
-      transition: { staggerChildren: 0.08, delayChildren: 0.1 },
+      rotate: 0,
+      scale: 1,
+      transition: {
+        staggerChildren: 0.08,
+        delayChildren: 0.15,
+        duration: 0.8,
+        ease: [0.16, 1, 0.3, 1],
+      },
     },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 15, scale: 0.95, transition: { duration: 0.2 } },
+    hidden: { opacity: 0, scale: 0.9, rotate: -3, y: 30, filter: "blur(4px)" },
     show: {
       opacity: 1,
-      y: 0,
       scale: 1,
-      transition: { type: "spring", stiffness: 200, damping: 20 },
+      rotate: 0,
+      y: 0,
+      filter: "blur(0px)",
+      transition: { type: "spring", stiffness: 120, damping: 18 },
     },
   };
 
@@ -57,10 +66,10 @@ export default function Awards() {
       />
       <div className="max-w-7xl mx-auto">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 30, rotate: 1 }}
+          whileInView={{ opacity: 1, y: 0, rotate: 0 }}
           viewport={{ once: false, margin: "-100px" }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           className="mb-16 flex flex-col md:flex-row md:items-end justify-between gap-8"
         >
           <div>
@@ -86,13 +95,13 @@ export default function Awards() {
           exit="hidden"
           viewport={{ once: false, amount: 0.1 }}
           variants={containerVariants}
-          className="flex flex-wrap justify-center gap-6 pb-8 md:pb-0"
+          className="flex md:flex-wrap md:justify-center overflow-x-auto md:overflow-x-visible snap-x md:snap-none hide-scrollbar gap-6 pb-8 md:pb-0"
         >
           {awards.map((award) => (
             <motion.div
               variants={itemVariants}
               key={award._id}
-              className="group flex flex-col bg-neutral-50 dark:bg-[#0a0a0a] border border-neutral-200 dark:border-neutral-800 p-8 hover:-translate-y-1 transition-all duration-300 hover:shadow-xl hover:shadow-neutral-200/50 dark:hover:shadow-yellow-500/5 shrink-0 w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] xl:w-[calc(25%-18px)]"
+              className="group flex flex-col bg-neutral-50 dark:bg-[#0a0a0a] border border-neutral-200 dark:border-neutral-800 p-8 hover:-translate-y-1 transition-all duration-300 hover:shadow-xl hover:shadow-neutral-200/50 dark:hover:shadow-yellow-500/5 shrink-0 w-[80vw] sm:w-[50vw] md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] xl:w-[calc(25%-18px)] snap-center md:snap-align-none"
             >
               <a
                 href={award.verificationLink}

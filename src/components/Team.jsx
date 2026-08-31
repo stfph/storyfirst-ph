@@ -19,26 +19,36 @@ export default function Team() {
 
   const { settings, team } = data;
 
+  // Unified Cinematic Swirl Animation Variants
   const containerVariants = {
     hidden: {
       opacity: 0,
-      y: 20,
-      transition: { staggerChildren: 0.08, staggerDirection: -1 },
+      rotate: -2,
+      scale: 0.96,
+      transition: { duration: 0.4 },
     },
     show: {
       opacity: 1,
-      y: 0,
-      transition: { staggerChildren: 0.12, delayChildren: 0.1 },
+      rotate: 0,
+      scale: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.15,
+        duration: 0.8,
+        ease: [0.16, 1, 0.3, 1],
+      },
     },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 15, scale: 0.95, transition: { duration: 0.2 } },
+    hidden: { opacity: 0, scale: 0.9, rotate: 3, y: 30, filter: "blur(4px)" },
     show: {
       opacity: 1,
-      y: 0,
       scale: 1,
-      transition: { type: "spring", stiffness: 200, damping: 20 },
+      rotate: 0,
+      y: 0,
+      filter: "blur(0px)",
+      transition: { type: "spring", stiffness: 120, damping: 18 },
     },
   };
 
@@ -57,10 +67,10 @@ export default function Team() {
 
       <div className="max-w-7xl mx-auto">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 30, rotate: -1 }}
+          whileInView={{ opacity: 1, y: 0, rotate: 0 }}
           viewport={{ once: false, margin: "-100px" }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           className="mb-16 text-center flex flex-col items-center justify-center gap-6"
         >
           <div>
@@ -82,31 +92,33 @@ export default function Team() {
           exit="hidden"
           viewport={{ once: false, amount: 0.1 }}
           variants={containerVariants}
-          className="flex flex-wrap justify-center gap-6 md:gap-8 lg:gap-12 pb-8 md:pb-0"
+          className="flex md:flex-wrap md:justify-center overflow-x-auto md:overflow-x-visible snap-x md:snap-none hide-scrollbar gap-6 md:gap-8 lg:gap-12 pb-8 md:pb-0"
         >
           {team.map((member) => (
             <motion.div
               variants={itemVariants}
               key={member._id}
-              className="group flex flex-col shrink-0 w-full sm:w-[calc(50%-16px)] lg:w-[calc(33.333%-32px)] max-w-sm"
+              className="group relative overflow-hidden bg-neutral-100 dark:bg-[#0a0a0a] aspect-[3/4] shadow-md hover:shadow-2xl transition-all duration-500 cursor-default shrink-0 w-[80vw] sm:w-[50vw] md:w-[calc(33.333%-32px)] max-w-sm snap-center md:snap-align-none border border-neutral-200 dark:border-neutral-800"
             >
-              <div className="relative aspect-[3/4] overflow-hidden bg-neutral-100 dark:bg-[#0a0a0a] mb-6">
-                {member.image && (
-                  <img
-                    src={urlFor(member.image).url()}
-                    alt={member.name}
-                    className="w-full h-full object-cover object-top filter grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out group-hover:scale-105"
-                  />
-                )}
-                <div className="absolute inset-0 bg-neutral-200 dark:bg-neutral-900 -z-10"></div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              </div>
+              {member.image && (
+                <motion.img
+                  initial={{ scale: 1.15 }}
+                  whileInView={{ scale: 1 }}
+                  transition={{ duration: 1.5, ease: "easeOut" }}
+                  viewport={{ once: false }}
+                  src={urlFor(member.image).url()}
+                  alt={member.name}
+                  className="w-full h-full object-cover object-top filter grayscale-0 md:grayscale opacity-100 md:opacity-90 md:group-hover:grayscale-0 md:group-hover:opacity-100 transition-all duration-700 ease-in-out md:group-hover:scale-105"
+                />
+              )}
+              <div className="absolute inset-0 bg-neutral-200 dark:bg-neutral-800 -z-10"></div>
 
-              <div>
-                <h3 className="text-2xl font-anton font-normal text-neutral-900 dark:text-white uppercase tracking-wide">
+              {/* Overlay Content Card */}
+              <div className="absolute bottom-0 left-0 w-full p-6 pt-16 transform translate-y-0 md:translate-y-6 md:group-hover:translate-y-0 transition-transform duration-500 ease-out bg-gradient-to-t from-black/95 via-black/70 to-transparent">
+                <h3 className="text-xl sm:text-2xl font-anton font-normal text-white uppercase tracking-wide transform opacity-100 md:opacity-90 md:group-hover:opacity-100 transition-opacity duration-300">
                   {member.name}
                 </h3>
-                <p className="text-yellow-600 dark:text-yellow-500 text-[10px] font-spartan font-bold tracking-[0.2em] uppercase mt-2">
+                <p className="text-yellow-400 text-[10px] sm:text-xs font-spartan font-bold uppercase tracking-widest mt-2 transform opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-500 delay-100">
                   {member.position}
                 </p>
               </div>

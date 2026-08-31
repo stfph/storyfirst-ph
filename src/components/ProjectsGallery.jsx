@@ -27,26 +27,36 @@ export default function ProjectsGallery() {
   const { settings, projects } = data;
   const filteredProjects = projects.filter((p) => p.category === filter);
 
+  // Cinematic Swirl Animation Variants
   const containerVariants = {
     hidden: {
       opacity: 0,
-      y: 20,
-      transition: { staggerChildren: 0.05, staggerDirection: -1 },
+      rotate: -2,
+      scale: 0.96,
+      transition: { duration: 0.4, ease: [0.25, 1, 0.5, 1] },
     },
     show: {
       opacity: 1,
-      y: 0,
-      transition: { staggerChildren: 0.08, delayChildren: 0.1 },
+      rotate: 0,
+      scale: 1,
+      transition: {
+        staggerChildren: 0.08,
+        delayChildren: 0.15,
+        duration: 0.8,
+        ease: [0.16, 1, 0.3, 1],
+      },
     },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 15, scale: 0.95, transition: { duration: 0.2 } },
+    hidden: { opacity: 0, scale: 0.9, rotate: 3, y: 30, filter: "blur(4px)" },
     show: {
       opacity: 1,
-      y: 0,
       scale: 1,
-      transition: { type: "spring", stiffness: 200, damping: 20 },
+      rotate: 0,
+      y: 0,
+      filter: "blur(0px)",
+      transition: { type: "spring", stiffness: 120, damping: 18 },
     },
   };
 
@@ -97,10 +107,10 @@ export default function ProjectsGallery() {
 
       <div className="relative z-10 max-w-7xl mx-auto px-6">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 30, rotate: -1 }}
+          whileInView={{ opacity: 1, y: 0, rotate: 0 }}
           viewport={{ once: false, margin: "-100px" }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-8"
         >
           <div>
@@ -148,7 +158,7 @@ export default function ProjectsGallery() {
               exit="hidden"
               viewport={{ once: false, amount: 0.1 }}
               variants={containerVariants}
-              className="flex flex-wrap justify-center gap-6 pb-6 md:pb-0"
+              className="flex md:flex-wrap md:justify-center overflow-x-auto md:overflow-x-visible snap-x md:snap-none hide-scrollbar gap-6 pb-6 md:pb-0"
             >
               {filteredProjects.map((project) => (
                 <motion.a
@@ -159,7 +169,7 @@ export default function ProjectsGallery() {
                   key={project._id}
                   onMouseEnter={() => setHoveredProject(project._id)}
                   onMouseLeave={() => setHoveredProject(null)}
-                  className="relative group min-h-[440px] sm:min-h-[480px] flex flex-col justify-end p-8 overflow-hidden bg-white/90 dark:bg-[#0a0a0a]/90 backdrop-blur-sm border border-neutral-200 dark:border-neutral-800 transition-all duration-500 hover:-translate-y-1 hover:shadow-xl hover:shadow-neutral-300/50 dark:hover:shadow-yellow-500/5 block cursor-pointer shrink-0 w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]"
+                  className="relative group min-h-[440px] sm:min-h-[480px] flex flex-col justify-end p-8 overflow-hidden bg-white/90 dark:bg-[#0a0a0a]/90 backdrop-blur-sm border border-neutral-200 dark:border-neutral-800 transition-all duration-500 hover:-translate-y-1 hover:shadow-xl hover:shadow-neutral-300/50 dark:hover:shadow-yellow-500/5 block cursor-pointer shrink-0 w-[85vw] sm:w-[60vw] md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] snap-center md:snap-align-none"
                 >
                   <div className="absolute inset-0 z-0">
                     {project.image && (

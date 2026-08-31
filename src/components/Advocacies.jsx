@@ -19,26 +19,36 @@ export default function Advocacies() {
 
   const { settings, advocacies } = data;
 
+  // Unified Cinematic Swirl Animation Variants
   const containerVariants = {
     hidden: {
       opacity: 0,
-      y: 20,
-      transition: { staggerChildren: 0.08, staggerDirection: -1 },
+      rotate: -2,
+      scale: 0.96,
+      transition: { duration: 0.4 },
     },
     show: {
       opacity: 1,
-      y: 0,
-      transition: { staggerChildren: 0.12, delayChildren: 0.1 },
+      rotate: 0,
+      scale: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.15,
+        duration: 0.8,
+        ease: [0.16, 1, 0.3, 1],
+      },
     },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 15, scale: 0.95, transition: { duration: 0.2 } },
+    hidden: { opacity: 0, scale: 0.9, rotate: 3, y: 30, filter: "blur(4px)" },
     show: {
       opacity: 1,
-      y: 0,
       scale: 1,
-      transition: { type: "spring", stiffness: 200, damping: 20 },
+      rotate: 0,
+      y: 0,
+      filter: "blur(0px)",
+      transition: { type: "spring", stiffness: 120, damping: 18 },
     },
   };
 
@@ -56,11 +66,11 @@ export default function Advocacies() {
       />
       <div className="max-w-7xl mx-auto">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 30, rotate: -1 }}
+          whileInView={{ opacity: 1, y: 0, rotate: 0 }}
           viewport={{ once: false, margin: "-100px" }}
-          transition={{ duration: 0.6 }}
-          className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8"
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          className="mb-16 flex flex-col md:flex-row md:items-end justify-between gap-8"
         >
           <div>
             <span className="bg-yellow-500 text-black uppercase font-spartan font-bold px-3 py-1 text-[10px] tracking-[0.2em] inline-block mb-4 shadow-sm">
@@ -81,13 +91,13 @@ export default function Advocacies() {
           exit="hidden"
           viewport={{ once: false, amount: 0.1 }}
           variants={containerVariants}
-          className="flex flex-wrap justify-center gap-6 md:gap-8 pb-8 md:pb-0"
+          className="flex md:flex-wrap md:justify-center overflow-x-auto md:overflow-x-visible snap-x md:snap-none hide-scrollbar gap-6 md:gap-8 pb-8 md:pb-0"
         >
           {advocacies.map((advocacy) => (
             <motion.div
               variants={itemVariants}
               key={advocacy._id}
-              className="group relative overflow-hidden bg-neutral-100 dark:bg-[#0a0a0a] min-h-[400px] flex flex-col justify-end p-8 border border-neutral-200 dark:border-neutral-800 cursor-default shrink-0 w-full sm:w-[calc(50%-16px)] lg:w-[calc(33.333%-22px)]"
+              className="group relative overflow-hidden bg-neutral-100 dark:bg-[#0a0a0a] min-h-[400px] flex flex-col justify-end p-8 border border-neutral-200 dark:border-neutral-800 cursor-default shrink-0 w-[85vw] sm:w-[60vw] md:w-[calc(33.333%-22px)] max-w-sm snap-center md:snap-align-none"
             >
               <div className="absolute inset-0 z-0">
                 {advocacy.image && (

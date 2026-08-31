@@ -26,7 +26,7 @@ export default defineConfig({
   name: 'default',
   title: 'StoryFirst PH CMS',
 
-  projectId: '3tcl3ri4', // Remember to keep your actual ID here
+  projectId: '3tcl3ri4',
   dataset: 'production',
 
   plugins: [
