@@ -1,13 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { projectsData } from "../data/portfolioData";
 import { ExternalLink } from "lucide-react";
+import { client, urlFor } from "../sanityClient"; // The new API bridge
 
 export default function ProjectsGallery() {
+  const [projects, setProjects] = useState([]);
   const [filter, setFilter] = useState("Documentaries");
   const [hoveredProject, setHoveredProject] = useState(null);
+
   const categories = ["Documentaries", "Content", "Events", "Workshops"];
-  const filteredProjects = projectsData.filter((p) => p.category === filter);
+
+  // Fetch live data from Sanity on component mount
+  useEffect(() => {
+    const query = `*[_type == "project"] | order(year desc) {
+      _id,
+      title,
+      category,
+      badge,
+      client,
+      role,
+      year,
+      shortDescription,
+      image,
+      linkUrl
+    }`;
+
+    client
+      .fetch(query)
+      .then((data) => {
+        setProjects(data);
+      })
+      .catch(console.error);
+  }, []);
+
+  // Filter the live data state instead of the hardcoded array
+  const filteredProjects = projects.filter((p) => p.category === filter);
 
   const containerVariants = {
     hidden: {
@@ -37,31 +64,38 @@ export default function ProjectsGallery() {
       id="work"
       className="relative py-24 bg-neutral-100 dark:bg-neutral-900 transition-colors duration-500 overflow-hidden border-t border-neutral-200 dark:border-neutral-900"
     >
-      {/* Background Template Layer (unchanged code blocks hidden for brevity) */}
+      {/* Dynamic Background Template Layer */}
       <div className="absolute inset-0 w-full h-full pointer-events-none transition-opacity duration-1000 ease-in-out z-0">
         <div
           className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${hoveredProject === null ? "opacity-100" : "opacity-0"}`}
         >
-          <img
-            src={filteredProjects[0]?.imageUrl || "./images/services/01.jpg"}
-            alt="default projects background"
-            className="w-full h-full object-cover opacity-15 dark:opacity-25 grayscale contrast-125 saturate-100 scale-105"
-          />
+          {/* Safeguard the default background image loading */}
+          {filteredProjects.length > 0 && filteredProjects[0].image && (
+            <img
+              src={urlFor(filteredProjects[0].image).url()}
+              alt="default projects background"
+              className="w-full h-full object-cover opacity-15 dark:opacity-25 grayscale contrast-125 saturate-100 scale-105"
+            />
+          )}
           <div className="absolute inset-0 bg-gradient-to-b from-neutral-100 via-neutral-100/75 to-neutral-100 dark:from-neutral-900 dark:via-neutral-900/80 dark:to-neutral-900 opacity-95"></div>
         </div>
-        {filteredProjects.map((project) => (
-          <div
-            key={`bg-${project.id}`}
-            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${hoveredProject === project.id ? "opacity-100" : "opacity-0"}`}
-          >
-            <img
-              src={project.imageUrl}
-              alt="project background template"
-              className="w-full h-full object-cover opacity-25 dark:opacity-35 contrast-125 saturate-110 scale-105"
-            />
-            <div className="absolute inset-0 bg-gradient-to-b from-neutral-100 via-neutral-100/50 to-neutral-100 dark:from-neutral-900 dark:via-neutral-900/60 dark:to-neutral-900 opacity-90"></div>
-          </div>
-        ))}
+
+        {filteredProjects.map(
+          (project) =>
+            project.image && (
+              <div
+                key={`bg-${project._id}`}
+                className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${hoveredProject === project._id ? "opacity-100" : "opacity-0"}`}
+              >
+                <img
+                  src={urlFor(project.image).url()}
+                  alt="project background template"
+                  className="w-full h-full object-cover opacity-25 dark:opacity-35 contrast-125 saturate-110 scale-105"
+                />
+                <div className="absolute inset-0 bg-gradient-to-b from-neutral-100 via-neutral-100/50 to-neutral-100 dark:from-neutral-900 dark:via-neutral-900/60 dark:to-neutral-900 opacity-90"></div>
+              </div>
+            ),
+        )}
       </div>
 
       <style
@@ -131,20 +165,19 @@ export default function ProjectsGallery() {
                   href={project.linkUrl}
                   target="_blank"
                   rel="noreferrer"
-                  key={project.id}
-                  onMouseEnter={() => setHoveredProject(project.id)}
+                  key={project._id}
+                  onMouseEnter={() => setHoveredProject(project._id)}
                   onMouseLeave={() => setHoveredProject(null)}
                   className="relative group min-h-[440px] sm:min-h-[480px] flex flex-col justify-end p-8 overflow-hidden bg-white/90 dark:bg-[#0a0a0a]/90 backdrop-blur-sm border border-neutral-200 dark:border-neutral-800 transition-all duration-500 hover:-translate-y-1 hover:shadow-xl hover:shadow-neutral-300/50 dark:hover:shadow-yellow-500/5 block cursor-pointer shrink-0 w-[85vw] sm:w-[60vw] md:w-auto snap-center md:snap-align-none"
                 >
                   <div className="absolute inset-0 z-0">
-                    <img
-                      src={project.imageUrl}
-                      alt={project.title}
-                      className="w-full h-full object-cover opacity-35 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-in-out"
-                      onError={(e) => {
-                        e.target.style.display = "none";
-                      }}
-                    />
+                    {project.image && (
+                      <img
+                        src={urlFor(project.image).url()}
+                        alt={project.title}
+                        className="w-full h-full object-cover opacity-35 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-in-out"
+                      />
+                    )}
                     <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/85 to-neutral-950/20 opacity-95 group-hover:opacity-90 transition-opacity duration-700"></div>
                   </div>
 
