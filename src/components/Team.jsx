@@ -3,21 +3,17 @@ import { motion } from "framer-motion";
 import { client, urlFor } from "../sanityClient";
 
 export default function Team() {
-  const [team, setTeam] = useState([]);
+  const [data, setData] = useState({ settings: null, team: [] });
 
   useEffect(() => {
-    const query = `*[_type == "teamMember"] {
-      _id,
-      name,
-      position,
-      image
+    const query = `{
+      "settings": *[_type == "teamSettings"][0],
+      "team": *[_type == "teamMember"]
     }`;
-
-    client
-      .fetch(query)
-      .then((data) => setTeam(data))
-      .catch(console.error);
+    client.fetch(query).then(setData).catch(console.error);
   }, []);
+
+  const { settings, team } = data;
 
   const containerVariants = {
     hidden: {
@@ -42,6 +38,8 @@ export default function Team() {
     },
   };
 
+  if (!settings) return null;
+
   return (
     <section
       id="team"
@@ -63,19 +61,14 @@ export default function Team() {
         >
           <div>
             <span className="bg-yellow-500 text-black uppercase font-spartan font-bold px-3 py-1 text-[10px] tracking-widest inline-block mb-4 shadow-sm">
-              The People Behind The Stories
+              {settings.badge}
             </span>
             <h2 className="text-4xl sm:text-5xl lg:text-6xl font-anton font-normal text-neutral-950 dark:text-white uppercase tracking-wide leading-[1.1]">
-              Our Team
+              {settings.headline}
             </h2>
           </div>
           <div className="max-w-xl text-neutral-600 dark:text-neutral-400 font-montserrat font-light leading-relaxed text-center">
-            <p>
-              StoryFirst PH is more than one perspective. We are a collective of
-              producers, researchers, and storytellers dedicated to producing
-              narratives that resonate with different audiences and
-              organizations.
-            </p>
+            <p>{settings.description}</p>
           </div>
         </motion.div>
 

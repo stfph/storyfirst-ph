@@ -1,39 +1,27 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ExternalLink } from "lucide-react";
-import { client, urlFor } from "../sanityClient"; // The new API bridge
+import { client, urlFor } from "../sanityClient";
 
 export default function ProjectsGallery() {
-  const [projects, setProjects] = useState([]);
+  const [data, setData] = useState({ settings: null, projects: [] });
   const [filter, setFilter] = useState("Documentaries");
   const [hoveredProject, setHoveredProject] = useState(null);
 
   const categories = ["Documentaries", "Content", "Events", "Workshops"];
 
-  // Fetch live data from Sanity on component mount
   useEffect(() => {
-    const query = `*[_type == "project"] | order(year desc) {
-      _id,
-      title,
-      category,
-      badge,
-      client,
-      role,
-      year,
-      shortDescription,
-      image,
-      linkUrl
+    // GROQ object mapping: fetches singleton settings AND projects array simultaneously
+    const query = `{
+      "settings": *[_type == "projectsSettings"][0],
+      "projects": *[_type == "project"] | order(year desc) {
+        _id, title, category, badge, client, role, year, shortDescription, image, linkUrl
+      }
     }`;
-
-    client
-      .fetch(query)
-      .then((data) => {
-        setProjects(data);
-      })
-      .catch(console.error);
+    client.fetch(query).then(setData).catch(console.error);
   }, []);
 
-  // Filter the live data state instead of the hardcoded array
+  const { settings, projects } = data;
   const filteredProjects = projects.filter((p) => p.category === filter);
 
   const containerVariants = {
@@ -59,17 +47,18 @@ export default function ProjectsGallery() {
     },
   };
 
+  if (!settings) return null;
+
   return (
     <section
       id="work"
       className="relative py-24 bg-neutral-100 dark:bg-neutral-900 transition-colors duration-500 overflow-hidden border-t border-neutral-200 dark:border-neutral-900"
     >
-      {/* Dynamic Background Template Layer */}
+      {/* Background Template Layer */}
       <div className="absolute inset-0 w-full h-full pointer-events-none transition-opacity duration-1000 ease-in-out z-0">
         <div
           className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${hoveredProject === null ? "opacity-100" : "opacity-0"}`}
         >
-          {/* Safeguard the default background image loading */}
           {filteredProjects.length > 0 && filteredProjects[0].image && (
             <img
               src={urlFor(filteredProjects[0].image).url()}
@@ -114,10 +103,10 @@ export default function ProjectsGallery() {
         >
           <div>
             <span className="bg-yellow-500 text-black uppercase font-spartan font-bold px-3 py-1 text-[10px] tracking-widest inline-block mb-3 shadow-sm">
-              Selected Work
+              {settings.badge}
             </span>
             <h2 className="text-4xl sm:text-5xl font-anton font-normal text-neutral-950 dark:text-white uppercase tracking-wide leading-[1.1]">
-              Featured Projects
+              {settings.headline}
             </h2>
           </div>
 

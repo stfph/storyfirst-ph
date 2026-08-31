@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Mail, Phone, MapPin } from "lucide-react";
+import { client } from "../sanityClient";
 
 export default function Contact() {
+  const [data, setData] = useState({ contact: null, global: null });
   const [isSent, setIsSent] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -21,9 +23,20 @@ export default function Contact() {
     "Other Inquiries",
   ];
 
-  const handleChange = (e) => {
+  useEffect(() => {
+    client
+      .fetch(
+        `{
+      "contact": *[_type == "contactSettings"][0],
+      "global": *[_type == "globalSettings"][0]
+    }`,
+      )
+      .then(setData)
+      .catch(console.error);
+  }, []);
+
+  const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -36,6 +49,10 @@ export default function Contact() {
     });
     setTimeout(() => setIsSent(false), 3000);
   };
+
+  const { contact, global } = data;
+
+  if (!contact || !global) return null;
 
   return (
     <section
@@ -52,21 +69,17 @@ export default function Contact() {
           className="lg:col-span-5 space-y-6"
         >
           <span className="bg-yellow-500 text-black uppercase font-black px-3 py-1 text-[10px] tracking-[0.2em] inline-block shadow-sm">
-            Work With StoryFirst PH
+            {contact.badge}
           </span>
-
           <h2 className="text-4xl sm:text-5xl font-black text-neutral-950 dark:text-white uppercase tracking-tight leading-[0.95]">
-            Have a story, project, or idea worth telling?
+            {contact.headline}
             <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-500 to-yellow-600">
-              Let's work together.
+              {contact.highlightText}
             </span>
           </h2>
-
           <p className="text-neutral-600 dark:text-neutral-400 text-base leading-relaxed font-medium">
-            Whether you need comprehensive documentary production, branded
-            digital campaigns, keynote speaking, or storytelling workshops, we
-            are ready to collaborate across the Philippines and internationally.
+            {contact.description}
           </p>
 
           <div className="pt-6 space-y-6 select-text">
@@ -79,14 +92,13 @@ export default function Contact() {
                   Email Inquiries
                 </p>
                 <a
-                  href="mailto:storyfirstph@gmail.com"
+                  href={`mailto:${global.contactEmail}`}
                   className="text-neutral-950 dark:text-white font-bold text-lg hover:text-yellow-500 transition-colors"
                 >
-                  storyfirstph@gmail.com
+                  {global.contactEmail}
                 </a>
               </div>
             </div>
-
             <div className="flex items-center gap-5">
               <div className="flex items-center justify-center w-12 h-12 bg-yellow-500 text-black rounded-full shadow-lg shadow-yellow-500/20 shrink-0">
                 <Phone size={20} strokeWidth={2.5} />
@@ -96,11 +108,10 @@ export default function Contact() {
                   Direct Line
                 </p>
                 <p className="text-neutral-950 dark:text-white font-bold text-lg">
-                  +63 928 604 4120
+                  {global.contactPhone}
                 </p>
               </div>
             </div>
-
             <div className="flex items-center gap-5">
               <div className="flex items-center justify-center w-12 h-12 bg-yellow-500 text-black rounded-full shadow-lg shadow-yellow-500/20 shrink-0">
                 <MapPin size={20} strokeWidth={2.5} />
@@ -110,7 +121,7 @@ export default function Contact() {
                   Location & Base
                 </p>
                 <p className="text-neutral-950 dark:text-white font-bold text-lg">
-                  Philippines / Cebu
+                  {global.contactLocation}
                 </p>
               </div>
             </div>
@@ -129,6 +140,7 @@ export default function Contact() {
             onSubmit={handleSubmit}
             className="bg-white dark:bg-neutral-950 p-8 sm:p-10 border border-neutral-200 dark:border-neutral-800 space-y-6 shadow-xl"
           >
+            {/* The form inputs themselves don't require Sanity connection, keeping them unchanged... */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div>
                 <label className="block text-[10px] font-black tracking-[0.2em] uppercase text-neutral-500 dark:text-neutral-400 mb-2">
@@ -144,7 +156,6 @@ export default function Contact() {
                   className="w-full bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 px-4 py-3.5 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 text-sm focus:outline-none focus:border-yellow-500 transition-colors"
                 />
               </div>
-
               <div>
                 <label className="block text-[10px] font-black tracking-[0.2em] uppercase text-neutral-500 dark:text-neutral-400 mb-2">
                   Email Address *
@@ -160,7 +171,6 @@ export default function Contact() {
                 />
               </div>
             </div>
-
             <div>
               <label className="block text-[10px] font-black tracking-[0.2em] uppercase text-neutral-500 dark:text-neutral-400 mb-2">
                 Inquiry Category *
@@ -178,7 +188,6 @@ export default function Contact() {
                 ))}
               </select>
             </div>
-
             <div>
               <label className="block text-[10px] font-black tracking-[0.2em] uppercase text-neutral-500 dark:text-neutral-400 mb-2">
                 Project Details / Message *
@@ -193,15 +202,9 @@ export default function Contact() {
                 className="w-full bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 px-4 py-3.5 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 text-sm focus:outline-none focus:border-yellow-500 resize-none transition-colors"
               ></textarea>
             </div>
-
-            {/* Removed the Send icon entirely as requested, keeping text only */}
             <button
               type="submit"
-              className={`w-full font-black uppercase py-4 text-xs tracking-[0.2em] flex items-center justify-center transition-all duration-300 active:scale-98 cursor-pointer ${
-                isSent
-                  ? "bg-emerald-600 text-white"
-                  : "bg-yellow-500 hover:bg-yellow-400 text-black shadow-lg shadow-yellow-500/20"
-              }`}
+              className={`w-full font-black uppercase py-4 text-xs tracking-[0.2em] flex items-center justify-center transition-all duration-300 active:scale-98 cursor-pointer ${isSent ? "bg-emerald-600 text-white" : "bg-yellow-500 hover:bg-yellow-400 text-black shadow-lg shadow-yellow-500/20"}`}
             >
               {isSent ? "INQUIRY SENT SUCCESSFULLY!" : "SEND INQUIRY"}
             </button>
