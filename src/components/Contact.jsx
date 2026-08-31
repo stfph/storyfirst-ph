@@ -9,19 +9,9 @@ export default function Contact() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    category: "Documentary / Production",
+    category: "",
     message: "",
   });
-
-  const inquiryCategories = [
-    "Documentary / Production",
-    "Content Creation",
-    "Events Hosting",
-    "Workshops / Speaking",
-    "Partnerships",
-    "Media / Press",
-    "Other Inquiries",
-  ];
 
   useEffect(() => {
     client
@@ -31,7 +21,16 @@ export default function Contact() {
       "global": *[_type == "globalSettings"][0]
     }`,
       )
-      .then(setData)
+      .then((res) => {
+        setData(res);
+        // Automatically set the default dropdown value to the first category in the CMS
+        if (res.contact?.inquiryCategories?.length > 0) {
+          setFormData((prev) => ({
+            ...prev,
+            category: res.contact.inquiryCategories[0],
+          }));
+        }
+      })
       .catch(console.error);
   }, []);
 
@@ -41,10 +40,11 @@ export default function Contact() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsSent(true);
+    // Reset form and revert category back to the dynamic default
     setFormData({
       name: "",
       email: "",
-      category: "Documentary / Production",
+      category: data.contact?.inquiryCategories?.[0] || "",
       message: "",
     });
     setTimeout(() => setIsSent(false), 3000);
@@ -54,12 +54,19 @@ export default function Contact() {
 
   if (!contact || !global) return null;
 
+  // Fallback array just in case the CMS array is emptied accidentally
+  const categories =
+    contact.inquiryCategories?.length > 0
+      ? contact.inquiryCategories
+      : ["General Inquiry"];
+
   return (
     <section
       id="contact"
       className="py-24 bg-neutral-50 dark:bg-neutral-900 border-t border-neutral-200 dark:border-neutral-800 px-6 transition-colors duration-500 overflow-hidden"
     >
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+        {/* Left Side: Contact Info */}
         <motion.div
           initial={{ opacity: 0, x: -30 }}
           whileInView={{ opacity: 1, x: 0 }}
@@ -68,17 +75,17 @@ export default function Contact() {
           transition={{ duration: 0.6 }}
           className="lg:col-span-5 space-y-6"
         >
-          <span className="bg-yellow-500 text-black uppercase font-black px-3 py-1 text-[10px] tracking-[0.2em] inline-block shadow-sm">
+          <span className="bg-yellow-500 text-black uppercase font-spartan font-bold px-3 py-1 text-[10px] tracking-widest inline-block shadow-sm">
             {contact.badge}
           </span>
-          <h2 className="text-4xl sm:text-5xl font-black text-neutral-950 dark:text-white uppercase tracking-tight leading-[0.95]">
+          <h2 className="text-4xl sm:text-5xl font-anton font-normal text-neutral-950 dark:text-white uppercase tracking-wide leading-[1.1]">
             {contact.headline}
             <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-500 to-yellow-600">
               {contact.highlightText}
             </span>
           </h2>
-          <p className="text-neutral-600 dark:text-neutral-400 text-base leading-relaxed font-medium">
+          <p className="text-neutral-600 dark:text-neutral-400 text-base leading-relaxed font-montserrat font-medium">
             {contact.description}
           </p>
 
@@ -88,7 +95,7 @@ export default function Contact() {
                 <Mail size={20} strokeWidth={2.5} />
               </div>
               <div>
-                <p className="text-[10px] font-black tracking-[0.2em] uppercase text-neutral-400">
+                <p className="text-[10px] font-spartan font-bold tracking-[0.2em] uppercase text-neutral-400">
                   Email Inquiries
                 </p>
                 <a
@@ -104,7 +111,7 @@ export default function Contact() {
                 <Phone size={20} strokeWidth={2.5} />
               </div>
               <div>
-                <p className="text-[10px] font-black tracking-[0.2em] uppercase text-neutral-400">
+                <p className="text-[10px] font-spartan font-bold tracking-[0.2em] uppercase text-neutral-400">
                   Direct Line
                 </p>
                 <p className="text-neutral-950 dark:text-white font-bold text-lg">
@@ -117,7 +124,7 @@ export default function Contact() {
                 <MapPin size={20} strokeWidth={2.5} />
               </div>
               <div>
-                <p className="text-[10px] font-black tracking-[0.2em] uppercase text-neutral-400">
+                <p className="text-[10px] font-spartan font-bold tracking-[0.2em] uppercase text-neutral-400">
                   Location & Base
                 </p>
                 <p className="text-neutral-950 dark:text-white font-bold text-lg">
@@ -128,6 +135,7 @@ export default function Contact() {
           </div>
         </motion.div>
 
+        {/* Right Side: Editable Form */}
         <motion.div
           initial={{ opacity: 0, x: 30 }}
           whileInView={{ opacity: 1, x: 0 }}
@@ -140,11 +148,10 @@ export default function Contact() {
             onSubmit={handleSubmit}
             className="bg-white dark:bg-neutral-950 p-8 sm:p-10 border border-neutral-200 dark:border-neutral-800 space-y-6 shadow-xl"
           >
-            {/* The form inputs themselves don't require Sanity connection, keeping them unchanged... */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div>
-                <label className="block text-[10px] font-black tracking-[0.2em] uppercase text-neutral-500 dark:text-neutral-400 mb-2">
-                  Your Name *
+                <label className="block text-[10px] font-spartan font-bold tracking-widest uppercase text-neutral-500 dark:text-neutral-400 mb-2">
+                  {contact.nameLabel || "Your Name *"}
                 </label>
                 <input
                   type="text"
@@ -152,13 +159,13 @@ export default function Contact() {
                   required
                   value={formData.name}
                   onChange={handleChange}
-                  placeholder="Juan Dela Cruz"
-                  className="w-full bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 px-4 py-3.5 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 text-sm focus:outline-none focus:border-yellow-500 transition-colors"
+                  placeholder={contact.namePlaceholder || "Juan Dela Cruz"}
+                  className="w-full bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 px-4 py-3.5 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 text-sm font-montserrat font-light focus:outline-none focus:border-yellow-500 transition-colors"
                 />
               </div>
               <div>
-                <label className="block text-[10px] font-black tracking-[0.2em] uppercase text-neutral-500 dark:text-neutral-400 mb-2">
-                  Email Address *
+                <label className="block text-[10px] font-spartan font-bold tracking-widest uppercase text-neutral-500 dark:text-neutral-400 mb-2">
+                  {contact.emailLabel || "Email Address *"}
                 </label>
                 <input
                   type="email"
@@ -166,31 +173,33 @@ export default function Contact() {
                   required
                   value={formData.email}
                   onChange={handleChange}
-                  placeholder="juan@company.com"
-                  className="w-full bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 px-4 py-3.5 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 text-sm focus:outline-none focus:border-yellow-500 transition-colors"
+                  placeholder={contact.emailPlaceholder || "juan@company.com"}
+                  className="w-full bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 px-4 py-3.5 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 text-sm font-montserrat font-light focus:outline-none focus:border-yellow-500 transition-colors"
                 />
               </div>
             </div>
+
             <div>
-              <label className="block text-[10px] font-black tracking-[0.2em] uppercase text-neutral-500 dark:text-neutral-400 mb-2">
-                Inquiry Category *
+              <label className="block text-[10px] font-spartan font-bold tracking-widest uppercase text-neutral-500 dark:text-neutral-400 mb-2">
+                {contact.categoryLabel || "Inquiry Category *"}
               </label>
               <select
                 name="category"
                 value={formData.category}
                 onChange={handleChange}
-                className="w-full bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 px-4 py-3.5 text-neutral-900 dark:text-white text-sm focus:outline-none focus:border-yellow-500 transition-colors cursor-pointer"
+                className="w-full bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 px-4 py-3.5 text-neutral-900 dark:text-white text-sm font-montserrat font-light focus:outline-none focus:border-yellow-500 transition-colors cursor-pointer"
               >
-                {inquiryCategories.map((cat) => (
+                {categories.map((cat) => (
                   <option key={cat} value={cat}>
                     {cat}
                   </option>
                 ))}
               </select>
             </div>
+
             <div>
-              <label className="block text-[10px] font-black tracking-[0.2em] uppercase text-neutral-500 dark:text-neutral-400 mb-2">
-                Project Details / Message *
+              <label className="block text-[10px] font-spartan font-bold tracking-widest uppercase text-neutral-500 dark:text-neutral-400 mb-2">
+                {contact.messageLabel || "Project Details / Message *"}
               </label>
               <textarea
                 rows="5"
@@ -198,15 +207,20 @@ export default function Contact() {
                 required
                 value={formData.message}
                 onChange={handleChange}
-                placeholder="Tell us about the story, timeline, or scope of your project..."
-                className="w-full bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 px-4 py-3.5 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 text-sm focus:outline-none focus:border-yellow-500 resize-none transition-colors"
+                placeholder={
+                  contact.messagePlaceholder || "Tell us about the story..."
+                }
+                className="w-full bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 px-4 py-3.5 text-neutral-900 dark:text-white placeholder-neutral-400 dark:placeholder-neutral-600 text-sm font-montserrat font-light focus:outline-none focus:border-yellow-500 resize-none transition-colors"
               ></textarea>
             </div>
+
             <button
               type="submit"
-              className={`w-full font-black uppercase py-4 text-xs tracking-[0.2em] flex items-center justify-center transition-all duration-300 active:scale-98 cursor-pointer ${isSent ? "bg-emerald-600 text-white" : "bg-yellow-500 hover:bg-yellow-400 text-black shadow-lg shadow-yellow-500/20"}`}
+              className={`w-full font-spartan font-bold uppercase py-4 text-xs tracking-widest flex items-center justify-center transition-all duration-300 active:scale-98 cursor-pointer ${isSent ? "bg-emerald-600 text-white" : "bg-yellow-500 hover:bg-yellow-400 text-black shadow-lg shadow-yellow-500/20"}`}
             >
-              {isSent ? "INQUIRY SENT SUCCESSFULLY!" : "SEND INQUIRY"}
+              {isSent
+                ? contact.successMessage || "INQUIRY SENT SUCCESSFULLY!"
+                : contact.submitButtonText || "SEND INQUIRY"}
             </button>
           </form>
         </motion.div>
