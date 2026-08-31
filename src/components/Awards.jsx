@@ -1,9 +1,25 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { awardsData } from "../data/portfolioData";
 import { Award, ExternalLink } from "lucide-react";
+import { client, urlFor } from "../sanityClient";
 
 export default function Awards() {
+  const [data, setData] = useState({ settings: null, awards: [] });
+
+  useEffect(() => {
+    client
+      .fetch(
+        `{
+      "settings": *[_type == "awardsSettings"][0],
+      "awards": *[_type == "award"]
+    }`,
+      )
+      .then(setData)
+      .catch(console.error);
+  }, []);
+
+  const { settings, awards } = data;
+
   const containerVariants = {
     hidden: {
       opacity: 0,
@@ -27,6 +43,8 @@ export default function Awards() {
     },
   };
 
+  if (!settings) return null;
+
   return (
     <section
       id="awards"
@@ -47,22 +65,18 @@ export default function Awards() {
         >
           <div>
             <span className="bg-yellow-500 text-black uppercase font-spartan font-bold px-3 py-1 text-[10px] tracking-[0.2em] inline-block mb-4 shadow-sm">
-              Global & Local Excellence
+              {settings.badge}
             </span>
             <h2 className="text-4xl sm:text-5xl lg:text-6xl font-anton font-normal text-neutral-950 dark:text-white uppercase tracking-wide leading-[1.1]">
-              Awards &<br />
+              {settings.headline}
+              <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-500 to-yellow-600">
-                Recognitions.
+                {settings.highlightText}
               </span>
             </h2>
           </div>
           <div className="max-w-md text-neutral-600 dark:text-neutral-400 font-montserrat font-light leading-relaxed">
-            <p>
-              A testament to responsible, well-researched, and cinematic
-              storytelling. These recognitions reflect the collective effort of
-              the production teams, journalists, and collaborators we have had
-              the honor to work alongside.
-            </p>
+            <p>{settings.description}</p>
           </div>
         </motion.div>
 
@@ -74,29 +88,32 @@ export default function Awards() {
           variants={containerVariants}
           className="flex md:grid overflow-x-auto md:overflow-x-visible snap-x md:snap-none hide-scrollbar gap-6 pb-8 md:pb-0 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
         >
-          {awardsData.map((award) => (
+          {awards.map((award) => (
             <motion.div
               variants={itemVariants}
-              key={award.id}
+              key={award._id}
               className="group flex flex-col bg-neutral-50 dark:bg-[#0a0a0a] border border-neutral-200 dark:border-neutral-800 p-8 hover:-translate-y-1 transition-all duration-300 hover:shadow-xl hover:shadow-neutral-200/50 dark:hover:shadow-yellow-500/5 shrink-0 w-[80vw] sm:w-[50vw] md:w-auto snap-center md:snap-align-none"
             >
               <a
                 href={award.verificationLink}
-                target={award.verificationLink !== "#" ? "_blank" : "_self"}
+                target={award.verificationLink ? "_blank" : "_self"}
                 rel="noreferrer"
                 className="block relative h-32 mb-8 bg-white/80 dark:bg-neutral-900/80 p-4 border border-neutral-100 dark:border-neutral-800 rounded-lg overflow-hidden cursor-pointer"
-                title={`Verify ${award.title} recognition`}
               >
-                <img
-                  src={award.logoUrl}
-                  alt={`${award.title} logo`}
-                  className="w-full h-full object-contain filter brightness-0 opacity-60 dark:invert dark:opacity-70 group-hover:!brightness-100 group-hover:!invert-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-105"
-                  onError={(e) => {
-                    e.target.style.display = "none";
-                    e.target.nextSibling.style.display = "flex";
-                  }}
-                />
-                <div className="hidden absolute inset-0 items-center justify-center text-neutral-300 dark:text-neutral-700">
+                {award.logo && (
+                  <img
+                    src={urlFor(award.logo).url()}
+                    alt={`${award.title} logo`}
+                    className="w-full h-full object-contain filter brightness-0 opacity-60 dark:invert dark:opacity-70 group-hover:!brightness-100 group-hover:!invert-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-105"
+                    onError={(e) => {
+                      e.target.style.display = "none";
+                      e.target.nextSibling.style.display = "flex";
+                    }}
+                  />
+                )}
+                <div
+                  className={`${award.logo ? "hidden" : "flex"} absolute inset-0 items-center justify-center text-neutral-300 dark:text-neutral-700`}
+                >
                   <Award size={48} strokeWidth={1} />
                 </div>
                 <div className="absolute inset-0 bg-yellow-500/90 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -110,11 +127,9 @@ export default function Awards() {
                 <span className="text-yellow-600 dark:text-yellow-500 text-[10px] font-spartan font-bold tracking-[0.2em] uppercase mb-3 block">
                   {award.recognition}
                 </span>
-
                 <h3 className="text-xl font-anton font-normal text-neutral-900 dark:text-white uppercase leading-[1.1] tracking-wide mb-4">
                   {award.title}
                 </h3>
-
                 <div className="mt-auto pt-6 border-t border-neutral-200 dark:border-neutral-800">
                   <p className="text-xs font-spartan font-bold text-neutral-900 dark:text-white uppercase tracking-widest mb-1">
                     {award.project}

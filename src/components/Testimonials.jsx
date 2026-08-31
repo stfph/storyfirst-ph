@@ -1,9 +1,25 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { testimonialsData } from "../data/portfolioData";
 import { Quote } from "lucide-react";
+import { client } from "../sanityClient";
 
 export default function Testimonials() {
+  const [data, setData] = useState({ settings: null, testimonials: [] });
+
+  useEffect(() => {
+    client
+      .fetch(
+        `{
+      "settings": *[_type == "testimonialsSettings"][0],
+      "testimonials": *[_type == "testimonial"]
+    }`,
+      )
+      .then(setData)
+      .catch(console.error);
+  }, []);
+
+  const { settings, testimonials } = data;
+
   const containerVariants = {
     hidden: {
       opacity: 0,
@@ -27,6 +43,8 @@ export default function Testimonials() {
     },
   };
 
+  if (!settings) return null;
+
   return (
     <section
       id="testimonials"
@@ -46,10 +64,10 @@ export default function Testimonials() {
           className="mb-16 text-center"
         >
           <span className="bg-yellow-500 text-black uppercase font-spartan font-bold px-3 py-1 text-[10px] tracking-[0.2em] inline-block mb-4 shadow-sm">
-            Client Feedback
+            {settings.badge}
           </span>
           <h2 className="text-4xl sm:text-5xl font-anton font-normal text-neutral-950 dark:text-white uppercase tracking-wide leading-[1.1]">
-            What They Say
+            {settings.headline}
           </h2>
         </motion.div>
 
@@ -61,10 +79,10 @@ export default function Testimonials() {
           variants={containerVariants}
           className="flex md:grid overflow-x-auto md:overflow-x-visible snap-x md:snap-none hide-scrollbar gap-6 md:gap-8 pb-8 md:pb-0 md:grid-cols-2 lg:grid-cols-3"
         >
-          {testimonialsData.map((testimonial) => (
+          {testimonials.map((testimonial) => (
             <motion.div
               variants={itemVariants}
-              key={testimonial.id}
+              key={testimonial._id}
               className="bg-white dark:bg-neutral-950 p-10 border border-neutral-200 dark:border-neutral-800 flex flex-col justify-between shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 shrink-0 w-[85vw] sm:w-[60vw] md:w-auto snap-center md:snap-align-none"
             >
               <div>
@@ -73,7 +91,6 @@ export default function Testimonials() {
                   "{testimonial.quote}"
                 </p>
               </div>
-
               <div className="border-t border-neutral-100 dark:border-neutral-800 pt-6 mt-auto">
                 <p className="text-neutral-900 dark:text-white font-spartan font-bold uppercase tracking-widest text-sm">
                   {testimonial.name}
