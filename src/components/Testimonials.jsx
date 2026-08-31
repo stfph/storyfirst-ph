@@ -77,13 +77,13 @@ export default function Testimonials() {
           exit="hidden"
           viewport={{ once: false, amount: 0.1 }}
           variants={containerVariants}
-          className="flex md:grid overflow-x-auto md:overflow-x-visible snap-x md:snap-none hide-scrollbar gap-6 md:gap-8 pb-8 md:pb-0 md:grid-cols-2 lg:grid-cols-3"
+          className="flex flex-wrap justify-center gap-6 md:gap-8 pb-8 md:pb-0"
         >
           {testimonials.map((testimonial) => (
             <motion.div
               variants={itemVariants}
               key={testimonial._id}
-              className="bg-white dark:bg-neutral-950 p-10 border border-neutral-200 dark:border-neutral-800 flex flex-col justify-between shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 shrink-0 w-[85vw] sm:w-[60vw] md:w-auto snap-center md:snap-align-none"
+              className="bg-white dark:bg-neutral-950 p-10 border border-neutral-200 dark:border-neutral-800 flex flex-col justify-between shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 shrink-0 w-full sm:w-[calc(50%-16px)] lg:w-[calc(33.333%-22px)]"
             >
               <div>
                 <Quote size={40} className="text-yellow-500/30 mb-6" />

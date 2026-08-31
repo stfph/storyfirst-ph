@@ -86,13 +86,13 @@ export default function Awards() {
           exit="hidden"
           viewport={{ once: false, amount: 0.1 }}
           variants={containerVariants}
-          className="flex md:grid overflow-x-auto md:overflow-x-visible snap-x md:snap-none hide-scrollbar gap-6 pb-8 md:pb-0 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+          className="flex flex-wrap justify-center gap-6 pb-8 md:pb-0"
         >
           {awards.map((award) => (
             <motion.div
               variants={itemVariants}
               key={award._id}
-              className="group flex flex-col bg-neutral-50 dark:bg-[#0a0a0a] border border-neutral-200 dark:border-neutral-800 p-8 hover:-translate-y-1 transition-all duration-300 hover:shadow-xl hover:shadow-neutral-200/50 dark:hover:shadow-yellow-500/5 shrink-0 w-[80vw] sm:w-[50vw] md:w-auto snap-center md:snap-align-none"
+              className="group flex flex-col bg-neutral-50 dark:bg-[#0a0a0a] border border-neutral-200 dark:border-neutral-800 p-8 hover:-translate-y-1 transition-all duration-300 hover:shadow-xl hover:shadow-neutral-200/50 dark:hover:shadow-yellow-500/5 shrink-0 w-full sm:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] xl:w-[calc(25%-18px)]"
             >
               <a
                 href={award.verificationLink}

@@ -6,11 +6,15 @@ export default function Team() {
   const [data, setData] = useState({ settings: null, team: [] });
 
   useEffect(() => {
-    const query = `{
+    client
+      .fetch(
+        `{
       "settings": *[_type == "teamSettings"][0],
       "team": *[_type == "teamMember"]
-    }`;
-    client.fetch(query).then(setData).catch(console.error);
+    }`,
+      )
+      .then(setData)
+      .catch(console.error);
   }, []);
 
   const { settings, team } = data;
@@ -78,13 +82,13 @@ export default function Team() {
           exit="hidden"
           viewport={{ once: false, amount: 0.1 }}
           variants={containerVariants}
-          className="flex md:grid overflow-x-auto md:overflow-x-visible snap-x md:snap-none hide-scrollbar gap-6 md:gap-8 lg:gap-12 pb-8 md:pb-0 sm:grid-cols-2 lg:grid-cols-3"
+          className="flex flex-wrap justify-center gap-6 md:gap-8 lg:gap-12 pb-8 md:pb-0"
         >
           {team.map((member) => (
             <motion.div
               variants={itemVariants}
               key={member._id}
-              className="group flex flex-col shrink-0 w-[80vw] sm:w-[50vw] md:w-auto snap-center md:snap-align-none"
+              className="group flex flex-col shrink-0 w-full sm:w-[calc(50%-16px)] lg:w-[calc(33.333%-32px)] max-w-sm"
             >
               <div className="relative aspect-[3/4] overflow-hidden bg-neutral-100 dark:bg-[#0a0a0a] mb-6">
                 {member.image && (

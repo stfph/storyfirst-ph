@@ -11,14 +11,17 @@ export default function ProjectsGallery() {
   const categories = ["Documentaries", "Content", "Events", "Workshops"];
 
   useEffect(() => {
-    // GROQ object mapping: fetches singleton settings AND projects array simultaneously
-    const query = `{
+    client
+      .fetch(
+        `{
       "settings": *[_type == "projectsSettings"][0],
       "projects": *[_type == "project"] | order(year desc) {
         _id, title, category, badge, client, role, year, shortDescription, image, linkUrl
       }
-    }`;
-    client.fetch(query).then(setData).catch(console.error);
+    }`,
+      )
+      .then(setData)
+      .catch(console.error);
   }, []);
 
   const { settings, projects } = data;
@@ -54,7 +57,6 @@ export default function ProjectsGallery() {
       id="work"
       className="relative py-24 bg-neutral-100 dark:bg-neutral-900 transition-colors duration-500 overflow-hidden border-t border-neutral-200 dark:border-neutral-900"
     >
-      {/* Background Template Layer */}
       <div className="absolute inset-0 w-full h-full pointer-events-none transition-opacity duration-1000 ease-in-out z-0">
         <div
           className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${hoveredProject === null ? "opacity-100" : "opacity-0"}`}
@@ -146,7 +148,7 @@ export default function ProjectsGallery() {
               exit="hidden"
               viewport={{ once: false, amount: 0.1 }}
               variants={containerVariants}
-              className="flex md:grid overflow-x-auto md:overflow-x-visible snap-x md:snap-none hide-scrollbar gap-6 pb-6 md:pb-0 md:grid-cols-2 lg:grid-cols-3"
+              className="flex flex-wrap justify-center gap-6 pb-6 md:pb-0"
             >
               {filteredProjects.map((project) => (
                 <motion.a
@@ -157,7 +159,7 @@ export default function ProjectsGallery() {
                   key={project._id}
                   onMouseEnter={() => setHoveredProject(project._id)}
                   onMouseLeave={() => setHoveredProject(null)}
-                  className="relative group min-h-[440px] sm:min-h-[480px] flex flex-col justify-end p-8 overflow-hidden bg-white/90 dark:bg-[#0a0a0a]/90 backdrop-blur-sm border border-neutral-200 dark:border-neutral-800 transition-all duration-500 hover:-translate-y-1 hover:shadow-xl hover:shadow-neutral-300/50 dark:hover:shadow-yellow-500/5 block cursor-pointer shrink-0 w-[85vw] sm:w-[60vw] md:w-auto snap-center md:snap-align-none"
+                  className="relative group min-h-[440px] sm:min-h-[480px] flex flex-col justify-end p-8 overflow-hidden bg-white/90 dark:bg-[#0a0a0a]/90 backdrop-blur-sm border border-neutral-200 dark:border-neutral-800 transition-all duration-500 hover:-translate-y-1 hover:shadow-xl hover:shadow-neutral-300/50 dark:hover:shadow-yellow-500/5 block cursor-pointer shrink-0 w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)]"
                 >
                   <div className="absolute inset-0 z-0">
                     {project.image && (

@@ -128,7 +128,7 @@ export default function Clients() {
               exit="hidden"
               viewport={{ once: false, amount: 0.1 }}
               variants={containerVariants}
-              className="flex md:grid overflow-x-auto md:overflow-x-visible snap-x md:snap-none hide-scrollbar gap-4 pb-6 md:pb-0 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5"
+              className="flex flex-wrap justify-center gap-4 pb-6 md:pb-0"
             >
               {activeClients.map((clientData) => (
                 <motion.a
@@ -137,7 +137,7 @@ export default function Clients() {
                   href={clientData.websiteUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="group relative flex flex-col items-center justify-center p-8 bg-white/80 dark:bg-neutral-950/80 backdrop-blur-sm border border-neutral-200 dark:border-neutral-800 hover:bg-gradient-to-br hover:from-yellow-400 hover:to-yellow-500 hover:border-yellow-400 transition-all duration-300 cursor-pointer h-40 shrink-0 w-[65vw] sm:w-[45vw] md:w-auto snap-center md:snap-align-none shadow-sm hover:shadow-xl hover:-translate-y-1 overflow-hidden"
+                  className="group relative flex flex-col items-center justify-center p-8 bg-white/80 dark:bg-neutral-950/80 backdrop-blur-sm border border-neutral-200 dark:border-neutral-800 hover:bg-gradient-to-br hover:from-yellow-400 hover:to-yellow-500 hover:border-yellow-400 transition-all duration-300 cursor-pointer h-40 shrink-0 w-[45vw] sm:w-[30vw] md:w-[calc(20%-16px)] shadow-sm hover:shadow-xl hover:-translate-y-1 overflow-hidden"
                   title={clientData.name}
                 >
                   {clientData.logo && (
@@ -184,13 +184,13 @@ export default function Clients() {
             exit="hidden"
             viewport={{ once: false, amount: 0.1 }}
             variants={containerVariants}
-            className="flex md:grid overflow-x-auto md:overflow-x-visible snap-x md:snap-none hide-scrollbar gap-6 md:gap-8 pb-8 md:pb-0 md:grid-cols-2 lg:grid-cols-3"
+            className="flex flex-wrap justify-center gap-6 md:gap-8 pb-8 md:pb-0"
           >
             {collaborators.map((person) => (
               <motion.div
                 variants={itemVariants}
                 key={person._id}
-                className="group relative overflow-hidden bg-neutral-200 dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 aspect-square shadow-md hover:shadow-2xl transition-shadow duration-500 cursor-default shrink-0 w-[80vw] sm:w-[50vw] md:w-auto snap-center md:snap-align-none"
+                className="group relative overflow-hidden bg-neutral-200 dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 aspect-square shadow-md hover:shadow-2xl transition-shadow duration-500 cursor-default shrink-0 w-full sm:w-[calc(50%-16px)] lg:w-[calc(33.333%-22px)] max-w-sm"
               >
                 {person.image && (
                   <motion.img

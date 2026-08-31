@@ -81,13 +81,13 @@ export default function Advocacies() {
           exit="hidden"
           viewport={{ once: false, amount: 0.1 }}
           variants={containerVariants}
-          className="flex md:grid overflow-x-auto md:overflow-x-visible snap-x md:snap-none hide-scrollbar gap-6 md:gap-8 pb-8 md:pb-0 md:grid-cols-3"
+          className="flex flex-wrap justify-center gap-6 md:gap-8 pb-8 md:pb-0"
         >
           {advocacies.map((advocacy) => (
             <motion.div
               variants={itemVariants}
               key={advocacy._id}
-              className="group relative overflow-hidden bg-neutral-100 dark:bg-[#0a0a0a] min-h-[400px] flex flex-col justify-end p-8 border border-neutral-200 dark:border-neutral-800 cursor-default shrink-0 w-[85vw] sm:w-[60vw] md:w-auto snap-center md:snap-align-none"
+              className="group relative overflow-hidden bg-neutral-100 dark:bg-[#0a0a0a] min-h-[400px] flex flex-col justify-end p-8 border border-neutral-200 dark:border-neutral-800 cursor-default shrink-0 w-full sm:w-[calc(50%-16px)] lg:w-[calc(33.333%-22px)]"
             >
               <div className="absolute inset-0 z-0">
                 {advocacy.image && (
