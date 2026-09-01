@@ -11,9 +11,12 @@ export default {
     {name: 'secondaryButtonText', title: 'Secondary Button Text', type: 'string'},
     {
       name: 'heroVideo',
-      title: 'Hero Background Video (URL)',
-      type: 'url',
-      description: 'Link to an MP4 video file',
+      title: 'Hero Background Video',
+      type: 'file',
+      description: 'Upload an MP4 video file for the hero background.',
+      options: {
+        accept: 'video/mp4',
+      },
     },
   ],
 }

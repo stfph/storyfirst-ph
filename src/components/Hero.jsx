@@ -6,10 +6,12 @@ export default function Hero() {
   const [data, setData] = useState(null);
 
   useEffect(() => {
-    client
-      .fetch(`*[_type == "heroSettings"][0]`)
-      .then(setData)
-      .catch(console.error);
+    // We expand the file asset reference to get the actual download URL
+    const query = `*[_type == "heroSettings"][0]{
+      ...,
+      "videoUrl": heroVideo.asset->url
+    }`;
+    client.fetch(query).then(setData).catch(console.error);
   }, []);
 
   if (!data)
@@ -22,18 +24,18 @@ export default function Hero() {
     >
       <div className="absolute inset-0 w-full h-full z-0">
         <div className="absolute inset-0 bg-black/70 z-10"></div>
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="w-full h-full object-cover opacity-80 contrast-125 saturate-110"
-        >
-          <source
-            src={data.heroVideo || "./videos/storyfirst-clip.mp4"}
-            type="video/mp4"
-          />
-        </video>
+        {/* Render the dynamically uploaded video */}
+        {data.videoUrl && (
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full h-full object-cover opacity-80 contrast-125 saturate-110"
+          >
+            <source src={data.videoUrl} type="video/mp4" />
+          </video>
+        )}
       </div>
 
       <motion.div
