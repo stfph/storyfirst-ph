@@ -1,9 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Sun, Moon } from "lucide-react";
+import { client } from "../sanityClient";
+import { urlFor } from "../lib/sanity";
 
 export default function Navbar({ isDark, toggleTheme }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    client
+      .fetch(`*[_type == "globalSettings"][0]`)
+      .then(setData)
+      .catch(console.error);
+  }, []);
+
+  const brandWords = data?.brandName
+    ? data.brandName.split(" ")
+    : ["Story", "First", "PH"];
+  const word1 = brandWords[0] || "Story";
+  const word2 = brandWords[1] || "First";
+  const word3 = brandWords.slice(2).join(" ") || "PH";
 
   const navLinks = [
     { name: "Home", href: "#hero" },
@@ -28,17 +45,27 @@ export default function Navbar({ isDark, toggleTheme }) {
           href="#hero"
           className="flex flex-col text-black dark:text-white leading-[0.85] tracking-tighter transition-colors w-fit"
         >
-          <span className="text-4xl font-anton font-normal uppercase tracking-wide">
-            Story
-          </span>
-          <div className="flex items-end">
-            <span className="text-4xl font-anton font-normal uppercase tracking-wide">
-              First
-            </span>
-            <span className="text-sm font-spartan font-bold uppercase mb-[4px] ml-1 tracking-normal">
-              PH
-            </span>
-          </div>
+          {data?.brandLogo ? (
+            <img
+              src={urlFor(data.brandLogo).height(56).url()}
+              alt={data?.brandName || "STORYFIRST PH"}
+              className="h-12 w-auto object-contain"
+            />
+          ) : (
+            <>
+              <span className="text-4xl font-anton font-normal uppercase tracking-wide">
+                {word1}
+              </span>
+              <div className="flex items-end">
+                <span className="text-4xl font-anton font-normal uppercase tracking-wide">
+                  {word2}
+                </span>
+                <span className="text-sm font-spartan font-bold uppercase mb-[4px] ml-1 tracking-normal">
+                  {word3}
+                </span>
+              </div>
+            </>
+          )}
         </a>
 
         {/* Desktop Menu */}

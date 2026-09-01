@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { FaFacebook, FaInstagram, FaTiktok } from "react-icons/fa6";
 import { client } from "../sanityClient";
+import { urlFor } from "../lib/sanity";
 
 export default function Footer() {
   const [data, setData] = useState(null);
@@ -15,7 +16,6 @@ export default function Footer() {
 
   if (!data) return null;
 
-  // Safe parsing for the stylized 3-word logo setup
   const brandWords = data.brandName
     ? data.brandName.split(" ")
     : ["Story", "First", "PH"];
@@ -38,17 +38,27 @@ export default function Footer() {
             href="#identity"
             className="flex flex-col text-black dark:text-white leading-[0.85] tracking-tighter transition-colors w-fit items-start text-left mb-3"
           >
-            <span className="text-3xl font-anton font-normal uppercase tracking-wide">
-              {word1}
-            </span>
-            <div className="flex items-end">
-              <span className="text-3xl font-anton font-normal uppercase tracking-wide">
-                {word2}
-              </span>
-              <span className="text-xs font-spartan font-bold uppercase mb-[2px] ml-1 tracking-normal">
-                {word3}
-              </span>
-            </div>
+            {data.brandLogo ? (
+              <img
+                src={urlFor(data.brandLogo).height(48).url()}
+                alt={data.brandName || "STORYFIRST PH"}
+                className="h-10 w-auto object-contain"
+              />
+            ) : (
+              <>
+                <span className="text-3xl font-anton font-normal uppercase tracking-wide">
+                  {word1}
+                </span>
+                <div className="flex items-end">
+                  <span className="text-3xl font-anton font-normal uppercase tracking-wide">
+                    {word2}
+                  </span>
+                  <span className="text-xs font-spartan font-bold uppercase mb-[2px] ml-1 tracking-normal">
+                    {word3}
+                  </span>
+                </div>
+              </>
+            )}
           </a>
           <p className="font-spartan font-bold tracking-widest uppercase text-[10px] mt-1">
             © {new Date().getFullYear()} {data.footerCopyright}
