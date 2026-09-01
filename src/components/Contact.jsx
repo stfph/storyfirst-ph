@@ -23,7 +23,6 @@ export default function Contact() {
       )
       .then((res) => {
         setData(res);
-        // Automatically set the default dropdown value to the first category in the CMS
         if (res.contact?.inquiryCategories?.length > 0) {
           setFormData((prev) => ({
             ...prev,
@@ -40,7 +39,6 @@ export default function Contact() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsSent(true);
-    // Reset form and revert category back to the dynamic default
     setFormData({
       name: "",
       email: "",
@@ -54,7 +52,6 @@ export default function Contact() {
 
   if (!contact || !global) return null;
 
-  // Fallback array just in case the CMS array is emptied accidentally
   const categories =
     contact.inquiryCategories?.length > 0
       ? contact.inquiryCategories
@@ -90,44 +87,46 @@ export default function Contact() {
           </p>
 
           <div className="pt-6 space-y-6 select-text">
+            {/* Plain Text Email */}
             <div className="flex items-center gap-5">
               <div className="flex items-center justify-center w-12 h-12 bg-yellow-500 text-black rounded-full shadow-lg shadow-yellow-500/20 shrink-0">
                 <Mail size={20} strokeWidth={2.5} />
               </div>
               <div>
                 <p className="text-[10px] font-spartan font-bold tracking-[0.2em] uppercase text-neutral-400">
-                  Email Inquiries
+                  {global.emailLabel || "Email Inquiries"}
                 </p>
-                <a
-                  href={`mailto:${global.contactEmail}`}
-                  className="text-neutral-950 dark:text-white font-bold text-lg hover:text-yellow-500 transition-colors"
-                >
+                <p className="text-neutral-950 dark:text-white font-bold text-lg mt-1">
                   {global.contactEmail}
-                </a>
+                </p>
               </div>
             </div>
+
+            {/* Plain Text Phone */}
             <div className="flex items-center gap-5">
               <div className="flex items-center justify-center w-12 h-12 bg-yellow-500 text-black rounded-full shadow-lg shadow-yellow-500/20 shrink-0">
                 <Phone size={20} strokeWidth={2.5} />
               </div>
               <div>
                 <p className="text-[10px] font-spartan font-bold tracking-[0.2em] uppercase text-neutral-400">
-                  Direct Line
+                  {global.phoneLabel || "Direct Line"}
                 </p>
-                <p className="text-neutral-950 dark:text-white font-bold text-lg">
+                <p className="text-neutral-950 dark:text-white font-bold text-lg mt-1">
                   {global.contactPhone}
                 </p>
               </div>
             </div>
+
+            {/* Plain Text Location */}
             <div className="flex items-center gap-5">
               <div className="flex items-center justify-center w-12 h-12 bg-yellow-500 text-black rounded-full shadow-lg shadow-yellow-500/20 shrink-0">
                 <MapPin size={20} strokeWidth={2.5} />
               </div>
               <div>
                 <p className="text-[10px] font-spartan font-bold tracking-[0.2em] uppercase text-neutral-400">
-                  Location & Base
+                  {global.locationLabel || "Location & Base"}
                 </p>
-                <p className="text-neutral-950 dark:text-white font-bold text-lg">
+                <p className="text-neutral-950 dark:text-white font-bold text-lg mt-1">
                   {global.contactLocation}
                 </p>
               </div>
