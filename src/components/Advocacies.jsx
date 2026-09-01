@@ -10,7 +10,7 @@ export default function Advocacies() {
       .fetch(
         `{
       "settings": *[_type == "advocaciesSettings"][0],
-      "advocacies": *[_type == "advocacy"]
+      "advocacies": *[_type == "advocacy"] | order(order asc)
     }`,
       )
       .then(setData)
@@ -19,7 +19,6 @@ export default function Advocacies() {
 
   const { settings, advocacies } = data;
 
-  // Unified Cinematic Swirl Animation Variants
   const containerVariants = {
     hidden: {
       opacity: 0,
@@ -70,7 +69,7 @@ export default function Advocacies() {
           whileInView={{ opacity: 1, y: 0, rotate: 0 }}
           viewport={{ once: false, margin: "-100px" }}
           transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-16 flex flex-col md:flex-row md:items-end justify-between gap-8"
+          className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8"
         >
           <div>
             <span className="bg-yellow-500 text-black uppercase font-spartan font-bold px-3 py-1 text-[10px] tracking-[0.2em] inline-block mb-4 shadow-sm">
@@ -97,7 +96,7 @@ export default function Advocacies() {
             <motion.div
               variants={itemVariants}
               key={advocacy._id}
-              className="group relative overflow-hidden bg-neutral-100 dark:bg-[#0a0a0a] min-h-[400px] flex flex-col justify-end p-8 border border-neutral-200 dark:border-neutral-800 cursor-default shrink-0 w-[85vw] sm:w-[60vw] md:w-[calc(33.333%-22px)] max-w-sm snap-center md:snap-align-none"
+              className="group relative overflow-hidden bg-neutral-100 dark:bg-[#0a0a0a] min-h-[400px] flex flex-col justify-end p-8 border border-neutral-200 dark:border-neutral-800 cursor-default shrink-0 w-[85vw] sm:w-[60vw] md:w-[calc(50%-16px)] lg:w-[calc(33.333%-22px)] snap-center md:snap-align-none"
             >
               <div className="absolute inset-0 z-0">
                 {advocacy.image && (

@@ -3,9 +3,9 @@ export default {
   title: 'Awards Settings',
   type: 'document',
   fields: [
-    { name: 'badge', title: 'Section Badge', type: 'string', initialValue: 'Global & Local Excellence' },
-    { name: 'headline', title: 'Headline', type: 'string', initialValue: 'Awards &' },
-    { name: 'highlightText', title: 'Gradient Highlight Text', type: 'string', initialValue: 'Recognitions.' },
-    { name: 'description', title: 'Description', type: 'text', rows: 3 },
+    {name: 'badge', title: 'Section Badge', type: 'string'},
+    {name: 'headline', title: 'Headline', type: 'string'},
+    {name: 'highlightText', title: 'Gradient Highlight Text', type: 'string'},
+    {name: 'description', title: 'Description', type: 'text', rows: 3},
   ],
 }

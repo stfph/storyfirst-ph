@@ -15,7 +15,7 @@ export default function ProjectsGallery() {
       .fetch(
         `{
       "settings": *[_type == "projectsSettings"][0],
-      "projects": *[_type == "project"] | order(year desc) {
+      "projects": *[_type == "project"] | order(order asc) {
         _id, title, category, badge, client, role, year, shortDescription, image, linkUrl
       }
     }`,
@@ -27,7 +27,6 @@ export default function ProjectsGallery() {
   const { settings, projects } = data;
   const filteredProjects = projects.filter((p) => p.category === filter);
 
-  // Cinematic Swirl Animation Variants
   const containerVariants = {
     hidden: {
       opacity: 0,

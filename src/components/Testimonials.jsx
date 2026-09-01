@@ -11,7 +11,7 @@ export default function Testimonials() {
       .fetch(
         `{
       "settings": *[_type == "testimonialsSettings"][0],
-      "testimonials": *[_type == "testimonial"]
+      "testimonials": *[_type == "testimonial"] | order(order asc)
     }`,
       )
       .then(setData)

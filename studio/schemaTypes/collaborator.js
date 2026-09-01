@@ -1,25 +1,11 @@
 export default {
   name: 'collaborator',
-  title: 'Notable Collaborator',
+  title: 'Notable Collaborators',
   type: 'document',
   fields: [
-    {
-      name: 'name',
-      title: 'Name',
-      type: 'string',
-      validation: (Rule) => Rule.required(),
-    },
-    {
-      name: 'context',
-      title: 'Context / Tagline',
-      type: 'string',
-      description: 'e.g. Food Vlogger | Philippines Tour',
-    },
-    {
-      name: 'image',
-      title: 'Photo',
-      type: 'image',
-      options: { hotspot: true },
-    },
+    {name: 'order', title: 'Sort Order', type: 'number'},
+    {name: 'name', title: 'Collaborator Name', type: 'string'},
+    {name: 'context', title: 'Context / Title', type: 'string'},
+    {name: 'image', title: 'Image', type: 'image', options: {hotspot: true}},
   ],
 }

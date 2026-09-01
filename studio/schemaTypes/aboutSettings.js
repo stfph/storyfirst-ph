@@ -1,17 +1,17 @@
 export default {
   name: 'aboutSettings',
-  title: 'About Section Settings',
+  title: 'About Settings',
   type: 'document',
   fields: [
-    { name: 'badge', title: 'Section Badge', type: 'string', initialValue: 'Our Philosophy' },
-    { name: 'headline', title: 'Headline', type: 'string', initialValue: 'The Story' },
-    { name: 'highlightText', title: 'Gradient Highlight Text', type: 'string', initialValue: 'Comes First.' },
-    { name: 'leadParagraph', title: 'Bold Lead Paragraph', type: 'text', rows: 3 },
+    {name: 'badge', title: 'Section Badge', type: 'string'},
+    {name: 'headline', title: 'Headline', type: 'string'},
+    {name: 'highlightText', title: 'Gradient Highlight Text', type: 'string'},
+    {name: 'leadParagraph', title: 'Lead Paragraph (Bold)', type: 'text', rows: 3},
     {
       name: 'bodyParagraphs',
       title: 'Body Paragraphs',
       type: 'array',
-      of: [{ type: 'text', rows: 4 }]
+      of: [{type: 'text', rows: 4}],
     },
   ],
 }

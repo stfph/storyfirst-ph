@@ -1,74 +1,22 @@
 export default {
   name: 'project',
-  title: 'Project',
+  title: 'Projects',
   type: 'document',
   fields: [
-    {
-      name: 'title',
-      title: 'Project Title',
-      type: 'string',
-      validation: (Rule) => Rule.required(),
-    },
+    {name: 'order', title: 'Sort Order', type: 'number', description: 'E.g., 1, 2, 3'},
+    {name: 'title', title: 'Project Title', type: 'string'},
     {
       name: 'category',
       title: 'Category',
       type: 'string',
-      options: {
-        list: [
-          { title: 'Documentaries', value: 'Documentaries' },
-          { title: 'Content', value: 'Content' },
-          { title: 'Events', value: 'Events' },
-          { title: 'Workshops', value: 'Workshops' },
-        ],
-      },
-      validation: (Rule) => Rule.required(),
+      options: {list: ['Documentaries', 'Content', 'Events', 'Workshops']},
     },
-    {
-      name: 'badge',
-      title: 'Badge / Tag',
-      type: 'string',
-      description: 'e.g., TV Documentary, Digital Campaign',
-    },
-    {
-      name: 'client',
-      title: 'Client / Network',
-      type: 'string',
-    },
-    {
-      name: 'role',
-      title: 'Your Role',
-      type: 'string',
-    },
-    {
-      name: 'year',
-      title: 'Year',
-      type: 'string',
-    },
-    {
-      name: 'shortDescription',
-      title: 'Short Description',
-      type: 'text',
-      rows: 3,
-    },
-    {
-      name: 'image',
-      title: 'Cover Image',
-      type: 'image',
-      options: {
-        hotspot: true, // Enables UI for editors to crop/focus images
-      },
-    },
-    {
-      name: 'linkUrl',
-      title: 'External Link (YouTube, Article, etc.)',
-      type: 'url',
-    },
+    {name: 'badge', title: 'Card Badge (e.g. TV Documentary)', type: 'string'},
+    {name: 'client', title: 'Client / Network', type: 'string'},
+    {name: 'role', title: 'Your Role', type: 'string'},
+    {name: 'year', title: 'Year', type: 'string'},
+    {name: 'shortDescription', title: 'Short Description', type: 'text', rows: 3},
+    {name: 'image', title: 'Project Image', type: 'image', options: {hotspot: true}},
+    {name: 'linkUrl', title: 'External Link', type: 'url'},
   ],
-  preview: {
-    select: {
-      title: 'title',
-      subtitle: 'client',
-      media: 'image',
-    },
-  },
 }

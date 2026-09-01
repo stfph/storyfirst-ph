@@ -1,40 +1,14 @@
 export default {
   name: 'award',
-  title: 'Award',
+  title: 'Awards',
   type: 'document',
   fields: [
-    {
-      name: 'title',
-      title: 'Awarding Body / Festival',
-      type: 'string',
-      validation: (Rule) => Rule.required(),
-    },
-    {
-      name: 'recognition',
-      title: 'Recognition Received',
-      type: 'string',
-      description: 'e.g., Nominee for Current Affairs (2025)',
-    },
-    {
-      name: 'project',
-      title: 'Winning Project Name',
-      type: 'string',
-    },
-    {
-      name: 'role',
-      title: 'Your Role',
-      type: 'string',
-    },
-    {
-      name: 'logo',
-      title: 'Award Logo',
-      type: 'image',
-      options: { hotspot: true },
-    },
-    {
-      name: 'verificationLink',
-      title: 'Verification URL',
-      type: 'url',
-    },
+    {name: 'order', title: 'Sort Order', type: 'number'},
+    {name: 'title', title: 'Award Title / Body', type: 'string'},
+    {name: 'recognition', title: 'Recognition (e.g. Gold Medalist)', type: 'string'},
+    {name: 'project', title: 'Winning Project', type: 'string'},
+    {name: 'role', title: 'Your Role', type: 'string'},
+    {name: 'verificationLink', title: 'Verification Link', type: 'url'},
+    {name: 'logo', title: 'Award Logo', type: 'image', options: {hotspot: true}},
   ],
 }

@@ -10,7 +10,7 @@ export default function Team() {
       .fetch(
         `{
       "settings": *[_type == "teamSettings"][0],
-      "team": *[_type == "teamMember"]
+      "team": *[_type == "teamMember"] | order(order asc)
     }`,
       )
       .then(setData)
@@ -19,7 +19,6 @@ export default function Team() {
 
   const { settings, team } = data;
 
-  // Unified Cinematic Swirl Animation Variants
   const containerVariants = {
     hidden: {
       opacity: 0,
@@ -98,7 +97,8 @@ export default function Team() {
             <motion.div
               variants={itemVariants}
               key={member._id}
-              className="group relative overflow-hidden bg-neutral-100 dark:bg-[#0a0a0a] aspect-[3/4] shadow-md hover:shadow-2xl transition-all duration-500 cursor-default shrink-0 w-[80vw] sm:w-[50vw] md:w-[calc(33.333%-32px)] max-w-sm snap-center md:snap-align-none border border-neutral-200 dark:border-neutral-800"
+              // Changed lg:w-[calc(33.333%-32px)] to lg:w-[calc(25%-36px)] to create a perfect 4-column centered grid
+              className="group relative overflow-hidden bg-neutral-100 dark:bg-[#0a0a0a] aspect-[3/4] shadow-md hover:shadow-2xl transition-all duration-500 cursor-default shrink-0 w-[80vw] sm:w-[50vw] md:w-[calc(50%-16px)] lg:w-[calc(25%-36px)] max-w-sm snap-center md:snap-align-none border border-neutral-200 dark:border-neutral-800"
             >
               {member.image && (
                 <motion.img
@@ -111,9 +111,8 @@ export default function Team() {
                   className="w-full h-full object-cover object-top filter grayscale-0 md:grayscale opacity-100 md:opacity-90 md:group-hover:grayscale-0 md:group-hover:opacity-100 transition-all duration-700 ease-in-out md:group-hover:scale-105"
                 />
               )}
-              <div className="absolute inset-0 bg-neutral-200 dark:bg-neutral-800 -z-10"></div>
+              <div className="absolute inset-0 bg-neutral-200 dark:bg-neutral-900 -z-10"></div>
 
-              {/* Overlay Content Card */}
               <div className="absolute bottom-0 left-0 w-full p-6 pt-16 transform translate-y-0 md:translate-y-6 md:group-hover:translate-y-0 transition-transform duration-500 ease-out bg-gradient-to-t from-black/95 via-black/70 to-transparent">
                 <h3 className="text-xl sm:text-2xl font-anton font-normal text-white uppercase tracking-wide transform opacity-100 md:opacity-90 md:group-hover:opacity-100 transition-opacity duration-300">
                   {member.name}

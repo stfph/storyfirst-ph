@@ -1,38 +1,17 @@
 export default {
   name: 'client',
-  title: 'Client & Partner Logo',
+  title: 'Clients & Partners',
   type: 'document',
   fields: [
-    {
-      name: 'name',
-      title: 'Client / Organization Name',
-      type: 'string',
-      validation: (Rule) => Rule.required(),
-    },
+    {name: 'order', title: 'Sort Order', type: 'number'},
+    {name: 'name', title: 'Client Name', type: 'string'},
     {
       name: 'category',
-      title: 'Category Tab',
+      title: 'Category',
       type: 'string',
-      options: {
-        list: [
-          { title: 'Media & Production', value: 'media' },
-          { title: 'Brands & Corporations', value: 'brands' },
-          { title: 'Organizations & NGOs', value: 'organizations' },
-          { title: 'Education & Institutions', value: 'institutions' },
-        ],
-      },
-      validation: (Rule) => Rule.required(),
+      options: {list: ['media', 'brands', 'organizations', 'institutions']},
     },
-    {
-      name: 'logo',
-      title: 'Client Logo (PNG recommended)',
-      type: 'image',
-      options: { hotspot: true },
-    },
-    {
-      name: 'websiteUrl',
-      title: 'Website Link',
-      type: 'url',
-    },
+    {name: 'websiteUrl', title: 'Website URL', type: 'url'},
+    {name: 'logo', title: 'Client Logo (PNG)', type: 'image', options: {hotspot: true}},
   ],
 }

@@ -13,18 +13,33 @@ import contactSettings from './contactSettings'
 import service from './service'
 import project from './project'
 import award from './award'
-import teamMember from './team'
-import advocacy from './advocacy'
-import testimonial from './testimonial'
 import client from './client'
 import collaborator from './collaborator'
+import advocacy from './advocacy'
+import testimonial from './testimonial'
+import teamMember from './teamMember'
 
 export const schemaTypes = [
   // Singletons
-  globalSettings, heroSettings, aboutSettings, servicesSettings,
-  projectsSettings, awardsSettings, clientsSettings, advocaciesSettings,
-  testimonialsSettings, teamSettings, contactSettings,
+  globalSettings,
+  heroSettings,
+  aboutSettings,
+  servicesSettings,
+  projectsSettings,
+  awardsSettings,
+  clientsSettings,
+  advocaciesSettings,
+  testimonialsSettings,
+  teamSettings,
+  contactSettings,
 
-  // Content Arrays
-  service, project, award, teamMember, advocacy, testimonial, client, collaborator,
+  // Array Documents
+  service,
+  project,
+  award,
+  client,
+  collaborator,
+  advocacy,
+  testimonial,
+  teamMember,
 ]

@@ -12,7 +12,7 @@ export default function Awards() {
       .fetch(
         `{
       "settings": *[_type == "awardsSettings"][0],
-      "awards": *[_type == "award"]
+      "awards": *[_type == "award"] | order(order asc)
     }`,
       )
       .then(setData)
@@ -61,7 +61,6 @@ export default function Awards() {
       id="awards"
       className="py-24 bg-white dark:bg-neutral-950 border-t border-neutral-200 dark:border-neutral-900 transition-colors duration-500 px-6 overflow-hidden"
     >
-      {/* Hidden Image Preloader: Downloads all carousel logos in the background immediately */}
       <div className="hidden" aria-hidden="true">
         {awards.map(
           (award) =>

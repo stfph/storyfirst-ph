@@ -22,8 +22,8 @@ export default function Clients() {
       .fetch(
         `{
       "settings": *[_type == "clientsSettings"][0],
-      "clients": *[_type == "client"],
-      "collaborators": *[_type == "collaborator"]
+      "clients": *[_type == "client"] | order(order asc),
+      "collaborators": *[_type == "collaborator"] | order(order asc)
     }`,
       )
       .then(setData)
@@ -53,7 +53,6 @@ export default function Clients() {
     },
   };
 
-  // Optimized: Removed heavy blur filter for fast grid rendering
   const itemVariants = {
     hidden: { opacity: 0, scale: 0.9, y: 15 },
     show: {
@@ -144,7 +143,6 @@ export default function Clients() {
                   href={clientData.websiteUrl}
                   target="_blank"
                   rel="noreferrer"
-                  // Added ambient glow effect on hover
                   className="group relative flex flex-col items-center justify-center p-8 bg-yellow-500/85 hover:bg-yellow-500 shadow-[0_0_15px_rgba(234,179,8,0.1)] hover:shadow-[0_0_35px_rgba(234,179,8,0.4)] border border-transparent hover:border-yellow-300 transition-all duration-300 cursor-pointer h-40 shrink-0 w-[65vw] sm:w-[45vw] md:w-[calc(20%-16px)] snap-center md:snap-align-none rounded-lg overflow-hidden"
                   title={clientData.name}
                 >
@@ -193,11 +191,14 @@ export default function Clients() {
               <motion.div
                 variants={itemVariants}
                 key={person._id}
-                // Added ambient glow for collaborators
                 className="group relative overflow-hidden bg-neutral-200 dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 aspect-square shadow-md hover:shadow-[0_0_30px_rgba(234,179,8,0.15)] hover:border-yellow-500/30 transition-all duration-500 cursor-default shrink-0 w-[80vw] sm:w-[50vw] md:w-[calc(33.333%-22px)] max-w-sm snap-center md:snap-align-none rounded-lg"
               >
                 {person.image && (
-                  <img
+                  <motion.img
+                    initial={{ scale: 1.15 }}
+                    whileInView={{ scale: 1 }}
+                    transition={{ duration: 1.5, ease: "easeOut" }}
+                    viewport={{ once: false }}
                     src={urlFor(person.image).url()}
                     alt={person.name}
                     className="w-full h-full object-cover filter grayscale-0 md:grayscale opacity-100 md:opacity-90 md:group-hover:grayscale-0 md:group-hover:opacity-100 transition-all duration-700 ease-in-out md:group-hover:scale-105"

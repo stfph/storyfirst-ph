@@ -7,7 +7,10 @@ export default function Partnerships() {
   const [partners, setPartners] = useState([]);
 
   useEffect(() => {
-    client.fetch(`*[_type == "client"]`).then(setPartners).catch(console.error);
+    client
+      .fetch(`*[_type == "client"] | order(order asc)`)
+      .then(setPartners)
+      .catch(console.error);
   }, []);
 
   if (partners.length === 0) return null;
@@ -17,7 +20,6 @@ export default function Partnerships() {
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 20 }}
-      // Reverted back to once: false to restore the continuous scroll bi-animation
       viewport={{ once: false, amount: 0.1 }}
       transition={{ duration: 0.6 }}
       className="py-6 bg-yellow-500 overflow-hidden flex items-center border-y-2 border-neutral-200 dark:border-neutral-900 transition-colors duration-500"

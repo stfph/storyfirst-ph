@@ -3,7 +3,7 @@ export default {
   title: 'Testimonials Settings',
   type: 'document',
   fields: [
-    { name: 'badge', title: 'Section Badge', type: 'string', initialValue: 'Client Feedback' },
-    { name: 'headline', title: 'Headline', type: 'string', initialValue: 'What They Say' },
+    {name: 'badge', title: 'Section Badge', type: 'string'},
+    {name: 'headline', title: 'Headline', type: 'string'},
   ],
 }

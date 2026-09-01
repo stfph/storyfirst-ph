@@ -1,30 +1,12 @@
 export default {
   name: 'testimonial',
-  title: 'Testimonial',
+  title: 'Testimonials',
   type: 'document',
   fields: [
-    {
-      name: 'name',
-      title: 'Client / Person Name',
-      type: 'string',
-      validation: (Rule) => Rule.required(),
-    },
-    {
-      name: 'position',
-      title: 'Position / Role',
-      type: 'string',
-    },
-    {
-      name: 'company',
-      title: 'Company / Organization',
-      type: 'string',
-    },
-    {
-      name: 'quote',
-      title: 'Feedback Quote',
-      type: 'text',
-      rows: 4,
-      validation: (Rule) => Rule.required(),
-    },
+    {name: 'order', title: 'Sort Order', type: 'number'},
+    {name: 'name', title: 'Author Name', type: 'string'},
+    {name: 'position', title: 'Job Position', type: 'string'},
+    {name: 'company', title: 'Company', type: 'string'},
+    {name: 'quote', title: 'Quote', type: 'text', rows: 4},
   ],
 }
