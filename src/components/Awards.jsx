@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { Award, ExternalLink } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Award, ExternalLink, ChevronLeft, ChevronRight } from "lucide-react";
 import { client, urlFor } from "../sanityClient";
 
 export default function Awards() {
   const [data, setData] = useState({ settings: null, awards: [] });
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
     client
@@ -20,56 +21,56 @@ export default function Awards() {
 
   const { settings, awards } = data;
 
-  const containerVariants = {
-    hidden: {
-      opacity: 0,
-      rotate: 2,
-      scale: 0.96,
-      transition: { duration: 0.4 },
-    },
-    show: {
-      opacity: 1,
-      rotate: 0,
-      scale: 1,
-      transition: {
-        staggerChildren: 0.08,
-        delayChildren: 0.15,
-        duration: 0.8,
-        ease: [0.16, 1, 0.3, 1],
-      },
-    },
+  const handleNext = () => {
+    setCurrentIndex((prev) => (prev + 1) % awards.length);
   };
 
-  const itemVariants = {
-    hidden: { opacity: 0, scale: 0.9, rotate: -3, y: 30, filter: "blur(4px)" },
+  const handlePrev = () => {
+    setCurrentIndex((prev) => (prev - 1 + awards.length) % awards.length);
+  };
+
+  if (!settings || awards.length === 0) return null;
+
+  const currentAward = awards[currentIndex];
+
+  // Optimized & Sped Up: Removed blur completely. Transitions reduced from 0.7s to 0.4s.
+  const slideVariants = {
+    hidden: { opacity: 0, rotate: 3, scale: 0.95, y: 15 },
     show: {
       opacity: 1,
-      scale: 1,
       rotate: 0,
+      scale: 1,
       y: 0,
-      filter: "blur(0px)",
-      transition: { type: "spring", stiffness: 120, damping: 18 },
+      transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] },
+    },
+    exit: {
+      opacity: 0,
+      rotate: -3,
+      scale: 0.95,
+      y: -15,
+      transition: { duration: 0.3, ease: [0.4, 0, 1, 1] },
     },
   };
 
-  if (!settings) return null;
+  // Scroll animation for the whole carousel container
+  const scrollVariants = {
+    hidden: { opacity: 0, y: 30 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+  };
 
   return (
     <section
       id="awards"
       className="py-24 bg-white dark:bg-neutral-950 border-t border-neutral-200 dark:border-neutral-900 transition-colors duration-500 px-6 overflow-hidden"
     >
-      <style
-        dangerouslySetInnerHTML={{
-          __html: ` .hide-scrollbar::-webkit-scrollbar { display: none; } .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; } `,
-        }}
-      />
       <div className="max-w-7xl mx-auto">
+        {/* Header - Bi-directional restored */}
         <motion.div
-          initial={{ opacity: 0, y: 30, rotate: 1 }}
-          whileInView={{ opacity: 1, y: 0, rotate: 0 }}
-          viewport={{ once: false, margin: "-100px" }}
-          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          initial="hidden"
+          whileInView="show"
+          exit="hidden"
+          viewport={{ once: false, amount: 0.1 }}
+          variants={scrollVariants}
           className="mb-16 flex flex-col md:flex-row md:items-end justify-between gap-8"
         >
           <div>
@@ -89,67 +90,86 @@ export default function Awards() {
           </div>
         </motion.div>
 
+        {/* Carousel Container - Bi-directional restored */}
         <motion.div
           initial="hidden"
           whileInView="show"
           exit="hidden"
           viewport={{ once: false, amount: 0.1 }}
-          variants={containerVariants}
-          className="flex md:flex-wrap md:justify-center overflow-x-auto md:overflow-x-visible snap-x md:snap-none hide-scrollbar gap-6 pb-8 md:pb-0"
+          variants={scrollVariants}
+          className="relative max-w-4xl mx-auto min-h-[450px] flex flex-col justify-center"
         >
-          {awards.map((award) => (
+          <AnimatePresence mode="wait">
             <motion.div
-              variants={itemVariants}
-              key={award._id}
-              className="group flex flex-col bg-neutral-50 dark:bg-[#0a0a0a] border border-neutral-200 dark:border-neutral-800 p-8 hover:-translate-y-1 transition-all duration-300 hover:shadow-xl hover:shadow-neutral-200/50 dark:hover:shadow-yellow-500/5 shrink-0 w-[80vw] sm:w-[50vw] md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] xl:w-[calc(25%-18px)] snap-center md:snap-align-none"
+              key={currentAward._id || currentIndex}
+              variants={slideVariants}
+              initial="hidden"
+              animate="show"
+              exit="exit"
+              className="bg-neutral-50 dark:bg-[#0a0a0a] border border-neutral-200 dark:border-neutral-800 p-8 sm:p-14 shadow-[0_0_30px_rgba(234,179,8,0.05)] hover:shadow-[0_0_50px_rgba(234,179,8,0.2)] hover:border-yellow-500/30 transition-shadow duration-700 relative flex flex-col md:flex-row items-center gap-10 rounded-xl"
             >
-              <a
-                href={award.verificationLink}
-                target={award.verificationLink ? "_blank" : "_self"}
-                rel="noreferrer"
-                className="block relative h-32 mb-8 bg-white/80 dark:bg-neutral-900/80 p-4 border border-neutral-100 dark:border-neutral-800 rounded-lg overflow-hidden cursor-pointer"
-              >
-                {award.logo && (
+              <div className="w-full md:w-1/2 flex flex-col items-center justify-center p-8 bg-yellow-500/85 hover:bg-yellow-500 transition-colors duration-500 rounded-xl min-h-[240px] group">
+                {currentAward.logo ? (
                   <img
-                    src={urlFor(award.logo).url()}
-                    alt={`${award.title} logo`}
-                    className="w-full h-full object-contain filter brightness-0 opacity-60 dark:invert dark:opacity-70 group-hover:!brightness-100 group-hover:!invert-0 group-hover:opacity-100 transition-all duration-500 group-hover:scale-105"
-                    onError={(e) => {
-                      e.target.style.display = "none";
-                      e.target.nextSibling.style.display = "flex";
-                    }}
+                    src={urlFor(currentAward.logo).url()}
+                    alt={`${currentAward.title} logo`}
+                    className="max-h-36 max-w-full object-contain transition-transform duration-500 group-hover:scale-105"
                   />
+                ) : (
+                  <div className="text-black transition-transform duration-500 group-hover:scale-105">
+                    <Award size={72} strokeWidth={1} />
+                  </div>
                 )}
-                <div
-                  className={`${award.logo ? "hidden" : "flex"} absolute inset-0 items-center justify-center text-neutral-300 dark:text-neutral-700`}
-                >
-                  <Award size={48} strokeWidth={1} />
-                </div>
-                <div className="absolute inset-0 bg-yellow-500/90 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <span className="text-black font-spartan font-bold uppercase text-[10px] tracking-widest flex items-center gap-2">
-                    Verify Link <ExternalLink size={12} />
-                  </span>
-                </div>
-              </a>
+                {currentAward.verificationLink && (
+                  <a
+                    href={currentAward.verificationLink}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="mt-6 text-xs font-spartan font-bold uppercase tracking-widest text-black/70 hover:text-black flex items-center gap-2 transition-colors"
+                  >
+                    Verify Recognition <ExternalLink size={14} />
+                  </a>
+                )}
+              </div>
 
-              <div className="flex-grow flex flex-col">
-                <span className="text-yellow-600 dark:text-yellow-500 text-[10px] font-spartan font-bold tracking-[0.2em] uppercase mb-3 block">
-                  {award.recognition}
+              <div className="w-full md:w-1/2 flex flex-col text-left">
+                <span className="text-yellow-600 dark:text-yellow-500 text-xs font-spartan font-bold tracking-[0.2em] uppercase mb-3 block">
+                  {currentAward.recognition}
                 </span>
-                <h3 className="text-xl font-anton font-normal text-neutral-900 dark:text-white uppercase leading-[1.1] tracking-wide mb-4">
-                  {award.title}
+                <h3 className="text-2xl sm:text-3xl font-anton font-normal text-neutral-900 dark:text-white uppercase leading-[1.1] tracking-wide mb-6">
+                  {currentAward.title}
                 </h3>
-                <div className="mt-auto pt-6 border-t border-neutral-200 dark:border-neutral-800">
-                  <p className="text-xs font-spartan font-bold text-neutral-900 dark:text-white uppercase tracking-widest mb-1">
-                    {award.project}
+                <div className="pt-6 border-t border-neutral-200 dark:border-neutral-800 space-y-2">
+                  <p className="text-sm font-spartan font-bold text-neutral-900 dark:text-white uppercase tracking-widest">
+                    {currentAward.project}
                   </p>
-                  <p className="text-sm font-montserrat font-light text-neutral-500 dark:text-neutral-400 mt-2">
-                    Role: {award.role}
+                  <p className="text-sm font-montserrat font-light text-neutral-500 dark:text-neutral-400">
+                    Role: {currentAward.role}
                   </p>
                 </div>
               </div>
             </motion.div>
-          ))}
+          </AnimatePresence>
+
+          <div className="flex justify-between items-center mt-8 px-4">
+            <span className="text-xs font-spartan font-bold tracking-widest text-neutral-400">
+              0{currentIndex + 1} / 0{awards.length}
+            </span>
+            <div className="flex items-center gap-4">
+              <button
+                onClick={handlePrev}
+                className="p-3 bg-neutral-100 dark:bg-neutral-900 hover:bg-yellow-500 hover:text-black dark:hover:bg-yellow-500 dark:hover:text-black text-neutral-900 dark:text-white rounded-full transition-colors cursor-pointer shadow-md"
+              >
+                <ChevronLeft size={20} />
+              </button>
+              <button
+                onClick={handleNext}
+                className="p-3 bg-neutral-100 dark:bg-neutral-900 hover:bg-yellow-500 hover:text-black dark:hover:bg-yellow-500 dark:hover:text-black text-neutral-900 dark:text-white rounded-full transition-colors cursor-pointer shadow-md"
+              >
+                <ChevronRight size={20} />
+              </button>
+            </div>
+          </div>
         </motion.div>
       </div>
     </section>

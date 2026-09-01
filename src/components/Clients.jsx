@@ -31,15 +31,13 @@ export default function Clients() {
   }, []);
 
   const { settings, clients, collaborators } = data;
-
   const activeClients = clients.filter((c) => c.category === activeTab);
 
-  // Unified Cinematic Swirl Animation Variants
   const containerVariants = {
     hidden: {
       opacity: 0,
-      rotate: 2,
-      scale: 0.96,
+      rotate: 1,
+      scale: 0.98,
       transition: { duration: 0.4 },
     },
     show: {
@@ -47,23 +45,22 @@ export default function Clients() {
       rotate: 0,
       scale: 1,
       transition: {
-        staggerChildren: 0.06,
+        staggerChildren: 0.05,
         delayChildren: 0.1,
-        duration: 0.8,
+        duration: 0.6,
         ease: [0.16, 1, 0.3, 1],
       },
     },
   };
 
+  // Optimized: Removed heavy blur filter for fast grid rendering
   const itemVariants = {
-    hidden: { opacity: 0, scale: 0.9, rotate: -2, y: 20, filter: "blur(3px)" },
+    hidden: { opacity: 0, scale: 0.9, y: 15 },
     show: {
       opacity: 1,
       scale: 1,
-      rotate: 0,
       y: 0,
-      filter: "blur(0px)",
-      transition: { type: "spring", stiffness: 140, damping: 18 },
+      transition: { type: "spring", stiffness: 150, damping: 20 },
     },
   };
 
@@ -147,25 +144,21 @@ export default function Clients() {
                   href={clientData.websiteUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="group relative flex flex-col items-center justify-center p-8 bg-white/80 dark:bg-neutral-950/80 backdrop-blur-sm border border-neutral-200 dark:border-neutral-800 hover:bg-gradient-to-br hover:from-yellow-400 hover:to-yellow-500 hover:border-yellow-400 transition-all duration-300 cursor-pointer h-40 shrink-0 w-[65vw] sm:w-[45vw] md:w-[calc(20%-16px)] snap-center md:snap-align-none shadow-sm hover:shadow-xl hover:-translate-y-1 overflow-hidden"
+                  // Added ambient glow effect on hover
+                  className="group relative flex flex-col items-center justify-center p-8 bg-yellow-500/85 hover:bg-yellow-500 shadow-[0_0_15px_rgba(234,179,8,0.1)] hover:shadow-[0_0_35px_rgba(234,179,8,0.4)] border border-transparent hover:border-yellow-300 transition-all duration-300 cursor-pointer h-40 shrink-0 w-[65vw] sm:w-[45vw] md:w-[calc(20%-16px)] snap-center md:snap-align-none rounded-lg overflow-hidden"
                   title={clientData.name}
                 >
-                  {clientData.logo && (
+                  {clientData.logo ? (
                     <img
                       src={urlFor(clientData.logo).url()}
                       alt={clientData.name}
-                      className="max-h-16 sm:max-h-20 max-w-[85%] object-contain filter brightness-0 opacity-40 dark:invert dark:opacity-60 group-hover:!brightness-100 group-hover:!invert-0 group-hover:opacity-100 transition-all duration-500"
-                      onError={(e) => {
-                        e.target.style.display = "none";
-                        e.target.nextSibling.style.display = "block";
-                      }}
+                      className="max-h-16 sm:max-h-20 max-w-[85%] object-contain transition-transform duration-500 group-hover:scale-105"
                     />
+                  ) : (
+                    <span className="text-xs font-spartan font-bold uppercase tracking-widest text-center text-black">
+                      {clientData.name}
+                    </span>
                   )}
-                  <span
-                    className={`${clientData.logo ? "hidden" : "block"} text-xs font-spartan font-bold uppercase tracking-widest text-center text-neutral-800 dark:text-neutral-200 group-hover:text-black transition-colors`}
-                  >
-                    {clientData.name}
-                  </span>
                 </motion.a>
               ))}
             </motion.div>
@@ -200,14 +193,11 @@ export default function Clients() {
               <motion.div
                 variants={itemVariants}
                 key={person._id}
-                className="group relative overflow-hidden bg-neutral-200 dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 aspect-square shadow-md hover:shadow-2xl transition-shadow duration-500 cursor-default shrink-0 w-[80vw] sm:w-[50vw] md:w-[calc(33.333%-22px)] max-w-sm snap-center md:snap-align-none"
+                // Added ambient glow for collaborators
+                className="group relative overflow-hidden bg-neutral-200 dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 aspect-square shadow-md hover:shadow-[0_0_30px_rgba(234,179,8,0.15)] hover:border-yellow-500/30 transition-all duration-500 cursor-default shrink-0 w-[80vw] sm:w-[50vw] md:w-[calc(33.333%-22px)] max-w-sm snap-center md:snap-align-none rounded-lg"
               >
                 {person.image && (
-                  <motion.img
-                    initial={{ scale: 1.15 }}
-                    whileInView={{ scale: 1 }}
-                    transition={{ duration: 1.5, ease: "easeOut" }}
-                    viewport={{ once: false }}
+                  <img
                     src={urlFor(person.image).url()}
                     alt={person.name}
                     className="w-full h-full object-cover filter grayscale-0 md:grayscale opacity-100 md:opacity-90 md:group-hover:grayscale-0 md:group-hover:opacity-100 transition-all duration-700 ease-in-out md:group-hover:scale-105"
