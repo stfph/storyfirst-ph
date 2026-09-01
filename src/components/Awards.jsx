@@ -33,7 +33,6 @@ export default function Awards() {
 
   const currentAward = awards[currentIndex];
 
-  // Optimized & Sped Up: Removed blur completely. Transitions reduced from 0.7s to 0.4s.
   const slideVariants = {
     hidden: { opacity: 0, rotate: 3, scale: 0.95, y: 15 },
     show: {
@@ -52,7 +51,6 @@ export default function Awards() {
     },
   };
 
-  // Scroll animation for the whole carousel container
   const scrollVariants = {
     hidden: { opacity: 0, y: 30 },
     show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
@@ -63,8 +61,21 @@ export default function Awards() {
       id="awards"
       className="py-24 bg-white dark:bg-neutral-950 border-t border-neutral-200 dark:border-neutral-900 transition-colors duration-500 px-6 overflow-hidden"
     >
+      {/* Hidden Image Preloader: Downloads all carousel logos in the background immediately */}
+      <div className="hidden" aria-hidden="true">
+        {awards.map(
+          (award) =>
+            award.logo && (
+              <img
+                key={`preload-${award._id}`}
+                src={urlFor(award.logo).url()}
+                alt=""
+              />
+            ),
+        )}
+      </div>
+
       <div className="max-w-7xl mx-auto">
-        {/* Header - Bi-directional restored */}
         <motion.div
           initial="hidden"
           whileInView="show"
@@ -90,7 +101,6 @@ export default function Awards() {
           </div>
         </motion.div>
 
-        {/* Carousel Container - Bi-directional restored */}
         <motion.div
           initial="hidden"
           whileInView="show"
@@ -153,7 +163,7 @@ export default function Awards() {
 
           <div className="flex justify-between items-center mt-8 px-4">
             <span className="text-xs font-spartan font-bold tracking-widest text-neutral-400">
-              0{currentIndex + 1} / 0{awards.length}
+              {currentIndex + 1} / {awards.length}
             </span>
             <div className="flex items-center gap-4">
               <button
