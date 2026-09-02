@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Sun, Moon } from "lucide-react";
-import { client } from "../sanityClient";
-import { urlFor } from "../lib/sanity";
+import { client, urlFor } from "../sanityClient";
 
 export default function Navbar({ isDark, toggleTheme }) {
   const [isOpen, setIsOpen] = useState(false);
