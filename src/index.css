@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Anton&family=League+Spartan:wght@700&family=Montserrat:ital,wght@0,300;0,500;1,300&display=swap");
 @import "tailwindcss";
 
 @theme {
@@ -6,9 +7,7 @@
   --font-montserrat: "Montserrat", sans-serif;
 }
 
-@layer base {
-  @import url("https://fonts.googleapis.com/css2?family=Anton&family=League+Spartan:wght@700&family=Montserrat:ital,wght@0,300;0,500;1,300&display=swap");
-}
+@custom-variant dark (&:where(.dark, .dark *));
 
 @keyframes marquee {
   0% {
