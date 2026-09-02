@@ -21,20 +21,51 @@ export default {
       title: "Card Badge (e.g. TV Documentary)",
       type: "string",
     },
-    { name: "client", title: "Client / Network", type: "string" },
-    { name: "role", title: "Your Role", type: "string" },
+    {
+      name: "image",
+      title: "Project Image (Poster Background)",
+      type: "image",
+      options: { hotspot: true },
+    },
+    {
+      name: "awardsList",
+      title: "Awards / Laurels",
+      type: "array",
+      description:
+        "Upload transparent PNG laurel logos and their corresponding award names.",
+      of: [
+        {
+          type: "object",
+          fields: [
+            {
+              name: "awardName",
+              title: "Award Name / Recognition",
+              type: "string",
+            },
+            {
+              name: "laurelImage",
+              title: "Award Laurel Logo",
+              type: "image",
+              options: { hotspot: true },
+            },
+          ],
+        },
+      ],
+    },
+    { name: "role", title: "Your Role/s", type: "string" },
+    { name: "client", title: "Client / Network Text", type: "string" },
+    {
+      name: "clientLogo",
+      title: "Client / Network Logo",
+      type: "image",
+      options: { hotspot: true },
+    },
     { name: "year", title: "Year", type: "string" },
     {
       name: "shortDescription",
       title: "Short Description",
       type: "text",
       rows: 3,
-    },
-    {
-      name: "image",
-      title: "Project Image",
-      type: "image",
-      options: { hotspot: true },
     },
     { name: "linkUrl", title: "External Link", type: "url" },
   ],

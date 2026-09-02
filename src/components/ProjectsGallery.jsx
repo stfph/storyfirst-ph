@@ -19,7 +19,7 @@ export default function ProjectsGallery() {
           "settings": *[_type == "projectsSettings"][0],
           "categories": *[_type == "projectCategory"] | order(order asc),
           "projects": *[_type == "project"] | order(order asc) {
-            _id, title, "category": category->title, badge, client, role, year, shortDescription, image, linkUrl
+            _id, title, "category": category->title, badge, client, clientLogo, role, year, shortDescription, image, linkUrl, awardsList
           }
         }`,
       )
@@ -177,6 +177,7 @@ export default function ProjectsGallery() {
                   onMouseLeave={() => setHoveredProject(null)}
                   className="relative group min-h-[440px] sm:min-h-[480px] flex flex-col justify-end p-8 overflow-hidden bg-white/90 dark:bg-[#0a0a0a]/90 backdrop-blur-sm border border-neutral-200 dark:border-neutral-800 transition-all duration-500 hover:-translate-y-1 hover:shadow-xl hover:shadow-neutral-300/50 dark:hover:shadow-yellow-500/5 block cursor-pointer shrink-0 w-[85vw] sm:w-[60vw] md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] snap-center md:snap-align-none"
                 >
+                  {/* Poster Background */}
                   <div className="absolute inset-0 z-0">
                     {project.image && (
                       <img
@@ -187,6 +188,8 @@ export default function ProjectsGallery() {
                     )}
                     <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/85 to-neutral-950/20 opacity-95 group-hover:opacity-90 transition-opacity duration-700"></div>
                   </div>
+
+                  {/* Genre / Medium Badge */}
                   <div className="relative z-10 flex items-center justify-between gap-3 mb-auto">
                     <span className="inline-block bg-yellow-500 text-black text-[10px] font-spartan font-bold tracking-[0.2em] uppercase px-3 py-1 shadow-sm">
                       {project.badge}
@@ -197,7 +200,9 @@ export default function ProjectsGallery() {
                       </span>
                     )}
                   </div>
+
                   <div className="relative z-10 mt-6 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
+                    {/* Title */}
                     <div className="flex items-start justify-between gap-2">
                       <h3 className="text-2xl sm:text-3xl font-anton font-normal text-white uppercase tracking-wide group-hover:text-yellow-500 transition-colors leading-[1.1] drop-shadow-md">
                         {project.title}
@@ -207,18 +212,60 @@ export default function ProjectsGallery() {
                         className="text-neutral-400 group-hover:text-yellow-500 transition-colors shrink-0 mt-2"
                       />
                     </div>
-                    <p className="text-yellow-400/90 text-xs font-spartan font-bold uppercase tracking-widest mt-3">
-                      {project.role}
+
+                    {/* Awards / Laurels */}
+                    {project.awardsList && project.awardsList.length > 0 && (
+                      <div className="flex flex-wrap gap-4 mt-4">
+                        {project.awardsList.map((award, i) => (
+                          <div
+                            key={i}
+                            className="flex flex-col items-start gap-1"
+                          >
+                            {award.laurelImage && (
+                              <img
+                                src={urlFor(award.laurelImage).url()}
+                                alt={award.awardName || "Award Laurel"}
+                                className="h-10 w-auto object-contain filter drop-shadow-md"
+                              />
+                            )}
+                            {award.awardName && (
+                              <span className="text-yellow-500/90 text-[8px] font-spartan font-bold uppercase tracking-widest leading-snug max-w-[120px]">
+                                {award.awardName}
+                              </span>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Roles */}
+                    <p className="text-yellow-400/90 text-[11px] font-spartan font-bold uppercase tracking-widest mt-5">
+                      ROLE/S: <span className="text-white">{project.role}</span>
                     </p>
+
+                    {/* Short Description */}
                     {project.shortDescription && (
-                      <p className="text-neutral-300 text-sm mt-3 leading-relaxed line-clamp-3 font-montserrat font-light group-hover:text-white transition-colors">
+                      <p className="text-neutral-300 text-sm mt-3 leading-relaxed line-clamp-2 font-montserrat font-light group-hover:text-white transition-colors">
                         {project.shortDescription}
                       </p>
                     )}
-                    {project.client && (
-                      <p className="text-neutral-500 text-[10px] font-spartan font-bold tracking-[0.15em] uppercase border-t border-neutral-800/80 pt-4 mt-5 group-hover:text-neutral-400 transition-colors">
-                        {project.client}
-                      </p>
+
+                    {/* Client with Logo */}
+                    {(project.client || project.clientLogo) && (
+                      <div className="border-t border-neutral-800/80 pt-4 mt-5 flex items-center gap-3">
+                        {project.clientLogo && (
+                          <img
+                            src={urlFor(project.clientLogo).url()}
+                            alt={project.client}
+                            className="h-6 w-auto max-w-[100px] object-contain filter brightness-0 invert opacity-70 group-hover:opacity-100 transition-opacity"
+                          />
+                        )}
+                        {project.client && (
+                          <span className="text-neutral-500 text-[10px] font-spartan font-bold tracking-[0.15em] uppercase group-hover:text-neutral-400 transition-colors">
+                            {project.client}
+                          </span>
+                        )}
+                      </div>
                     )}
                   </div>
                 </motion.a>
