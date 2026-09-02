@@ -15,9 +15,13 @@ export default defineType({
       name: "brandLogo",
       title: "Brand Logo / Icon",
       type: "image",
-      options: {
-        hotspot: true,
-      },
+      options: { hotspot: true },
+    }),
+    defineField({
+      name: "websiteIcon",
+      title: "Website Favicon (Browser Tab Icon)",
+      type: "image",
+      options: { hotspot: true },
     }),
     defineField({
       name: "emailLabel",

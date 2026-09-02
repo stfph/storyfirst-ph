@@ -11,7 +11,21 @@ export default function Navbar({ isDark, toggleTheme }) {
   useEffect(() => {
     client
       .fetch(`*[_type == "globalSettings"][0]`)
-      .then(setData)
+      .then((res) => {
+        setData(res);
+
+        // Dynamically update the website favicon
+        if (res?.websiteIcon) {
+          const iconUrl = urlFor(res.websiteIcon).width(64).height(64).url();
+          let link = document.querySelector("link[rel~='icon']");
+          if (!link) {
+            link = document.createElement("link");
+            link.rel = "icon";
+            document.head.appendChild(link);
+          }
+          link.href = iconUrl;
+        }
+      })
       .catch(console.error);
   }, []);
 
