@@ -66,16 +66,16 @@ export default function Hero() {
           {data.subtext}
         </p>
 
-        <div className="mt-12 flex flex-col sm:flex-row gap-6">
+        <div className="mt-12 flex flex-col sm:flex-row justify-center items-center gap-6 w-full">
           <a
             href="#work"
-            className="bg-yellow-500 text-black px-10 py-4 font-spartan font-bold uppercase tracking-widest text-sm hover:bg-yellow-400 transition-colors shadow-xl shadow-yellow-500/20"
+            className="flex items-center justify-center bg-yellow-500 text-black px-10 py-4 font-spartan font-bold uppercase tracking-widest text-sm hover:bg-yellow-400 transition-colors shadow-xl shadow-yellow-500/20 text-center"
           >
             {data.primaryButtonText}
           </a>
           <a
             href="#contact"
-            className="bg-transparent border-2 border-white/30 text-white px-10 py-4 font-spartan font-bold uppercase tracking-widest text-sm hover:bg-white hover:text-black transition-colors backdrop-blur-sm"
+            className="flex items-center justify-center bg-transparent border-2 border-white/30 text-white px-10 py-4 font-spartan font-bold uppercase tracking-widest text-sm hover:bg-white hover:text-black transition-colors backdrop-blur-sm text-center"
           >
             {data.secondaryButtonText}
           </a>
