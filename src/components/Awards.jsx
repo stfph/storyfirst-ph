@@ -136,7 +136,8 @@ export default function Awards() {
                     rel="noreferrer"
                     className="mt-6 text-xs font-spartan font-bold uppercase tracking-widest text-black/70 hover:text-black flex items-center gap-2 transition-colors"
                   >
-                    Verify Recognition <ExternalLink size={14} />
+                    {settings.verifyButtonText || "Verify Recognition"}{" "}
+                    <ExternalLink size={14} />
                   </a>
                 )}
               </div>

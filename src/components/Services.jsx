@@ -125,6 +125,7 @@ export default function Services() {
                     {service.title}
                   </h3>
                 </div>
+
                 <div className="md:w-[50%] flex flex-col items-start md:items-end text-left md:text-right">
                   <p className="text-neutral-700 dark:text-neutral-300 group-hover:text-black/90 text-sm leading-relaxed font-montserrat font-medium transition-colors duration-500 drop-shadow-md group-hover:drop-shadow-none mb-6">
                     {service.description}
@@ -133,7 +134,7 @@ export default function Services() {
                     href="#work"
                     className="inline-block bg-neutral-950 dark:bg-white text-white dark:text-black group-hover:bg-black group-hover:text-white px-6 py-3 text-[10px] font-spartan font-bold uppercase tracking-[0.2em] transition-colors shadow-lg cursor-pointer"
                   >
-                    Learn More / View Projects
+                    {settings.buttonText || "Learn More / View Projects"}
                   </a>
                 </div>
               </div>
