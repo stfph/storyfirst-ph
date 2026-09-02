@@ -1,12 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { PopupModal } from "react-calendly";
 import { client, urlFor } from "../sanityClient";
 
 export default function Services() {
   const [data, setData] = useState({ settings: null, services: [] });
   const [hoveredService, setHoveredService] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [rootElement, setRootElement] = useState(null);
 
   useEffect(() => {
+    // Set the root element for the Calendly modal to mount onto
+    if (typeof window !== "undefined") {
+      setRootElement(document.getElementById("root"));
+    }
+
     client
       .fetch(
         `{
@@ -105,6 +113,7 @@ export default function Services() {
           variants={containerVariants}
           className="flex flex-col border-t border-neutral-300 dark:border-neutral-800"
         >
+          {/* Mapped Services */}
           {services.map((service) => (
             <motion.div
               variants={itemVariants}
@@ -140,8 +149,46 @@ export default function Services() {
               </div>
             </motion.div>
           ))}
+
+          {/* Booking CTA Banner */}
+          <motion.div
+            variants={itemVariants}
+            className="mt-16 bg-neutral-900 dark:bg-[#050505] border border-neutral-800 p-10 sm:p-14 rounded-3xl flex flex-col lg:flex-row items-center justify-between gap-8 shadow-2xl relative overflow-hidden"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/10 to-transparent z-0 pointer-events-none"></div>
+            <div className="relative z-10 lg:w-3/5 text-center lg:text-left">
+              <span className="text-yellow-500 font-spartan font-bold uppercase tracking-[0.2em] text-[10px] mb-4 block">
+                Let's Collaborate
+              </span>
+              <h3 className="text-3xl sm:text-4xl font-anton font-normal text-white uppercase tracking-wide leading-[1.1] mb-4">
+                Ready to tell your story?
+              </h3>
+              <p className="text-neutral-400 font-montserrat font-light text-sm sm:text-base leading-relaxed">
+                Schedule a free 1-on-1 consultation or immersion setup.
+                Available every Saturday and Sunday from 1:00 PM to 10:00 PM.
+              </p>
+            </div>
+            <div className="relative z-10 lg:w-2/5 flex justify-center lg:justify-end w-full">
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className="w-full sm:w-auto bg-yellow-500 hover:bg-yellow-400 text-black px-8 py-5 font-spartan font-bold uppercase tracking-[0.2em] text-xs transition-colors shadow-[0_0_20px_rgba(234,179,8,0.2)] hover:shadow-[0_0_30px_rgba(234,179,8,0.4)] cursor-pointer"
+              >
+                BOOK A FREE CONSULTATION NOW!
+              </button>
+            </div>
+          </motion.div>
         </motion.div>
       </div>
+
+      {/* Calendly Popup Modal */}
+      {rootElement && (
+        <PopupModal
+          url="https://calendly.com/newgatefence/free-consultation"
+          onModalClose={() => setIsModalOpen(false)}
+          open={isModalOpen}
+          rootElement={rootElement}
+        />
+      )}
     </section>
   );
 }
