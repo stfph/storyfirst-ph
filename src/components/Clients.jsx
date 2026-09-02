@@ -7,30 +7,33 @@ export default function Clients() {
     settings: null,
     clients: [],
     collaborators: [],
+    categories: [],
   });
-  const [activeTab, setActiveTab] = useState("media");
-
-  const tabs = [
-    { id: "media", label: "Media & Production" },
-    { id: "brands", label: "Brands & Corporations" },
-    { id: "organizations", label: "Organizations & NGOs" },
-    { id: "institutions", label: "Education & Institutions" },
-  ];
+  const [activeTab, setActiveTab] = useState("");
 
   useEffect(() => {
     client
       .fetch(
         `{
-      "settings": *[_type == "clientsSettings"][0],
-      "clients": *[_type == "client"] | order(order asc),
-      "collaborators": *[_type == "collaborator"] | order(order asc)
-    }`,
+          "settings": *[_type == "clientsSettings"][0],
+          "categories": *[_type == "clientCategory"] | order(order asc),
+          "clients": *[_type == "client"] | order(order asc) {
+             ...,
+             "category": category->title
+          },
+          "collaborators": *[_type == "collaborator"] | order(order asc)
+        }`,
       )
-      .then(setData)
+      .then((res) => {
+        setData(res);
+        if (res.categories && res.categories.length > 0) {
+          setActiveTab(res.categories[0].title);
+        }
+      })
       .catch(console.error);
   }, []);
 
-  const { settings, clients, collaborators } = data;
+  const { settings, clients, collaborators, categories } = data;
   const activeClients = clients.filter((c) => c.category === activeTab);
 
   const containerVariants = {
@@ -102,19 +105,19 @@ export default function Clients() {
           variants={containerVariants}
           className="flex overflow-x-auto hide-scrollbar snap-x gap-2 mb-10 border-b border-neutral-200 dark:border-neutral-800 pb-4"
         >
-          {tabs.map((tab) => (
+          {categories.map((tab) => (
             <motion.button
               variants={itemVariants}
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
+              key={tab._id}
+              onClick={() => setActiveTab(tab.title)}
               className="relative px-5 py-3 text-[10px] font-spartan font-bold uppercase tracking-[0.2em] transition-colors focus:outline-none whitespace-nowrap snap-start shrink-0"
             >
               <span
-                className={`relative z-10 transition-colors duration-300 ${activeTab === tab.id ? "text-black dark:text-black" : "text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white"}`}
+                className={`relative z-10 transition-colors duration-300 ${activeTab === tab.title ? "text-black dark:text-black" : "text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white"}`}
               >
-                {tab.label}
+                {tab.title}
               </span>
-              {activeTab === tab.id && (
+              {activeTab === tab.title && (
                 <motion.div
                   layoutId="activeClientTab"
                   className="absolute inset-0 bg-yellow-500 shadow-lg shadow-yellow-500/20"

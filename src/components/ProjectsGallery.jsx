@@ -4,27 +4,35 @@ import { ExternalLink } from "lucide-react";
 import { client, urlFor } from "../sanityClient";
 
 export default function ProjectsGallery() {
-  const [data, setData] = useState({ settings: null, projects: [] });
-  const [filter, setFilter] = useState("Documentaries");
+  const [data, setData] = useState({
+    settings: null,
+    projects: [],
+    categories: [],
+  });
+  const [filter, setFilter] = useState("");
   const [hoveredProject, setHoveredProject] = useState(null);
-
-  const categories = ["Documentaries", "Content", "Events", "Workshops"];
 
   useEffect(() => {
     client
       .fetch(
         `{
-      "settings": *[_type == "projectsSettings"][0],
-      "projects": *[_type == "project"] | order(order asc) {
-        _id, title, category, badge, client, role, year, shortDescription, image, linkUrl
-      }
-    }`,
+          "settings": *[_type == "projectsSettings"][0],
+          "categories": *[_type == "projectCategory"] | order(order asc),
+          "projects": *[_type == "project"] | order(order asc) {
+            _id, title, "category": category->title, badge, client, role, year, shortDescription, image, linkUrl
+          }
+        }`,
       )
-      .then(setData)
+      .then((res) => {
+        setData(res);
+        if (res.categories && res.categories.length > 0) {
+          setFilter(res.categories[0].title);
+        }
+      })
       .catch(console.error);
   }, []);
 
-  const { settings, projects } = data;
+  const { settings, projects, categories } = data;
   const filteredProjects = projects.filter((p) => p.category === filter);
 
   const containerVariants = {
@@ -79,7 +87,6 @@ export default function ProjectsGallery() {
           )}
           <div className="absolute inset-0 bg-gradient-to-b from-neutral-100 via-neutral-100/75 to-neutral-100 dark:from-neutral-900 dark:via-neutral-900/80 dark:to-neutral-900 opacity-95"></div>
         </div>
-
         {filteredProjects.map(
           (project) =>
             project.image && (
@@ -124,19 +131,19 @@ export default function ProjectsGallery() {
           <div className="flex overflow-x-auto hide-scrollbar snap-x gap-2 pb-2 md:pb-0">
             {categories.map((cat) => (
               <button
-                key={cat}
+                key={cat._id}
                 onClick={() => {
-                  setFilter(cat);
+                  setFilter(cat.title);
                   setHoveredProject(null);
                 }}
                 className="relative px-5 py-3 text-[10px] font-spartan font-bold uppercase tracking-[0.2em] transition-colors focus:outline-none whitespace-nowrap snap-start shrink-0 cursor-pointer"
               >
                 <span
-                  className={`relative z-10 transition-colors duration-300 ${filter === cat ? "text-black dark:text-black" : "text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white"}`}
+                  className={`relative z-10 transition-colors duration-300 ${filter === cat.title ? "text-black dark:text-black" : "text-neutral-600 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white"}`}
                 >
-                  {cat}
+                  {cat.title}
                 </span>
-                {filter === cat && (
+                {filter === cat.title && (
                   <motion.div
                     layoutId="activeProjectTab"
                     className="absolute inset-0 bg-yellow-500 shadow-lg shadow-yellow-500/20"
@@ -180,7 +187,6 @@ export default function ProjectsGallery() {
                     )}
                     <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/85 to-neutral-950/20 opacity-95 group-hover:opacity-90 transition-opacity duration-700"></div>
                   </div>
-
                   <div className="relative z-10 flex items-center justify-between gap-3 mb-auto">
                     <span className="inline-block bg-yellow-500 text-black text-[10px] font-spartan font-bold tracking-[0.2em] uppercase px-3 py-1 shadow-sm">
                       {project.badge}
@@ -191,7 +197,6 @@ export default function ProjectsGallery() {
                       </span>
                     )}
                   </div>
-
                   <div className="relative z-10 mt-6 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
                     <div className="flex items-start justify-between gap-2">
                       <h3 className="text-2xl sm:text-3xl font-anton font-normal text-white uppercase tracking-wide group-hover:text-yellow-500 transition-colors leading-[1.1] drop-shadow-md">
@@ -202,17 +207,14 @@ export default function ProjectsGallery() {
                         className="text-neutral-400 group-hover:text-yellow-500 transition-colors shrink-0 mt-2"
                       />
                     </div>
-
                     <p className="text-yellow-400/90 text-xs font-spartan font-bold uppercase tracking-widest mt-3">
                       {project.role}
                     </p>
-
                     {project.shortDescription && (
                       <p className="text-neutral-300 text-sm mt-3 leading-relaxed line-clamp-3 font-montserrat font-light group-hover:text-white transition-colors">
                         {project.shortDescription}
                       </p>
                     )}
-
                     {project.client && (
                       <p className="text-neutral-500 text-[10px] font-spartan font-bold tracking-[0.15em] uppercase border-t border-neutral-800/80 pt-4 mt-5 group-hover:text-neutral-400 transition-colors">
                         {project.client}

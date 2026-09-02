@@ -12,8 +12,6 @@ export default function Navbar({ isDark, toggleTheme }) {
       .fetch(`*[_type == "globalSettings"][0]`)
       .then((res) => {
         setData(res);
-
-        // Dynamically update the website favicon
         if (res?.websiteIcon) {
           const iconUrl = urlFor(res.websiteIcon).width(64).height(64).url();
           let link = document.querySelector("link[rel~='icon']");
@@ -35,16 +33,19 @@ export default function Navbar({ isDark, toggleTheme }) {
   const word2 = brandWords[1] || "First";
   const word3 = brandWords.slice(2).join(" ") || "PH";
 
-  const navLinks = [
-    { name: "Home", href: "#hero" },
-    { name: "About", href: "#about" },
-    { name: "Work", href: "#work" },
-    { name: "Services", href: "#services" },
-    { name: "Awards", href: "#awards" },
-    { name: "Advocacies", href: "#advocacies" },
-    { name: "Team", href: "#team" },
-    { name: "Contact", href: "#contact" },
-  ];
+  const dynamicNavLinks =
+    data?.navLinks?.length > 0
+      ? data.navLinks
+      : [
+          { name: "Home", href: "#hero" },
+          { name: "About", href: "#about" },
+          { name: "Work", href: "#work" },
+          { name: "Services", href: "#services" },
+          { name: "Awards", href: "#awards" },
+          { name: "Advocacies", href: "#advocacies" },
+          { name: "Team", href: "#team" },
+          { name: "Contact", href: "#contact" },
+        ];
 
   return (
     <motion.nav
@@ -83,7 +84,7 @@ export default function Navbar({ isDark, toggleTheme }) {
 
         {/* Desktop Menu */}
         <div className="hidden lg:flex items-center gap-8 text-[11px] font-spartan font-bold uppercase tracking-widest">
-          {navLinks.map((link) => (
+          {dynamicNavLinks.map((link) => (
             <a
               key={link.name}
               href={link.href}
@@ -156,7 +157,7 @@ export default function Navbar({ isDark, toggleTheme }) {
               </div>
 
               <div className="flex flex-col gap-6 text-left py-6 my-auto">
-                {navLinks.map((link, index) => (
+                {dynamicNavLinks.map((link, index) => (
                   <motion.a
                     key={link.name}
                     initial={{ opacity: 0, x: 20 }}
