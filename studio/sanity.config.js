@@ -14,6 +14,7 @@ import { UsersIcon } from "@sanity/icons/Users";
 import { HeartIcon } from "@sanity/icons/Heart";
 import { CommentIcon } from "@sanity/icons/Comment";
 import { EnvelopeIcon } from "@sanity/icons/Envelope";
+import { FolderIcon } from "@sanity/icons/Folder";
 
 const singletonActions = new Set([
   "publish",
@@ -145,8 +146,77 @@ export default defineConfig({
                   ]),
               ),
             S.divider(),
+
+            // Projects Directory
+            S.listItem()
+              .title("Projects Directory")
+              .icon(FolderIcon)
+              .child(
+                S.list()
+                  .title("Projects Directory")
+                  .items([
+                    S.documentTypeListItem("projectCategory").title(
+                      "Manage Categories",
+                    ),
+                    S.divider(),
+                    S.listItem()
+                      .title("Projects by Category")
+                      .child(
+                        S.documentTypeList("projectCategory")
+                          .title("Projects by Category")
+                          .child((categoryId) =>
+                            S.documentList()
+                              .title("Projects")
+                              .filter(
+                                '_type == "project" && category._ref == $categoryId',
+                              )
+                              .params({ categoryId }),
+                          ),
+                      ),
+                    S.documentTypeListItem("project").title("All Projects"),
+                  ]),
+              ),
+
+            // Clients Directory
+            S.listItem()
+              .title("Clients Directory")
+              .icon(FolderIcon)
+              .child(
+                S.list()
+                  .title("Clients Directory")
+                  .items([
+                    S.documentTypeListItem("clientCategory").title(
+                      "Manage Categories",
+                    ),
+                    S.divider(),
+                    S.listItem()
+                      .title("Clients by Category")
+                      .child(
+                        S.documentTypeList("clientCategory")
+                          .title("Clients by Category")
+                          .child((categoryId) =>
+                            S.documentList()
+                              .title("Clients")
+                              .filter(
+                                '_type == "client" && category._ref == $categoryId',
+                              )
+                              .params({ categoryId }),
+                          ),
+                      ),
+                    S.documentTypeListItem("client").title("All Clients"),
+                  ]),
+              ),
+
+            S.divider(),
             ...S.documentTypeListItems().filter(
-              (listItem) => !singletonTypes.has(listItem.getId()),
+              (listItem) =>
+                !singletonTypes.has(listItem.getId()) &&
+                ![
+                  "project",
+                  "projectCategory",
+                  "client",
+                  "clientCategory",
+                ].includes(listItem.getId()),
             ),
           ]),
     }),

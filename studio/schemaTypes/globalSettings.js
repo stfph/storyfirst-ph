@@ -4,6 +4,20 @@ export default {
   type: "document",
   fields: [
     {
+      name: "navLinks",
+      title: "Navigation Links",
+      type: "array",
+      of: [
+        {
+          type: "object",
+          fields: [
+            { name: "name", title: "Display Name (e.g. Home)", type: "string" },
+            { name: "href", title: "Link URL (e.g. #hero)", type: "string" },
+          ],
+        },
+      ],
+    },
+    {
       name: "brandName",
       title: "Brand Name (Nav/Footer)",
       type: "string",
