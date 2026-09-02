@@ -6,6 +6,7 @@ import { client } from "../sanityClient";
 export default function Contact() {
   const [data, setData] = useState({ contact: null, global: null });
   const [isSent, setIsSent] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -36,16 +37,55 @@ export default function Contact() {
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsSent(true);
-    setFormData({
-      name: "",
-      email: "",
-      category: data.contact?.inquiryCategories?.[0] || "",
-      message: "",
-    });
-    setTimeout(() => setIsSent(false), 3000);
+
+    if (!data.contact?.web3formsAccessKey) {
+      alert(
+        "Form submission is currently unavailable. Please configure the Access Key in the CMS.",
+      );
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: data.contact.web3formsAccessKey,
+          subject: `New Inquiry from StoryFirst PH: ${formData.category}`,
+          from_name: formData.name,
+          email: formData.email,
+          category: formData.category,
+          message: formData.message,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setIsSent(true);
+        setFormData({
+          name: "",
+          email: "",
+          category: data.contact?.inquiryCategories?.[0] || "",
+          message: "",
+        });
+        setTimeout(() => setIsSent(false), 3000);
+      } else {
+        alert("Something went wrong. Please try again later.");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Something went wrong. Please try again later.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const { contact, global } = data;
@@ -134,7 +174,7 @@ export default function Contact() {
           </div>
         </motion.div>
 
-        {/* Right Side: Editable Form */}
+        {/* Right Side: Web3Forms Integrated Form */}
         <motion.div
           initial={{ opacity: 0, x: 30 }}
           whileInView={{ opacity: 1, x: 0 }}
@@ -215,11 +255,20 @@ export default function Contact() {
 
             <button
               type="submit"
-              className={`w-full font-spartan font-bold uppercase py-4 text-xs tracking-widest flex items-center justify-center transition-all duration-300 active:scale-98 cursor-pointer ${isSent ? "bg-emerald-600 text-white" : "bg-yellow-500 hover:bg-yellow-400 text-black shadow-lg shadow-yellow-500/20"}`}
+              disabled={isSubmitting}
+              className={`w-full font-spartan font-bold uppercase py-4 text-xs tracking-widest flex items-center justify-center transition-all duration-300 active:scale-98 cursor-pointer ${
+                isSent
+                  ? "bg-emerald-600 text-white"
+                  : isSubmitting
+                    ? "bg-neutral-400 text-neutral-800 cursor-not-allowed"
+                    : "bg-yellow-500 hover:bg-yellow-400 text-black shadow-lg shadow-yellow-500/20"
+              }`}
             >
-              {isSent
-                ? contact.successMessage || "INQUIRY SENT SUCCESSFULLY!"
-                : contact.submitButtonText || "SEND INQUIRY"}
+              {isSubmitting
+                ? "SENDING..."
+                : isSent
+                  ? contact.successMessage || "INQUIRY SENT SUCCESSFULLY!"
+                  : contact.submitButtonText || "SEND INQUIRY"}
             </button>
           </form>
         </motion.div>
