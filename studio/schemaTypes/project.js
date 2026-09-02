@@ -28,6 +28,13 @@ export default {
       options: { hotspot: true },
     },
     {
+      name: "videoEmbedUrl",
+      title: "Video Embed URL (For Pop-up)",
+      type: "url",
+      description:
+        "Paste the embed URL here (e.g., https://www.youtube.com/embed/VIDEO_ID). This will play in the pop-up when the card is clicked.",
+    },
+    {
       name: "awardsList",
       title: "Awards / Laurels",
       type: "array",
@@ -67,6 +74,12 @@ export default {
       type: "text",
       rows: 3,
     },
-    { name: "linkUrl", title: "External Link", type: "url" },
+    {
+      name: "linkUrl",
+      title: "External Link",
+      type: "url",
+      description:
+        "This is the link users will go to when they click the button inside the pop-up.",
+    },
   ],
 };

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, X, PlayCircle } from "lucide-react";
 import { client, urlFor } from "../sanityClient";
 
 export default function ProjectsGallery() {
@@ -11,6 +11,7 @@ export default function ProjectsGallery() {
   });
   const [filter, setFilter] = useState("");
   const [hoveredProject, setHoveredProject] = useState(null);
+  const [selectedProject, setSelectedProject] = useState(null);
 
   useEffect(() => {
     client
@@ -19,7 +20,7 @@ export default function ProjectsGallery() {
           "settings": *[_type == "projectsSettings"][0],
           "categories": *[_type == "projectCategory"] | order(order asc),
           "projects": *[_type == "project"] | order(order asc) {
-            _id, title, "category": category->title, badge, client, clientLogo, role, year, shortDescription, image, linkUrl, awardsList
+            _id, title, "category": category->title, badge, client, clientLogo, role, year, shortDescription, image, linkUrl, videoEmbedUrl, awardsList
           }
         }`,
       )
@@ -31,6 +32,15 @@ export default function ProjectsGallery() {
       })
       .catch(console.error);
   }, []);
+
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    if (selectedProject) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+  }, [selectedProject]);
 
   const { settings, projects, categories } = data;
   const filteredProjects = projects.filter((p) => p.category === filter);
@@ -74,9 +84,10 @@ export default function ProjectsGallery() {
       id="work"
       className="relative py-24 bg-neutral-100 dark:bg-neutral-900 transition-colors duration-500 overflow-hidden border-t border-neutral-200 dark:border-neutral-900"
     >
+      {/* Background Images Map */}
       <div className="absolute inset-0 w-full h-full pointer-events-none transition-opacity duration-1000 ease-in-out z-0">
         <div
-          className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${hoveredProject === null ? "opacity-100" : "opacity-0"}`}
+          className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${hoveredProject === null && !selectedProject ? "opacity-100" : "opacity-0"}`}
         >
           {filteredProjects.length > 0 && filteredProjects[0].image && (
             <img
@@ -92,7 +103,7 @@ export default function ProjectsGallery() {
             project.image && (
               <div
                 key={`bg-${project._id}`}
-                className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${hoveredProject === project._id ? "opacity-100" : "opacity-0"}`}
+                className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${hoveredProject === project._id && !selectedProject ? "opacity-100" : "opacity-0"}`}
               >
                 <img
                   src={urlFor(project.image).url()}
@@ -167,12 +178,10 @@ export default function ProjectsGallery() {
               className="flex md:flex-wrap md:justify-center overflow-x-auto md:overflow-x-visible snap-x md:snap-none hide-scrollbar gap-6 pb-6 md:pb-0"
             >
               {filteredProjects.map((project) => (
-                <motion.a
+                <motion.div
                   variants={itemVariants}
-                  href={project.linkUrl}
-                  target="_blank"
-                  rel="noreferrer"
                   key={project._id}
+                  onClick={() => setSelectedProject(project)}
                   onMouseEnter={() => setHoveredProject(project._id)}
                   onMouseLeave={() => setHoveredProject(null)}
                   className="relative group min-h-[440px] sm:min-h-[480px] flex flex-col justify-end p-8 overflow-hidden bg-white/90 dark:bg-[#0a0a0a]/90 backdrop-blur-sm border border-neutral-200 dark:border-neutral-800 transition-all duration-500 hover:-translate-y-1 hover:shadow-xl hover:shadow-neutral-300/50 dark:hover:shadow-yellow-500/5 block cursor-pointer shrink-0 w-[85vw] sm:w-[60vw] md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] snap-center md:snap-align-none"
@@ -189,6 +198,15 @@ export default function ProjectsGallery() {
                     <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-950/85 to-neutral-950/20 opacity-95 group-hover:opacity-90 transition-opacity duration-700"></div>
                   </div>
 
+                  {/* Play Overlay Indicator */}
+                  <div className="absolute inset-0 z-20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                    <PlayCircle
+                      size={64}
+                      strokeWidth={1}
+                      className="text-yellow-500 drop-shadow-2xl"
+                    />
+                  </div>
+
                   {/* Genre / Medium Badge */}
                   <div className="relative z-10 flex items-center justify-between gap-3 mb-auto">
                     <span className="inline-block bg-yellow-500 text-black text-[10px] font-spartan font-bold tracking-[0.2em] uppercase px-3 py-1 shadow-sm">
@@ -203,35 +221,24 @@ export default function ProjectsGallery() {
 
                   <div className="relative z-10 mt-6 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
                     {/* Title */}
-                    <div className="flex items-start justify-between gap-2">
-                      <h3 className="text-2xl sm:text-3xl font-anton font-normal text-white uppercase tracking-wide group-hover:text-yellow-500 transition-colors leading-[1.1] drop-shadow-md">
-                        {project.title}
-                      </h3>
-                      <ExternalLink
-                        size={16}
-                        className="text-neutral-400 group-hover:text-yellow-500 transition-colors shrink-0 mt-2"
-                      />
-                    </div>
+                    <h3 className="text-2xl sm:text-3xl font-anton font-normal text-white uppercase tracking-wide group-hover:text-yellow-500 transition-colors leading-[1.1] drop-shadow-md">
+                      {project.title}
+                    </h3>
 
-                    {/* Awards / Laurels */}
+                    {/* Enlarged Awards / Laurels */}
                     {project.awardsList && project.awardsList.length > 0 && (
-                      <div className="flex flex-wrap gap-4 mt-4">
+                      <div className="flex flex-wrap gap-4 mt-6">
                         {project.awardsList.map((award, i) => (
                           <div
                             key={i}
-                            className="flex flex-col items-start gap-1"
+                            className="flex flex-col items-center justify-center gap-1 text-center"
                           >
                             {award.laurelImage && (
                               <img
                                 src={urlFor(award.laurelImage).url()}
                                 alt={award.awardName || "Award Laurel"}
-                                className="h-10 w-auto object-contain filter drop-shadow-md"
+                                className="h-16 sm:h-20 w-auto object-contain drop-shadow-lg"
                               />
-                            )}
-                            {award.awardName && (
-                              <span className="text-yellow-500/90 text-[8px] font-spartan font-bold uppercase tracking-widest leading-snug max-w-[120px]">
-                                {award.awardName}
-                              </span>
                             )}
                           </div>
                         ))}
@@ -243,37 +250,110 @@ export default function ProjectsGallery() {
                       ROLE/S: <span className="text-white">{project.role}</span>
                     </p>
 
-                    {/* Short Description */}
-                    {project.shortDescription && (
-                      <p className="text-neutral-300 text-sm mt-3 leading-relaxed line-clamp-2 font-montserrat font-light group-hover:text-white transition-colors">
-                        {project.shortDescription}
-                      </p>
-                    )}
-
-                    {/* Client with Logo */}
+                    {/* Client with Full Color Logo */}
                     {(project.client || project.clientLogo) && (
-                      <div className="border-t border-neutral-800/80 pt-4 mt-5 flex items-center gap-3">
+                      <div className="border-t border-neutral-800/80 pt-4 mt-5 flex items-center gap-4">
                         {project.clientLogo && (
                           <img
                             src={urlFor(project.clientLogo).url()}
                             alt={project.client}
-                            className="h-6 w-auto max-w-[100px] object-contain filter brightness-0 invert opacity-70 group-hover:opacity-100 transition-opacity"
+                            className="h-8 sm:h-10 w-auto max-w-[120px] object-contain drop-shadow-md bg-white/10 rounded px-2 py-1"
                           />
                         )}
                         {project.client && (
-                          <span className="text-neutral-500 text-[10px] font-spartan font-bold tracking-[0.15em] uppercase group-hover:text-neutral-400 transition-colors">
+                          <span className="text-neutral-300 text-[10px] font-spartan font-bold tracking-[0.15em] uppercase transition-colors">
                             {project.client}
                           </span>
                         )}
                       </div>
                     )}
                   </div>
-                </motion.a>
+                </motion.div>
               ))}
             </motion.div>
           </AnimatePresence>
         </div>
       </div>
+
+      {/* Pop-up Video Modal */}
+      <AnimatePresence>
+        {selectedProject && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelectedProject(null)}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/90 backdrop-blur-sm"
+          >
+            <motion.div
+              initial={{ scale: 0.95, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.95, opacity: 0, y: 20 }}
+              onClick={(e) => e.stopPropagation()} // Prevent modal close when clicking inside
+              className="relative w-full max-w-5xl bg-neutral-950 border border-neutral-800 shadow-2xl rounded-xl overflow-hidden flex flex-col max-h-[90vh]"
+            >
+              {/* Close Button */}
+              <button
+                onClick={() => setSelectedProject(null)}
+                className="absolute top-4 right-4 z-50 p-2 bg-black/50 hover:bg-yellow-500 hover:text-black text-white rounded-full transition-colors cursor-pointer"
+              >
+                <X size={20} strokeWidth={2.5} />
+              </button>
+
+              {/* Video or Image Container */}
+              <div className="w-full aspect-video bg-black relative flex-shrink-0">
+                {selectedProject.videoEmbedUrl ? (
+                  <iframe
+                    src={selectedProject.videoEmbedUrl}
+                    title={selectedProject.title}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                    className="w-full h-full border-0"
+                  ></iframe>
+                ) : selectedProject.image ? (
+                  <img
+                    src={urlFor(selectedProject.image).url()}
+                    alt={selectedProject.title}
+                    className="w-full h-full object-cover opacity-80"
+                  />
+                ) : null}
+              </div>
+
+              {/* Details & External Link */}
+              <div className="p-6 sm:p-10 overflow-y-auto flex flex-col md:flex-row gap-8 justify-between items-start">
+                <div className="flex-1">
+                  <h3 className="text-3xl sm:text-4xl font-anton font-normal text-white uppercase tracking-wide leading-tight mb-4">
+                    {selectedProject.title}
+                  </h3>
+                  <p className="text-yellow-500 text-xs font-spartan font-bold uppercase tracking-widest mb-4">
+                    ROLE/S: {selectedProject.role}
+                  </p>
+                  <p className="text-neutral-300 font-montserrat font-light leading-relaxed">
+                    {selectedProject.shortDescription}
+                  </p>
+                </div>
+                <div className="w-full md:w-auto flex-shrink-0 flex flex-col gap-4 items-start md:items-end mt-4 md:mt-0">
+                  {selectedProject.linkUrl && (
+                    <a
+                      href={selectedProject.linkUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-3 bg-yellow-500 hover:bg-yellow-400 text-black px-8 py-4 font-spartan font-bold uppercase tracking-widest text-xs transition-colors shadow-lg cursor-pointer"
+                    >
+                      Visit External Link <ExternalLink size={16} />
+                    </a>
+                  )}
+                  {selectedProject.client && (
+                    <p className="text-neutral-500 text-[10px] font-spartan font-bold tracking-[0.15em] uppercase">
+                      Client: {selectedProject.client}
+                    </p>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }
