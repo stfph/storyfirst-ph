@@ -65,14 +65,14 @@ export default function ProjectsGallery() {
     },
   };
 
+  // GPU-optimized variants (Removed filter: blur to fix scroll glitches)
   const itemVariants = {
-    hidden: { opacity: 0, scale: 0.9, rotate: 3, y: 30, filter: "blur(4px)" },
+    hidden: { opacity: 0, scale: 0.9, rotate: 3, y: 30 },
     show: {
       opacity: 1,
       scale: 1,
       rotate: 0,
       y: 0,
-      filter: "blur(0px)",
       transition: { type: "spring", stiffness: 120, damping: 18 },
     },
   };
@@ -225,7 +225,7 @@ export default function ProjectsGallery() {
                       {project.title}
                     </h3>
 
-                    {/* Enlarged Awards / Laurels */}
+                    {/* Awards / Laurels */}
                     {project.awardsList && project.awardsList.length > 0 && (
                       <div className="flex flex-wrap gap-4 mt-6">
                         {project.awardsList.map((award, i) => (
@@ -250,14 +250,14 @@ export default function ProjectsGallery() {
                       ROLE/S: <span className="text-white">{project.role}</span>
                     </p>
 
-                    {/* Client with Full Color Logo */}
+                    {/* Client with Logo (Yellow Background Applied) */}
                     {(project.client || project.clientLogo) && (
                       <div className="border-t border-neutral-800/80 pt-4 mt-5 flex items-center gap-4">
                         {project.clientLogo && (
                           <img
                             src={urlFor(project.clientLogo).url()}
                             alt={project.client}
-                            className="h-8 sm:h-10 w-auto max-w-[120px] object-contain drop-shadow-md bg-white/10 rounded px-2 py-1"
+                            className="h-8 sm:h-10 w-auto max-w-[120px] object-contain drop-shadow-md bg-yellow-500/60 rounded px-2 py-1"
                           />
                         )}
                         {project.client && (
@@ -289,7 +289,7 @@ export default function ProjectsGallery() {
               initial={{ scale: 0.95, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.95, opacity: 0, y: 20 }}
-              onClick={(e) => e.stopPropagation()} // Prevent modal close when clicking inside
+              onClick={(e) => e.stopPropagation()}
               className="relative w-full max-w-5xl bg-neutral-950 border border-neutral-800 shadow-2xl rounded-xl overflow-hidden flex flex-col max-h-[90vh]"
             >
               {/* Close Button */}
@@ -332,22 +332,45 @@ export default function ProjectsGallery() {
                     {selectedProject.shortDescription}
                   </p>
                 </div>
+
                 <div className="w-full md:w-auto flex-shrink-0 flex flex-col gap-4 items-start md:items-end mt-4 md:mt-0">
                   {selectedProject.linkUrl && (
                     <a
                       href={selectedProject.linkUrl}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex items-center gap-3 bg-yellow-500 hover:bg-yellow-400 text-black px-8 py-4 font-spartan font-bold uppercase tracking-widest text-xs transition-colors shadow-lg cursor-pointer"
+                      className="inline-flex items-center gap-3 bg-yellow-500 hover:bg-yellow-400 text-black px-8 py-4 font-spartan font-bold uppercase tracking-widest text-xs transition-colors shadow-lg cursor-pointer text-center w-full md:w-auto justify-center"
                     >
-                      Visit External Link <ExternalLink size={16} />
+                      {settings.externalLinkText || "Visit External Link"}{" "}
+                      <ExternalLink size={16} />
                     </a>
                   )}
                   {selectedProject.client && (
-                    <p className="text-neutral-500 text-[10px] font-spartan font-bold tracking-[0.15em] uppercase">
+                    <p className="text-neutral-500 text-[10px] font-spartan font-bold tracking-[0.15em] uppercase text-center w-full md:text-right md:w-auto">
                       Client: {selectedProject.client}
                     </p>
                   )}
+
+                  {/* Awards / Laurels inside Modal (below the link and client) */}
+                  {selectedProject.awardsList &&
+                    selectedProject.awardsList.length > 0 && (
+                      <div className="flex flex-wrap gap-4 mt-2 justify-center md:justify-end w-full border-t border-neutral-800/80 pt-4">
+                        {selectedProject.awardsList.map((award, i) => (
+                          <div
+                            key={i}
+                            className="flex flex-col items-center justify-center text-center"
+                          >
+                            {award.laurelImage && (
+                              <img
+                                src={urlFor(award.laurelImage).url()}
+                                alt={award.awardName || "Award Laurel"}
+                                className="h-12 sm:h-14 w-auto object-contain drop-shadow-md"
+                              />
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
                 </div>
               </div>
             </motion.div>
