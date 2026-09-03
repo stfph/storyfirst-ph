@@ -12,36 +12,63 @@ export default {
       description: "e.g., (USA/Thailand)",
     },
     {
-      name: "context",
-      title: "Context / Title (Optional)",
-      type: "string",
-    },
-    {
-      name: "profile",
-      title: "1-Liner Profile",
-      type: "text",
-      rows: 2,
-      description:
-        "Brief description of who they are and what you did together.",
-    },
-    {
       name: "image",
-      title: "Portrait Image",
+      title: "Portrait Image (Card Thumbnail)",
       type: "image",
       options: { hotspot: true },
     },
     {
-      name: "videoEmbedUrl",
-      title: "Video Embed URL (For Pop-up)",
-      type: "url",
+      name: "collaborations",
+      title: "Projects / Works Together",
+      type: "array",
       description:
-        "Paste the embed URL here (e.g., https://www.youtube.com/embed/VIDEO_ID).",
+        "Add one or more projects you did with this collaborator. These will appear in the pop-up modal.",
+      of: [
+        {
+          type: "object",
+          fields: [
+            {
+              name: "profile",
+              title: "1-Liner Profile / Description",
+              type: "text",
+              rows: 2,
+              description:
+                "Brief description of what you did together in this specific project.",
+            },
+            {
+              name: "videoEmbedUrl",
+              title: "Video Embed URL",
+              type: "url",
+              description:
+                "Paste the embed URL here (e.g., https://www.youtube.com/embed/VIDEO_ID).",
+            },
+            {
+              name: "image",
+              title: "Project Image (Fallback if no video)",
+              type: "image",
+              options: { hotspot: true },
+            },
+            {
+              name: "linkUrl",
+              title: "External Link",
+              type: "url",
+              description:
+                "Secondary link for the button inside the pop-up modal.",
+            },
+          ],
+          preview: {
+            select: {
+              title: "profile",
+              media: "image",
+            },
+          },
+        },
+      ],
     },
-    {
-      name: "linkUrl",
-      title: "External Link",
-      type: "url",
-      description: "Secondary link for the button inside the pop-up modal.",
-    },
+    // The following fields are kept for backward compatibility with your existing data.
+    // Moving forward, use the "Projects / Works Together" array above.
+    { name: "profile", title: "Legacy Profile", type: "text", hidden: true },
+    { name: "videoEmbedUrl", title: "Legacy Video", type: "url", hidden: true },
+    { name: "linkUrl", title: "Legacy Link", type: "url", hidden: true },
   ],
 };

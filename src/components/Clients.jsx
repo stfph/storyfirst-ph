@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ExternalLink, X, PlayCircle } from "lucide-react";
+import {
+  ExternalLink,
+  X,
+  PlayCircle,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import { client, urlFor } from "../sanityClient";
 
 export default function Clients() {
@@ -12,6 +18,7 @@ export default function Clients() {
   });
   const [activeTab, setActiveTab] = useState("");
   const [selectedCollab, setSelectedCollab] = useState(null);
+  const [collabWorkIndex, setCollabWorkIndex] = useState(0);
 
   useEffect(() => {
     client
@@ -23,7 +30,10 @@ export default function Clients() {
              ...,
              "category": category->title
           },
-          "collaborators": *[_type == "collaborator"] | order(order asc)
+          "collaborators": *[_type == "collaborator"] | order(order asc) {
+             ...,
+             collaborations[]{ profile, videoEmbedUrl, image, linkUrl }
+          }
         }`,
       )
       .then((res) => {
@@ -76,6 +86,21 @@ export default function Clients() {
       transition: { type: "spring", stiffness: 150, damping: 20 },
     },
   };
+
+  // Determine current work to display in modal, with backward compatibility for old single-data setup
+  const hasCollaborations =
+    selectedCollab?.collaborations && selectedCollab.collaborations.length > 0;
+  const currentWork = hasCollaborations
+    ? selectedCollab.collaborations[collabWorkIndex]
+    : {
+        profile: selectedCollab?.profile,
+        videoEmbedUrl: selectedCollab?.videoEmbedUrl,
+        image: selectedCollab?.image,
+        linkUrl: selectedCollab?.linkUrl,
+      };
+  const totalWorks = hasCollaborations
+    ? selectedCollab.collaborations.length
+    : 1;
 
   if (!settings) return null;
 
@@ -207,8 +232,10 @@ export default function Clients() {
               <motion.div
                 variants={itemVariants}
                 key={person._id}
-                onClick={() => setSelectedCollab(person)}
-                // UPDATED GRID SIZE: lg:w-[calc(20%-26px)] ensures exactly 5 columns per row on desktop
+                onClick={() => {
+                  setSelectedCollab(person);
+                  setCollabWorkIndex(0); // Reset to first video when opening modal
+                }}
                 className="group relative overflow-hidden bg-neutral-200 dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 aspect-square shadow-md hover:shadow-[0_0_30px_rgba(234,179,8,0.15)] hover:border-yellow-500/30 transition-all duration-500 cursor-pointer shrink-0 w-[65vw] sm:w-[45vw] md:w-[calc(33.333%-22px)] lg:w-[calc(20%-26px)] snap-center md:snap-align-none rounded-lg"
               >
                 {person.image && (
@@ -229,7 +256,6 @@ export default function Clients() {
                     {person.name}
                   </h4>
 
-                  {/* Dynamic Hover Text with slightly smaller text for 5-col fit */}
                   <p className="text-yellow-400 flex items-center gap-1 text-[9px] sm:text-[10px] font-spartan font-bold uppercase tracking-widest mt-1 transform opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-500 delay-100">
                     {settings.collabHoverText || "See our work together →"}
                   </p>
@@ -264,26 +290,43 @@ export default function Clients() {
                 <X size={20} strokeWidth={2.5} />
               </button>
 
-              <div className="w-full aspect-video bg-black relative flex-shrink-0">
-                {selectedCollab.videoEmbedUrl ? (
-                  <iframe
-                    src={selectedCollab.videoEmbedUrl}
-                    title={selectedCollab.name}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowFullScreen
-                    className="w-full h-full border-0"
-                  ></iframe>
-                ) : selectedCollab.image ? (
-                  <img
-                    src={urlFor(selectedCollab.image).url()}
-                    alt={selectedCollab.name}
-                    className="w-full h-full object-cover opacity-80"
-                  />
-                ) : null}
-              </div>
+              {/* Dynamic Video or Image Container */}
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={collabWorkIndex}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="w-full aspect-video bg-black relative flex-shrink-0"
+                >
+                  {currentWork.videoEmbedUrl ? (
+                    <iframe
+                      src={currentWork.videoEmbedUrl}
+                      title={`${selectedCollab.name} - Project ${collabWorkIndex + 1}`}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowFullScreen
+                      className="w-full h-full border-0"
+                    ></iframe>
+                  ) : currentWork.image ? (
+                    <img
+                      src={urlFor(currentWork.image).url()}
+                      alt={selectedCollab.name}
+                      className="w-full h-full object-cover opacity-80"
+                    />
+                  ) : selectedCollab.image ? (
+                    <img
+                      src={urlFor(selectedCollab.image).url()}
+                      alt={selectedCollab.name}
+                      className="w-full h-full object-cover opacity-80"
+                    />
+                  ) : null}
+                </motion.div>
+              </AnimatePresence>
 
-              <div className="p-6 sm:p-10 overflow-y-auto flex flex-col md:flex-row gap-8 justify-between items-start">
-                <div className="flex-1">
+              {/* Details, Navigation & External Link */}
+              <div className="p-6 sm:p-10 overflow-y-auto flex flex-col md:flex-row gap-8 justify-between items-start flex-1 min-h-[160px]">
+                <div className="flex-1 flex flex-col h-full">
                   <h3 className="text-3xl sm:text-4xl font-anton font-normal text-white uppercase tracking-wide leading-tight mb-2">
                     {selectedCollab.name}
                   </h3>
@@ -292,23 +335,62 @@ export default function Clients() {
                       {selectedCollab.country}
                     </p>
                   )}
-                  {selectedCollab.profile && (
-                    <p className="text-neutral-300 font-montserrat font-light leading-relaxed">
-                      {selectedCollab.profile}
-                    </p>
+                  {currentWork.profile && (
+                    <motion.p
+                      key={collabWorkIndex}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.3 }}
+                      className="text-neutral-300 font-montserrat font-light leading-relaxed"
+                    >
+                      {currentWork.profile}
+                    </motion.p>
                   )}
                 </div>
 
-                <div className="w-full md:w-auto flex-shrink-0 flex flex-col gap-4 items-start md:items-end mt-4 md:mt-0">
-                  {selectedCollab.linkUrl && (
+                <div className="w-full md:w-auto flex-shrink-0 flex flex-col gap-4 items-start md:items-end justify-between h-full mt-4 md:mt-0">
+                  {currentWork.linkUrl && (
                     <a
-                      href={selectedCollab.linkUrl}
+                      href={currentWork.linkUrl}
                       target="_blank"
                       rel="noreferrer"
                       className="inline-flex items-center gap-3 bg-yellow-500 hover:bg-yellow-400 text-black px-8 py-4 font-spartan font-bold uppercase tracking-widest text-xs transition-colors shadow-lg cursor-pointer text-center w-full md:w-auto justify-center"
                     >
                       Visit External Link <ExternalLink size={16} />
                     </a>
+                  )}
+
+                  {/* Multiple Works Pagination Controls */}
+                  {totalWorks > 1 && (
+                    <div className="flex items-center justify-between w-full md:w-auto gap-6 mt-auto pt-4 md:border-t-0 border-t border-neutral-800">
+                      <span className="text-xs font-spartan font-bold tracking-widest text-neutral-400">
+                        {collabWorkIndex + 1} / {totalWorks}
+                      </span>
+                      <div className="flex gap-2">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setCollabWorkIndex(
+                              (prev) => (prev - 1 + totalWorks) % totalWorks,
+                            );
+                          }}
+                          className="p-2 bg-neutral-900 hover:bg-yellow-500 hover:text-black text-white rounded-full transition-colors cursor-pointer"
+                        >
+                          <ChevronLeft size={16} strokeWidth={2.5} />
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setCollabWorkIndex(
+                              (prev) => (prev + 1) % totalWorks,
+                            );
+                          }}
+                          className="p-2 bg-neutral-900 hover:bg-yellow-500 hover:text-black text-white rounded-full transition-colors cursor-pointer"
+                        >
+                          <ChevronRight size={16} strokeWidth={2.5} />
+                        </button>
+                      </div>
+                    </div>
                   )}
                 </div>
               </div>
