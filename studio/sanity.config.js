@@ -161,6 +161,7 @@ export default defineConfig({
                     S.divider(),
                     S.listItem()
                       .title("Projects by Category")
+                      .icon(FolderIcon)
                       .child(
                         S.documentTypeList("projectCategory")
                           .title("Projects by Category")
@@ -191,6 +192,7 @@ export default defineConfig({
                     S.divider(),
                     S.listItem()
                       .title("Clients by Category")
+                      .icon(FolderIcon)
                       .child(
                         S.documentTypeList("clientCategory")
                           .title("Clients by Category")
@@ -208,16 +210,26 @@ export default defineConfig({
               ),
 
             S.divider(),
-            ...S.documentTypeListItems().filter(
-              (listItem) =>
-                !singletonTypes.has(listItem.getId()) &&
-                ![
-                  "project",
-                  "projectCategory",
-                  "client",
-                  "clientCategory",
-                ].includes(listItem.getId()),
-            ),
+
+            // Explicitly defined content types with emojis
+            S.documentTypeListItem("service")
+              .title("Services")
+              .icon(() => "✨"),
+            S.documentTypeListItem("award")
+              .title("Awards")
+              .icon(() => "🏆"),
+            S.documentTypeListItem("collaborator")
+              .title("Notable Collaborators")
+              .icon(() => "🌟"),
+            S.documentTypeListItem("advocacy")
+              .title("Advocacies")
+              .icon(() => "📢"),
+            S.documentTypeListItem("testimonial")
+              .title("Testimonials")
+              .icon(() => "💬"),
+            S.documentTypeListItem("teamMember")
+              .title("Team Members")
+              .icon(() => "👥"),
           ]),
     }),
     visionTool(),
