@@ -14,7 +14,6 @@ import { UsersIcon } from "@sanity/icons/Users";
 import { HeartIcon } from "@sanity/icons/Heart";
 import { CommentIcon } from "@sanity/icons/Comment";
 import { EnvelopeIcon } from "@sanity/icons/Envelope";
-import { FolderIcon } from "@sanity/icons/Folder";
 
 const singletonActions = new Set([
   "publish",
@@ -150,18 +149,18 @@ export default defineConfig({
             // Projects Directory
             S.listItem()
               .title("Projects Directory")
-              .icon(FolderIcon)
+              .icon(() => "📁")
               .child(
                 S.list()
                   .title("Projects Directory")
                   .items([
-                    S.documentTypeListItem("projectCategory").title(
-                      "Manage Categories",
-                    ),
+                    S.documentTypeListItem("projectCategory")
+                      .title("Manage Categories")
+                      .icon(() => "🏷️"),
                     S.divider(),
                     S.listItem()
                       .title("Projects by Category")
-                      .icon(FolderIcon)
+                      .icon(() => "🗂️")
                       .child(
                         S.documentTypeList("projectCategory")
                           .title("Projects by Category")
@@ -174,25 +173,27 @@ export default defineConfig({
                               .params({ categoryId }),
                           ),
                       ),
-                    S.documentTypeListItem("project").title("All Projects"),
+                    S.documentTypeListItem("project")
+                      .title("All Projects")
+                      .icon(() => "🎬"),
                   ]),
               ),
 
             // Clients Directory
             S.listItem()
               .title("Clients Directory")
-              .icon(FolderIcon)
+              .icon(() => "📁")
               .child(
                 S.list()
                   .title("Clients Directory")
                   .items([
-                    S.documentTypeListItem("clientCategory").title(
-                      "Manage Categories",
-                    ),
+                    S.documentTypeListItem("clientCategory")
+                      .title("Manage Categories")
+                      .icon(() => "🏷️"),
                     S.divider(),
                     S.listItem()
                       .title("Clients by Category")
-                      .icon(FolderIcon)
+                      .icon(() => "🗂️")
                       .child(
                         S.documentTypeList("clientCategory")
                           .title("Clients by Category")
@@ -205,7 +206,9 @@ export default defineConfig({
                               .params({ categoryId }),
                           ),
                       ),
-                    S.documentTypeListItem("client").title("All Clients"),
+                    S.documentTypeListItem("client")
+                      .title("All Clients")
+                      .icon(() => "🤝"),
                   ]),
               ),
 
