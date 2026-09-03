@@ -12,15 +12,61 @@ export default function Navbar({ isDark, toggleTheme }) {
       .fetch(`*[_type == "globalSettings"][0]`)
       .then((res) => {
         setData(res);
-        if (res?.websiteIcon) {
-          const iconUrl = urlFor(res.websiteIcon).width(64).height(64).url();
-          let link = document.querySelector("link[rel~='icon']");
-          if (!link) {
-            link = document.createElement("link");
-            link.rel = "icon";
-            document.head.appendChild(link);
+        if (res) {
+          if (res.websiteIcon) {
+            const iconUrl = urlFor(res.websiteIcon).width(64).height(64).url();
+            let link = document.querySelector("link[rel~='icon']");
+            if (!link) {
+              link = document.createElement("link");
+              link.rel = "icon";
+              document.head.appendChild(link);
+            }
+            link.href = iconUrl;
           }
-          link.href = iconUrl;
+
+          if (res.seoTitle) {
+            document.title = res.seoTitle;
+            document
+              .querySelector('meta[name="title"]')
+              ?.setAttribute("content", res.seoTitle);
+            document
+              .querySelector('meta[property="og:title"]')
+              ?.setAttribute("content", res.seoTitle);
+            document
+              .querySelector('meta[property="twitter:title"]')
+              ?.setAttribute("content", res.seoTitle);
+          }
+
+          if (res.seoDescription) {
+            document
+              .querySelector('meta[name="description"]')
+              ?.setAttribute("content", res.seoDescription);
+            document
+              .querySelector('meta[property="og:description"]')
+              ?.setAttribute("content", res.seoDescription);
+            document
+              .querySelector('meta[property="twitter:description"]')
+              ?.setAttribute("content", res.seoDescription);
+          }
+
+          if (res.seoKeywords) {
+            document
+              .querySelector('meta[name="keywords"]')
+              ?.setAttribute("content", res.seoKeywords);
+          }
+
+          if (res.seoImage) {
+            const ogImageUrl = urlFor(res.seoImage)
+              .width(1200)
+              .height(630)
+              .url();
+            document
+              .querySelector('meta[property="og:image"]')
+              ?.setAttribute("content", ogImageUrl);
+            document
+              .querySelector('meta[property="twitter:image"]')
+              ?.setAttribute("content", ogImageUrl);
+          }
         }
       })
       .catch(console.error);

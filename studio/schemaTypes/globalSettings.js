@@ -17,6 +17,40 @@ export default {
         },
       ],
     },
+    // --- SEO & META TAGS ---
+    {
+      name: "seoTitle",
+      title: "SEO Title",
+      type: "string",
+      description:
+        "Title of the website (appears in search engines and browser tab).",
+      initialValue: "StoryFirst PH | Creative Communications & Production",
+    },
+    {
+      name: "seoDescription",
+      title: "SEO Description",
+      type: "text",
+      rows: 3,
+      description: "Short summary of the website for search engines.",
+      initialValue:
+        "StoryFirst PH is a Philippines-based communications consultancy and production company specializing in documentary production, content creation, and public speaking / workshops.",
+    },
+    {
+      name: "seoKeywords",
+      title: "SEO Keywords",
+      type: "string",
+      description:
+        "Comma-separated keywords (e.g., StoryFirst PH, documentary production Philippines, content creation Cebu).",
+    },
+    {
+      name: "seoImage",
+      title: "SEO Social Share Image",
+      type: "image",
+      description:
+        "Image displayed when the site is shared on social media (Facebook, Twitter).",
+      options: { hotspot: true },
+    },
+    // --- BRAND & CONTACT ---
     {
       name: "brandName",
       title: "Brand Name (Nav/Footer)",
@@ -27,17 +61,13 @@ export default {
       name: "brandLogo",
       title: "Brand Logo / Icon",
       type: "image",
-      options: {
-        hotspot: true,
-      },
+      options: { hotspot: true },
     },
     {
       name: "websiteIcon",
       title: "Website Favicon (Browser Tab Icon)",
       type: "image",
-      options: {
-        hotspot: true,
-      },
+      options: { hotspot: true },
     },
     {
       name: "emailLabel",
