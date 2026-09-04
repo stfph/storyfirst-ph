@@ -1,5 +1,7 @@
 # StoryFirst PH — Official Website & CMS Repository
 
+**🌐 Live Website:** [https://stfph.github.io/storyfirst-ph/](https://stfph.github.io/storyfirst-ph/)
+
 This repository contains the complete source code, assets, and content management architecture for the official **StoryFirst PH** website.
 
 The website is built as a modern, high-performance Single Page Application (SPA) using React, styled with Tailwind CSS, and powered by a headless Sanity CMS backend.
