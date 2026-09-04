@@ -45,7 +45,6 @@ export default function Clients() {
       .catch(console.error);
   }, []);
 
-  // Lock body scroll when modal is open
   useEffect(() => {
     if (selectedCollab) {
       document.body.style.overflow = "hidden";
@@ -87,7 +86,6 @@ export default function Clients() {
     },
   };
 
-  // Determine current work to display in modal, with backward compatibility for old single-data setup
   const hasCollaborations =
     selectedCollab?.collaborations && selectedCollab.collaborations.length > 0;
   const currentWork = hasCollaborations
@@ -115,7 +113,6 @@ export default function Clients() {
         }}
       />
       <div className="max-w-7xl mx-auto">
-        {/* -- CLIENTS TABS SECTION -- */}
         <motion.div
           initial={{ opacity: 0, y: 30, rotate: 1 }}
           whileInView={{ opacity: 1, y: 0, rotate: 0 }}
@@ -203,7 +200,6 @@ export default function Clients() {
           </AnimatePresence>
         </div>
 
-        {/* -- NOTABLE COLLABORATORS SECTION -- */}
         <div className="mt-24 md:mt-32">
           <motion.div
             initial={{ opacity: 0, y: 30, rotate: -1 }}
@@ -234,7 +230,7 @@ export default function Clients() {
                 key={person._id}
                 onClick={() => {
                   setSelectedCollab(person);
-                  setCollabWorkIndex(0); // Reset to first video when opening modal
+                  setCollabWorkIndex(0);
                 }}
                 className="group relative overflow-hidden bg-neutral-200 dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 aspect-square shadow-md hover:shadow-[0_0_30px_rgba(234,179,8,0.15)] hover:border-yellow-500/30 transition-all duration-500 cursor-pointer shrink-0 w-[65vw] sm:w-[45vw] md:w-[calc(33.333%-22px)] lg:w-[calc(20%-26px)] snap-center md:snap-align-none rounded-lg"
               >
@@ -255,7 +251,6 @@ export default function Clients() {
                   <h4 className="text-lg sm:text-xl font-anton font-normal text-white uppercase tracking-wide transform opacity-100 md:opacity-90 md:group-hover:opacity-100 transition-opacity duration-300">
                     {person.name}
                   </h4>
-
                   <p className="text-yellow-400 flex items-center gap-1 text-[9px] sm:text-[10px] font-spartan font-bold uppercase tracking-widest mt-1 transform opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity duration-500 delay-100">
                     {settings.collabHoverText || "See our work together →"}
                   </p>
@@ -266,7 +261,6 @@ export default function Clients() {
         </div>
       </div>
 
-      {/* -- POP-UP VIDEO MODAL FOR COLLABORATORS -- */}
       <AnimatePresence>
         {selectedCollab && (
           <motion.div
@@ -281,7 +275,7 @@ export default function Clients() {
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.95, opacity: 0, y: 20 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-5xl bg-neutral-950 border border-neutral-800 shadow-2xl rounded-xl overflow-hidden flex flex-col max-h-[90vh]"
+              className="relative w-full max-w-5xl bg-neutral-950 border border-neutral-800 shadow-2xl rounded-xl overflow-hidden flex flex-col max-h-[95vh]"
             >
               <button
                 onClick={() => setSelectedCollab(null)}
@@ -290,7 +284,6 @@ export default function Clients() {
                 <X size={20} strokeWidth={2.5} />
               </button>
 
-              {/* Dynamic Video or Image Container */}
               <AnimatePresence mode="wait">
                 <motion.div
                   key={collabWorkIndex}
@@ -324,14 +317,14 @@ export default function Clients() {
                 </motion.div>
               </AnimatePresence>
 
-              {/* Details, Navigation & External Link */}
-              <div className="p-6 sm:p-10 overflow-y-auto flex flex-col md:flex-row gap-8 justify-between items-start flex-1 min-h-[160px]">
+              {/* OPTIMIZED DESCRIPTION SECTION */}
+              <div className="p-4 sm:p-6 overflow-y-auto flex flex-col md:flex-row gap-4 sm:gap-6 justify-between items-start flex-1 min-h-[120px]">
                 <div className="flex-1 flex flex-col h-full">
-                  <h3 className="text-3xl sm:text-4xl font-anton font-normal text-white uppercase tracking-wide leading-tight mb-2">
+                  <h3 className="text-2xl sm:text-3xl font-anton font-normal text-white uppercase tracking-wide leading-tight mb-1 sm:mb-2">
                     {selectedCollab.name}
                   </h3>
                   {selectedCollab.country && (
-                    <p className="text-yellow-500 text-xs font-spartan font-bold uppercase tracking-widest mb-4">
+                    <p className="text-yellow-500 text-[10px] sm:text-xs font-spartan font-bold uppercase tracking-widest mb-2 sm:mb-3">
                       {selectedCollab.country}
                     </p>
                   )}
@@ -341,29 +334,28 @@ export default function Clients() {
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       transition={{ duration: 0.3 }}
-                      className="text-neutral-300 font-montserrat font-light leading-relaxed"
+                      className="text-neutral-300 text-sm sm:text-base font-montserrat font-light leading-relaxed"
                     >
                       {currentWork.profile}
                     </motion.p>
                   )}
                 </div>
 
-                <div className="w-full md:w-auto flex-shrink-0 flex flex-col gap-4 items-start md:items-end justify-between h-full mt-4 md:mt-0">
+                <div className="w-full md:w-auto flex-shrink-0 flex flex-col gap-3 sm:gap-4 items-start md:items-end justify-between h-full mt-2 md:mt-0">
                   {currentWork.linkUrl && (
                     <a
                       href={currentWork.linkUrl}
                       target="_blank"
                       rel="noreferrer"
-                      className="inline-flex items-center gap-3 bg-yellow-500 hover:bg-yellow-400 text-black px-8 py-4 font-spartan font-bold uppercase tracking-widest text-xs transition-colors shadow-lg cursor-pointer text-center w-full md:w-auto justify-center"
+                      className="inline-flex items-center gap-2 bg-yellow-500 hover:bg-yellow-400 text-black px-5 py-2.5 sm:px-6 sm:py-3 font-spartan font-bold uppercase tracking-widest text-[10px] sm:text-xs transition-colors shadow-lg cursor-pointer text-center w-full md:w-auto justify-center"
                     >
-                      Visit External Link <ExternalLink size={16} />
+                      Visit External Link <ExternalLink size={14} />
                     </a>
                   )}
 
-                  {/* Multiple Works Pagination Controls */}
                   {totalWorks > 1 && (
-                    <div className="flex items-center justify-between w-full md:w-auto gap-6 mt-auto pt-4 md:border-t-0 border-t border-neutral-800">
-                      <span className="text-xs font-spartan font-bold tracking-widest text-neutral-400">
+                    <div className="flex items-center justify-between w-full md:w-auto gap-4 mt-auto pt-3 sm:pt-4 md:border-t-0 border-t border-neutral-800">
+                      <span className="text-[10px] sm:text-xs font-spartan font-bold tracking-widest text-neutral-400">
                         {collabWorkIndex + 1} / {totalWorks}
                       </span>
                       <div className="flex gap-2">
@@ -374,7 +366,7 @@ export default function Clients() {
                               (prev) => (prev - 1 + totalWorks) % totalWorks,
                             );
                           }}
-                          className="p-2 bg-neutral-900 hover:bg-yellow-500 hover:text-black text-white rounded-full transition-colors cursor-pointer"
+                          className="p-1.5 sm:p-2 bg-neutral-900 hover:bg-yellow-500 hover:text-black text-white rounded-full transition-colors cursor-pointer"
                         >
                           <ChevronLeft size={16} strokeWidth={2.5} />
                         </button>
@@ -385,7 +377,7 @@ export default function Clients() {
                               (prev) => (prev + 1) % totalWorks,
                             );
                           }}
-                          className="p-2 bg-neutral-900 hover:bg-yellow-500 hover:text-black text-white rounded-full transition-colors cursor-pointer"
+                          className="p-1.5 sm:p-2 bg-neutral-900 hover:bg-yellow-500 hover:text-black text-white rounded-full transition-colors cursor-pointer"
                         >
                           <ChevronRight size={16} strokeWidth={2.5} />
                         </button>
