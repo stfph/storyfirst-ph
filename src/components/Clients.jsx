@@ -26,11 +26,11 @@ export default function Clients() {
         `{
           "settings": *[_type == "clientsSettings"][0],
           "categories": *[_type == "clientCategory"] | order(order asc),
-          "clients": *[_type == "client"] | order(order asc) {
+          "clients": *[_type == "client" && isArchived != true] | order(order asc) {
              ...,
              "category": category->title
           },
-          "collaborators": *[_type == "collaborator"] | order(order asc) {
+          "collaborators": *[_type == "collaborator" && isArchived != true] | order(order asc) {
              ...,
              collaborations[]{ profile, videoEmbedUrl, image, linkUrl }
           }
