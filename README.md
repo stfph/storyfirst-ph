@@ -1,48 +1,51 @@
-# StoryFirst PH — Practical Exam Portfolio Website
+# StoryFirst PH — Official Website & CMS Repository
 
-**🌐 Live Site:** [hfqhi.github.io/storyfirst-ph](https://hfqhi.github.io/storyfirst-ph/)
+This repository contains the complete source code, assets, and content management architecture for the official **StoryFirst PH** website.
 
-A high-end, responsive digital experience and portfolio website built for **StoryFirst PH**, showcasing cinematic documentaries, event hosting, brand collaborations, and award-winning media productions.
-
----
-
-## 🚀 Short Documentation
-
-StoryFirst PH is a media and communications organization dedicated to authentic storytelling, investigative journalism, and human-centered visual narratives. This web application was designed and engineered as a modern digital showcase to elevate the agency's online presence, featuring immersive hero video integration, interactive capability showcases, a filterable multimedia project gallery, and a direct client inquiry portal.
+The website is built as a modern, high-performance Single Page Application (SPA) using React, styled with Tailwind CSS, and powered by a headless Sanity CMS backend.
 
 ---
 
-## 🛠️ Technologies / Tools Used
+## 🏗️ Technology Stack & Architecture
 
-- **Frontend Library:** React (Vite)
-- **Styling & Design System:** Tailwind CSS v4
-- **Animations & Interaction:** Framer Motion & CSS keyframe animations
-- **Icons:** React Icons (`react-icons`) & Lucide React
-- **Deployment & Hosting:** GitHub Pages
-
----
-
-## ✅ Completed Sections
-
-- **Cinematic Hero Section:** Implemented with a high-impact background video, fluid typography scaling, and call-to-action buttons.
-- **Founder Profile:** Showcases Marco Romas's biography, a linked portrait photo, and stylized notable recognitions (International Emmy Nominee, New York Festivals, etc.).
-- **Capabilities (Services):** Interactive list with background image transitions, gradient masks, and smooth yellow gradient hover states.
-- **Featured Projects Gallery:** Fully filterable grid supporting Documentaries, Hosting, and Brands, complete with in-background image hover reveals and direct media links.
-- **Partnerships Marquee:** Infinite horizontal scrolling ticker showcasing brand partners.
-- **Contact & Footer Section:** Fully functional inquiry form with success states, auto-clearing input fields, contact details, and optimized social media icons.
-- **Global Theme Engine:** Fully functional Light/Dark mode switcher with persistent visual styling and paper texture overlays.
+- **Frontend:** React.js (via Vite)
+- **Styling & Animation:** Tailwind CSS, Framer Motion, Lucide React (Icons)
+- **Backend / Database:** Sanity CMS (Headless CMS)
+- **Hosting & Deployment:** GitHub Pages (Automated via GitHub Actions)
+- **Contact Form:** Web3Forms (Serverless email routing)
+- **Booking / Scheduling:** Calendly Integration
 
 ---
 
-## ⏳ Incomplete Sections
+## 📂 Repository Structure & Assets
 
-- **Backend Database Integration:** Form submissions trigger a client-side state change ("MESSAGE SENT!") rather than writing data to a persistent cloud database or server.
-- **CMS Capabilities:** Project items and awards are statically managed through local data files (`portfolioData.js`) instead of a headless Content Management System.
+The repository is divided into two main environments: the frontend website and the backend CMS studio.
+
+- `/src/` — Contains all React frontend code.
+  - `/src/components/` — Individual UI sections (Hero, About, ProjectsGallery, Clients, etc.).
+  - `/src/sanityClient.js` — The connection file linking the frontend to the Sanity database.
+- `/public/` — Contains static, hardcoded assets that must be publicly accessible to crawlers.
+  - `og-image.jpg` — The fallback Open Graph image used when sharing the website link on social media. Replace this file with a 1200x630px image to update the social preview.
+  - `404.html` — The custom fallback error page.
+- `/studio/` — Contains the entire Sanity CMS backend configuration.
+  - `/studio/schemaTypes/` — The data structures defining what content can be edited (e.g., `project.js`, `collaborator.js`, `globalSettings.js`).
+  - `/studio/sanity.config.js` — The layout and desk structure (with emojis) of the CMS dashboard.
+- `index.html` — The entry point of the website. It contains the hardcoded SEO meta tags and Open Graph data required for social media crawlers.
 
 ---
 
-## ⚠️ Known Limitations
+## 📝 How to Edit and Update Content (No Coding Required)
 
-- **Static Form Handling:** The contact form provides visual confirmation of submission but does not actually dispatch automated emails or store submissions in a database due to the 24-hour development constraints.
-- **Client-Side Routing:** Built as a Single Page Application (SPA) anchored around smooth scrolling sections rather than multi-page server-side routing.
-- **External Media Dependencies:** Video elements and external links rely on third-party video hosting platforms (YouTube, Instagram, Facebook) for full playback.
+All text, images, categories, and video links are managed entirely through the **Sanity Studio CMS**.
+
+1.  **Access the CMS:** Log in to your project at [manage.sanity.io](https://manage.sanity.io/) or your deployed Studio URL.
+2.  **Navigate the Dashboard:** Use the left sidebar to navigate through your Content Management sections (Website Settings, Projects Directory, Clients Directory, etc.).
+3.  **Publishing Changes:** Any changes made and published in the CMS will instantly and automatically update on the live website. No code deployment is required for content updates.
+
+### Important Note on Video Embeds
+
+When adding videos to the "Projects" or "Notable Collaborators" pop-up modals, you **must** use the official embed URL format, not the standard browser link:
+
+- **YouTube:** `https://www.youtube.com/embed/VIDEO_ID`
+- **TikTok:** `https://www.tiktok.com/embed/v2/VIDEO_ID`
+- **Facebook:** `https://www.facebook.com/plugins/video.php?href=ENCODED_VIDEO_URL&show_text=false&width=560`
