@@ -25,7 +25,7 @@ The repository is divided into two main environments: the frontend website and t
   - `/src/components/` — Individual UI sections (Hero, About, ProjectsGallery, Clients, etc.).
   - `/src/sanityClient.js` — The connection file linking the frontend to the Sanity database.
 - `/public/` — Contains static, hardcoded assets that must be publicly accessible to crawlers.
-  - `og-image.jpg` — The fallback Open Graph image used when sharing the website link on social media. Replace this file with a 1200x630px image to update the social preview.
+  - `seo-cover.jpg` — The fallback Open Graph image used when sharing the website link on social media. Replace this file with a 1200x630px image to update the social preview.
   - `404.html` — The custom fallback error page.
 - `/studio/` — Contains the entire Sanity CMS backend configuration.
   - `/studio/schemaTypes/` — The data structures defining what content can be edited (e.g., `project.js`, `collaborator.js`, `globalSettings.js`).
