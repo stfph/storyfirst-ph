@@ -3,6 +3,12 @@ export default {
   title: "Clients & Partners",
   type: "document",
   fields: [
+    {
+      name: "isArchived",
+      title: "Archive (Hide from website)",
+      type: "boolean",
+      initialValue: false,
+    },
     { name: "order", title: "Sort Order", type: "number" },
     { name: "name", title: "Client Name", type: "string" },
     {

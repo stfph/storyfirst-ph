@@ -12,7 +12,7 @@ export default function Awards() {
       .fetch(
         `{
       "settings": *[_type == "awardsSettings"][0],
-      "awards": *[_type == "award"] | order(order asc)
+      "awards": *[_type == "award" && isArchived != true] | order(order asc)
     }`,
       )
       .then(setData)

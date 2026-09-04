@@ -3,6 +3,12 @@ export default {
   title: "Notable Collaborators",
   type: "document",
   fields: [
+    {
+      name: "isArchived",
+      title: "Archive (Hide from website)",
+      type: "boolean",
+      initialValue: false,
+    },
     { name: "order", title: "Sort Order", type: "number" },
     { name: "name", title: "Collaborator Name", type: "string" },
     {
@@ -65,8 +71,6 @@ export default {
         },
       ],
     },
-    // The following fields are kept for backward compatibility with your existing data.
-    // Moving forward, use the "Projects / Works Together" array above.
     { name: "profile", title: "Legacy Profile", type: "text", hidden: true },
     { name: "videoEmbedUrl", title: "Legacy Video", type: "url", hidden: true },
     { name: "linkUrl", title: "Legacy Link", type: "url", hidden: true },

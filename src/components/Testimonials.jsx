@@ -11,7 +11,7 @@ export default function Testimonials() {
       .fetch(
         `{
       "settings": *[_type == "testimonialsSettings"][0],
-      "testimonials": *[_type == "testimonial"] | order(order asc)
+      "testimonials": *[_type == "testimonial" && isArchived != true] | order(order asc)
     }`,
       )
       .then(setData)
@@ -59,11 +59,6 @@ export default function Testimonials() {
       id="testimonials"
       className="py-24 bg-neutral-100 dark:bg-[#0a0a0a] border-t border-neutral-200 dark:border-neutral-900 transition-colors duration-500 px-6 overflow-hidden"
     >
-      <style
-        dangerouslySetInnerHTML={{
-          __html: ` .hide-scrollbar::-webkit-scrollbar { display: none; } .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; } `,
-        }}
-      />
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30, rotate: 1 }}
@@ -88,31 +83,39 @@ export default function Testimonials() {
           variants={containerVariants}
           className="flex md:flex-wrap md:justify-center overflow-x-auto md:overflow-x-visible snap-x md:snap-none hide-scrollbar gap-6 md:gap-8 pb-8 md:pb-0"
         >
-          {testimonials.map((testimonial) => (
-            <motion.div
-              variants={itemVariants}
-              key={testimonial._id}
-              className="bg-white dark:bg-neutral-950 p-10 border border-neutral-200 dark:border-neutral-800 flex flex-col justify-between shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 shrink-0 w-[85vw] sm:w-[60vw] md:w-[calc(50%-16px)] lg:w-[calc(33.333%-22px)] snap-center md:snap-align-none"
-            >
-              <div>
-                <Quote size={40} className="text-yellow-500/30 mb-6" />
-                <p className="text-neutral-700 dark:text-neutral-300 text-base leading-relaxed mb-8 font-montserrat font-light italic">
-                  "{testimonial.quote}"
-                </p>
-              </div>
-              <div className="border-t border-neutral-100 dark:border-neutral-800 pt-6 mt-auto">
-                <p className="text-neutral-900 dark:text-white font-spartan font-bold uppercase tracking-widest text-sm">
-                  {testimonial.name}
-                </p>
-                <p className="text-yellow-600 dark:text-yellow-500 text-[10px] font-spartan font-bold uppercase tracking-[0.15em] mt-1">
-                  {testimonial.position}
-                </p>
-                <p className="text-neutral-500 dark:text-neutral-500 text-xs font-montserrat font-light mt-2">
-                  {testimonial.company}
-                </p>
-              </div>
-            </motion.div>
-          ))}
+          {testimonials.map((testimonial) => {
+            const Card = testimonial.linkUrl ? motion.a : motion.div;
+            return (
+              <Card
+                href={testimonial.linkUrl}
+                target={testimonial.linkUrl ? "_blank" : undefined}
+                rel={testimonial.linkUrl ? "noreferrer" : undefined}
+                variants={itemVariants}
+                key={testimonial._id}
+                className={`bg-white dark:bg-neutral-950 p-10 border border-neutral-200 dark:border-neutral-800 flex flex-col justify-between shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 shrink-0 w-[85vw] sm:w-[60vw] md:w-[calc(50%-16px)] lg:w-[calc(33.333%-22px)] snap-center md:snap-align-none ${
+                  testimonial.linkUrl ? "cursor-pointer" : "cursor-default"
+                }`}
+              >
+                <div>
+                  <Quote size={40} className="text-yellow-500/30 mb-6" />
+                  <p className="text-neutral-700 dark:text-neutral-300 text-base leading-relaxed mb-8 font-montserrat font-light italic">
+                    "{testimonial.quote}"
+                  </p>
+                </div>
+                <div className="border-t border-neutral-100 dark:border-neutral-800 pt-6 mt-auto">
+                  <p className="text-neutral-900 dark:text-white font-spartan font-bold uppercase tracking-widest text-sm">
+                    {testimonial.name}
+                  </p>
+                  <p className="text-yellow-600 dark:text-yellow-500 text-[10px] font-spartan font-bold uppercase tracking-[0.15em] mt-1">
+                    {testimonial.position}
+                  </p>
+                  <p className="text-neutral-500 dark:text-neutral-500 text-xs font-montserrat font-light mt-2">
+                    {testimonial.company}
+                  </p>
+                </div>
+              </Card>
+            );
+          })}
         </motion.div>
       </div>
     </section>

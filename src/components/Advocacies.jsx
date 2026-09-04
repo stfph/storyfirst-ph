@@ -10,7 +10,7 @@ export default function Advocacies() {
       .fetch(
         `{
       "settings": *[_type == "advocaciesSettings"][0],
-      "advocacies": *[_type == "advocacy"] | order(order asc)
+      "advocacies": *[_type == "advocacy" && isArchived != true] | order(order asc)
     }`,
       )
       .then(setData)
@@ -58,11 +58,6 @@ export default function Advocacies() {
       id="advocacies"
       className="py-24 bg-white dark:bg-neutral-950 transition-colors duration-500 px-6 border-t border-neutral-200 dark:border-neutral-900 overflow-hidden"
     >
-      <style
-        dangerouslySetInnerHTML={{
-          __html: ` .hide-scrollbar::-webkit-scrollbar { display: none; } .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; } `,
-        }}
-      />
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30, rotate: -1 }}
@@ -92,35 +87,43 @@ export default function Advocacies() {
           variants={containerVariants}
           className="flex md:flex-wrap md:justify-center overflow-x-auto md:overflow-x-visible snap-x md:snap-none hide-scrollbar gap-6 md:gap-8 pb-8 md:pb-0"
         >
-          {advocacies.map((advocacy) => (
-            <motion.div
-              variants={itemVariants}
-              key={advocacy._id}
-              className="group relative overflow-hidden bg-neutral-100 dark:bg-[#0a0a0a] min-h-[400px] flex flex-col justify-end p-8 border border-neutral-200 dark:border-neutral-800 cursor-default shrink-0 w-[85vw] sm:w-[60vw] md:w-[calc(50%-16px)] lg:w-[calc(33.333%-22px)] snap-center md:snap-align-none"
-            >
-              <div className="absolute inset-0 z-0">
-                {advocacy.image && (
-                  <img
-                    src={urlFor(advocacy.image).url()}
-                    alt={advocacy.title}
-                    className="w-full h-full object-cover filter grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out group-hover:scale-105"
-                  />
-                )}
-                <div className="absolute inset-0 bg-neutral-200 dark:bg-neutral-900 -z-10"></div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/60 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-500"></div>
-              </div>
+          {advocacies.map((advocacy) => {
+            const Card = advocacy.linkUrl ? motion.a : motion.div;
+            return (
+              <Card
+                href={advocacy.linkUrl}
+                target={advocacy.linkUrl ? "_blank" : undefined}
+                rel={advocacy.linkUrl ? "noreferrer" : undefined}
+                variants={itemVariants}
+                key={advocacy._id}
+                className={`group relative overflow-hidden bg-neutral-100 dark:bg-[#0a0a0a] min-h-[400px] flex flex-col justify-end p-8 border border-neutral-200 dark:border-neutral-800 shrink-0 w-[85vw] sm:w-[60vw] md:w-[calc(50%-16px)] lg:w-[calc(33.333%-22px)] snap-center md:snap-align-none ${
+                  advocacy.linkUrl ? "cursor-pointer" : "cursor-default"
+                }`}
+              >
+                <div className="absolute inset-0 z-0">
+                  {advocacy.image && (
+                    <img
+                      src={urlFor(advocacy.image).url()}
+                      alt={advocacy.title}
+                      className="w-full h-full object-cover filter grayscale-0 md:grayscale md:group-hover:grayscale-0 transition-all duration-700 ease-in-out md:group-hover:scale-105"
+                    />
+                  )}
+                  <div className="absolute inset-0 bg-neutral-200 dark:bg-neutral-900 -z-10"></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/60 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-500"></div>
+                </div>
 
-              <div className="relative z-10 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                <h3 className="text-2xl font-anton font-normal text-white uppercase tracking-wide mb-4 group-hover:text-yellow-500 transition-colors">
-                  {advocacy.title}
-                </h3>
-                <div className="w-12 h-1 bg-yellow-500 mb-5 transition-all duration-500 group-hover:w-full"></div>
-                <p className="text-neutral-300 text-sm leading-relaxed font-montserrat font-medium">
-                  {advocacy.description}
-                </p>
-              </div>
-            </motion.div>
-          ))}
+                <div className="relative z-10 transform translate-y-4 md:group-hover:translate-y-0 transition-transform duration-500">
+                  <h3 className="text-2xl font-anton font-normal text-white uppercase tracking-wide mb-4 md:group-hover:text-yellow-500 transition-colors">
+                    {advocacy.title}
+                  </h3>
+                  <div className="w-12 h-1 bg-yellow-500 mb-5 transition-all duration-500 md:group-hover:w-full"></div>
+                  <p className="text-neutral-300 text-sm leading-relaxed font-montserrat font-medium">
+                    {advocacy.description}
+                  </p>
+                </div>
+              </Card>
+            );
+          })}
         </motion.div>
       </div>
     </section>

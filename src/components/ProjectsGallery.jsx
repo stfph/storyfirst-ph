@@ -19,7 +19,7 @@ export default function ProjectsGallery() {
         `{
           "settings": *[_type == "projectsSettings"][0],
           "categories": *[_type == "projectCategory"] | order(order asc),
-          "projects": *[_type == "project"] | order(order asc) {
+          "projects": *[_type == "project" && isArchived != true] | order(order asc) {
             _id, title, "category": category->title, badge, client, clientLogo, role, year, shortDescription, image, linkUrl, videoEmbedUrl, awardsList
           }
         }`,

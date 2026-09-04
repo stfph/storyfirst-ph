@@ -9,17 +9,17 @@ export default function Services() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [rootElement, setRootElement] = useState(null);
 
+  // Change ONLY the fetch query inside your useEffect:
   useEffect(() => {
     // Set the root element for the Calendly modal to mount onto
     if (typeof window !== "undefined") {
       setRootElement(document.getElementById("root"));
     }
-
     client
       .fetch(
         `{
       "settings": *[_type == "servicesSettings"][0],
-      "services": *[_type == "service"] | order(order asc)
+      "services": *[_type == "service" && isArchived != true] | order(order asc)
     }`,
       )
       .then(setData)
