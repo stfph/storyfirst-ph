@@ -46,7 +46,7 @@ All text, images, categories, and video links are managed entirely through the *
 
 ### Important Note on Video Embeds
 
-When adding videos to the "Projects" or "Notable Collaborators" pop-up modals, you **must** use the official embed URL format, not the standard browser link:
+When adding the videos to the "Projects" or "Notable Collaborators" pop-up modals, you **must** use the official embed URL format, not the standard browser link:
 
 - **YouTube:** `https://www.youtube.com/embed/VIDEO_ID`
 - **TikTok:** `https://www.tiktok.com/embed/v2/VIDEO_ID`
