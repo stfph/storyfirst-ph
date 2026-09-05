@@ -9,7 +9,6 @@ export default function Services() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [rootElement, setRootElement] = useState(null);
 
-  // Change ONLY the fetch query inside your useEffect:
   useEffect(() => {
     // Set the root element for the Calendly modal to mount onto
     if (typeof window !== "undefined") {
@@ -19,7 +18,10 @@ export default function Services() {
       .fetch(
         `{
       "settings": *[_type == "servicesSettings"][0],
-      "services": *[_type == "service" && isArchived != true] | order(order asc)
+      "services": *[_type == "service" && isArchived != true] | order(order asc) {
+        ...,
+        "linkedCategory": linkedCategory->title
+      }
     }`,
       )
       .then(setData)
@@ -114,7 +116,7 @@ export default function Services() {
           className="flex flex-col border-t border-neutral-300 dark:border-neutral-800"
         >
           {/* Mapped Services */}
-          {services.map((service) => (
+          {services.map((service, index) => (
             <motion.div
               variants={itemVariants}
               key={service._id}
@@ -134,13 +136,33 @@ export default function Services() {
                     {service.title}
                   </h3>
                 </div>
-
                 <div className="md:w-[50%] flex flex-col items-start md:items-end text-left md:text-right">
                   <p className="text-neutral-700 dark:text-neutral-300 group-hover:text-black/90 text-sm leading-relaxed font-montserrat font-medium transition-colors duration-500 drop-shadow-md group-hover:drop-shadow-none mb-6">
                     {service.description}
                   </p>
                   <a
                     href="#work"
+                    onClick={() => {
+                      // Dispatches custom event to ProjectsGallery before smooth scrolling
+                      if (service.linkedCategory) {
+                        window.dispatchEvent(
+                          new CustomEvent("changeProjectFilter", {
+                            detail: service.linkedCategory,
+                          }),
+                        );
+                      } else {
+                        const fallbackMap = [
+                          "Documentaries",
+                          "Contents",
+                          "Events",
+                        ];
+                        window.dispatchEvent(
+                          new CustomEvent("changeProjectFilter", {
+                            detail: fallbackMap[index] || fallbackMap[0],
+                          }),
+                        );
+                      }
+                    }}
                     className="inline-block bg-neutral-950 dark:bg-white text-white dark:text-black group-hover:bg-black group-hover:text-white px-6 py-3 text-[10px] font-spartan font-bold uppercase tracking-[0.2em] transition-colors shadow-lg cursor-pointer"
                   >
                     {settings.buttonText || "Learn More / View Projects"}

@@ -33,6 +33,19 @@ export default function ProjectsGallery() {
       .catch(console.error);
   }, []);
 
+  // NEW: Listens for category changes dispatched by Services.jsx
+  useEffect(() => {
+    const handleFilterChange = (e) => {
+      if (e.detail) {
+        setFilter(e.detail);
+      }
+    };
+    window.addEventListener("changeProjectFilter", handleFilterChange);
+    return () => {
+      window.removeEventListener("changeProjectFilter", handleFilterChange);
+    };
+  }, []);
+
   useEffect(() => {
     if (selectedProject) {
       document.body.style.overflow = "hidden";
@@ -319,7 +332,6 @@ export default function ProjectsGallery() {
                     {selectedProject.shortDescription}
                   </p>
                 </div>
-
                 <div className="w-full md:w-auto flex-shrink-0 flex flex-col gap-3 sm:gap-4 items-start md:items-end mt-2 md:mt-0">
                   {selectedProject.linkUrl && (
                     <a
@@ -337,7 +349,6 @@ export default function ProjectsGallery() {
                       Client: {selectedProject.client}
                     </p>
                   )}
-
                   {selectedProject.awardsList &&
                     selectedProject.awardsList.length > 0 && (
                       <div className="flex flex-wrap gap-3 sm:gap-4 mt-1 sm:mt-2 justify-center md:justify-end w-full border-t border-neutral-800/80 pt-3 sm:pt-4">

@@ -18,5 +18,13 @@ export default {
       type: "image",
       options: { hotspot: true },
     },
+    {
+      name: "linkedCategory",
+      title: "Linked Project Category",
+      type: "reference",
+      to: [{ type: "projectCategory" }],
+      description:
+        "Select which project category this service links to when 'View Projects' is clicked.",
+    },
   ],
 };
