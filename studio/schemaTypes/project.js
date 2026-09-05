@@ -34,11 +34,48 @@ export default {
       options: { hotspot: true },
     },
     {
-      name: "videoEmbedUrl",
-      title: "Video Embed URL (For Pop-up)",
-      type: "url",
+      name: "galleryItems",
+      title: "Project Media Items (Pop-up Carousel)",
+      type: "array",
       description:
-        "Paste the embed URL here (e.g., https://www.youtube.com/embed/VIDEO_ID). This will play in the pop-up when the card is clicked.",
+        "Add one or more photos or video links here. If you add multiple, the pop-up will turn into a slider. If left empty, it will fall back to the legacy fields below.",
+      of: [
+        {
+          type: "object",
+          fields: [
+            {
+              name: "videoEmbedUrl",
+              title: "Video Embed URL",
+              type: "url",
+              description: "Paste the embed URL here (e.g., YouTube/TikTok).",
+            },
+            {
+              name: "image",
+              title: "Project Image (Fallback if no video)",
+              type: "image",
+              options: { hotspot: true },
+            },
+            {
+              name: "linkUrl",
+              title: "External Link (Specific to this item)",
+              type: "url",
+            },
+          ],
+        },
+      ],
+    },
+    // Legacy fields kept for backward compatibility
+    {
+      name: "videoEmbedUrl",
+      title: "Legacy Video Embed URL",
+      type: "url",
+      hidden: true,
+    },
+    {
+      name: "linkUrl",
+      title: "Legacy External Link",
+      type: "url",
+      hidden: true,
     },
     {
       name: "awardsList",
@@ -65,7 +102,11 @@ export default {
         },
       ],
     },
-    { name: "role", title: "Your Role/s", type: "string" },
+    {
+      name: "role",
+      title: "Your Role/s (Leave blank to hide completely)",
+      type: "string",
+    },
     { name: "client", title: "Client / Network Text", type: "string" },
     {
       name: "clientLogo",
@@ -79,13 +120,6 @@ export default {
       title: "Short Description",
       type: "text",
       rows: 3,
-    },
-    {
-      name: "linkUrl",
-      title: "External Link",
-      type: "url",
-      description:
-        "This is the link users will go to when they click the button inside the pop-up.",
     },
   ],
 };

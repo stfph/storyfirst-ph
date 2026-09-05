@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ExternalLink, X, PlayCircle } from "lucide-react";
+import {
+  ExternalLink,
+  X,
+  PlayCircle,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import { client, urlFor } from "../sanityClient";
 
 export default function ProjectsGallery() {
@@ -12,6 +18,7 @@ export default function ProjectsGallery() {
   const [filter, setFilter] = useState("");
   const [hoveredProject, setHoveredProject] = useState(null);
   const [selectedProject, setSelectedProject] = useState(null);
+  const [projectItemIndex, setProjectItemIndex] = useState(0);
 
   useEffect(() => {
     client
@@ -20,7 +27,7 @@ export default function ProjectsGallery() {
           "settings": *[_type == "projectsSettings"][0],
           "categories": *[_type == "projectCategory"] | order(order asc),
           "projects": *[_type == "project" && isArchived != true] | order(order asc) {
-            _id, title, "category": category->title, badge, client, clientLogo, role, year, shortDescription, image, linkUrl, videoEmbedUrl, awardsList
+            _id, title, "category": category->title, badge, client, clientLogo, role, year, shortDescription, image, linkUrl, videoEmbedUrl, awardsList, galleryItems[]{ videoEmbedUrl, image, linkUrl }
           }
         }`,
       )
@@ -33,7 +40,6 @@ export default function ProjectsGallery() {
       .catch(console.error);
   }, []);
 
-  // NEW: Listens for category changes dispatched by Services.jsx
   useEffect(() => {
     const handleFilterChange = (e) => {
       if (e.detail) {
@@ -87,6 +93,16 @@ export default function ProjectsGallery() {
       transition: { type: "spring", stiffness: 120, damping: 18 },
     },
   };
+
+  const hasGalleryItems = selectedProject?.galleryItems?.length > 0;
+  const currentItem = hasGalleryItems
+    ? selectedProject.galleryItems[projectItemIndex]
+    : {
+        videoEmbedUrl: selectedProject?.videoEmbedUrl,
+        image: selectedProject?.image,
+        linkUrl: selectedProject?.linkUrl,
+      };
+  const totalItems = hasGalleryItems ? selectedProject.galleryItems.length : 1;
 
   if (!settings) return null;
 
@@ -191,7 +207,10 @@ export default function ProjectsGallery() {
                 <motion.div
                   variants={itemVariants}
                   key={project._id}
-                  onClick={() => setSelectedProject(project)}
+                  onClick={() => {
+                    setSelectedProject(project);
+                    setProjectItemIndex(0);
+                  }}
                   onMouseEnter={() => setHoveredProject(project._id)}
                   onMouseLeave={() => setHoveredProject(null)}
                   className="relative group min-h-[440px] sm:min-h-[480px] flex flex-col justify-end p-8 overflow-hidden bg-white/90 dark:bg-[#0a0a0a]/90 backdrop-blur-sm border border-neutral-200 dark:border-neutral-800 transition-all duration-500 hover:-translate-y-1 hover:shadow-xl hover:shadow-neutral-300/50 dark:hover:shadow-yellow-500/5 block cursor-pointer shrink-0 w-[85vw] sm:w-[60vw] md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] snap-center md:snap-align-none"
@@ -250,9 +269,12 @@ export default function ProjectsGallery() {
                       </div>
                     )}
 
-                    <p className="text-yellow-400/90 text-[11px] font-spartan font-bold uppercase tracking-widest mt-5">
-                      ROLE/S: <span className="text-white">{project.role}</span>
-                    </p>
+                    {project.role && (
+                      <p className="text-yellow-400/90 text-[11px] font-spartan font-bold uppercase tracking-widest mt-5">
+                        ROLE/S:{" "}
+                        <span className="text-white">{project.role}</span>
+                      </p>
+                    )}
 
                     {(project.client || project.clientLogo) && (
                       <div className="border-t border-neutral-800/80 pt-4 mt-5 flex items-center gap-4">
@@ -301,41 +323,58 @@ export default function ProjectsGallery() {
                 <X size={20} strokeWidth={2.5} />
               </button>
 
-              <div className="w-full aspect-video bg-black relative flex-shrink-0">
-                {selectedProject.videoEmbedUrl ? (
-                  <iframe
-                    src={selectedProject.videoEmbedUrl}
-                    title={selectedProject.title}
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowFullScreen
-                    className="w-full h-full border-0"
-                  ></iframe>
-                ) : selectedProject.image ? (
-                  <img
-                    src={urlFor(selectedProject.image).url()}
-                    alt={selectedProject.title}
-                    className="w-full h-full object-cover opacity-80"
-                  />
-                ) : null}
-              </div>
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={projectItemIndex}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="w-full aspect-video bg-black relative flex-shrink-0"
+                >
+                  {currentItem.videoEmbedUrl ? (
+                    <iframe
+                      src={currentItem.videoEmbedUrl}
+                      title={selectedProject.title}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowFullScreen
+                      className="w-full h-full border-0"
+                    ></iframe>
+                  ) : currentItem.image ? (
+                    <img
+                      src={urlFor(currentItem.image).url()}
+                      alt={selectedProject.title}
+                      className="w-full h-full object-cover opacity-80"
+                    />
+                  ) : selectedProject.image ? (
+                    <img
+                      src={urlFor(selectedProject.image).url()}
+                      alt={selectedProject.title}
+                      className="w-full h-full object-cover opacity-80"
+                    />
+                  ) : null}
+                </motion.div>
+              </AnimatePresence>
 
               {/* OPTIMIZED DESCRIPTION SECTION */}
-              <div className="p-4 sm:p-6 overflow-y-auto flex flex-col md:flex-row gap-4 sm:gap-6 justify-between items-start">
-                <div className="flex-1">
+              <div className="p-4 sm:p-6 overflow-y-auto flex flex-col md:flex-row gap-4 sm:gap-6 justify-between items-start flex-1 min-h-[120px]">
+                <div className="flex-1 flex flex-col h-full">
                   <h3 className="text-2xl sm:text-3xl font-anton font-normal text-white uppercase tracking-wide leading-tight mb-1 sm:mb-2">
                     {selectedProject.title}
                   </h3>
-                  <p className="text-yellow-500 text-[10px] sm:text-xs font-spartan font-bold uppercase tracking-widest mb-2 sm:mb-3">
-                    ROLE/S: {selectedProject.role}
-                  </p>
+                  {selectedProject.role && (
+                    <p className="text-yellow-500 text-[10px] sm:text-xs font-spartan font-bold uppercase tracking-widest mb-2 sm:mb-3">
+                      ROLE/S: {selectedProject.role}
+                    </p>
+                  )}
                   <p className="text-neutral-300 text-sm sm:text-base font-montserrat font-light leading-relaxed">
                     {selectedProject.shortDescription}
                   </p>
                 </div>
-                <div className="w-full md:w-auto flex-shrink-0 flex flex-col gap-3 sm:gap-4 items-start md:items-end mt-2 md:mt-0">
-                  {selectedProject.linkUrl && (
+                <div className="w-full md:w-auto flex-shrink-0 flex flex-col gap-3 sm:gap-4 items-start md:items-end justify-between h-full mt-2 md:mt-0">
+                  {currentItem.linkUrl && (
                     <a
-                      href={selectedProject.linkUrl}
+                      href={currentItem.linkUrl}
                       target="_blank"
                       rel="noreferrer"
                       className="inline-flex items-center gap-2 bg-yellow-500 hover:bg-yellow-400 text-black px-5 py-2.5 sm:px-6 sm:py-3 font-spartan font-bold uppercase tracking-widest text-[10px] sm:text-xs transition-colors shadow-lg cursor-pointer text-center w-full md:w-auto justify-center"
@@ -368,6 +407,38 @@ export default function ProjectsGallery() {
                         ))}
                       </div>
                     )}
+
+                  {totalItems > 1 && (
+                    <div className="flex items-center justify-between w-full md:w-auto gap-4 mt-auto pt-3 sm:pt-4 md:border-t-0 border-t border-neutral-800">
+                      <span className="text-[10px] sm:text-xs font-spartan font-bold tracking-widest text-neutral-400">
+                        {projectItemIndex + 1} / {totalItems}
+                      </span>
+                      <div className="flex gap-2">
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setProjectItemIndex(
+                              (prev) => (prev - 1 + totalItems) % totalItems,
+                            );
+                          }}
+                          className="p-1.5 sm:p-2 bg-neutral-900 hover:bg-yellow-500 hover:text-black text-white rounded-full transition-colors cursor-pointer"
+                        >
+                          <ChevronLeft size={16} strokeWidth={2.5} />
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setProjectItemIndex(
+                              (prev) => (prev + 1) % totalItems,
+                            );
+                          }}
+                          className="p-1.5 sm:p-2 bg-neutral-900 hover:bg-yellow-500 hover:text-black text-white rounded-full transition-colors cursor-pointer"
+                        >
+                          <ChevronRight size={16} strokeWidth={2.5} />
+                        </button>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             </motion.div>
