@@ -242,10 +242,9 @@ export default function Clients() {
                     viewport={{ once: false }}
                     src={urlFor(person.image).url()}
                     alt={person.name}
-                    className="w-full h-full object-cover filter grayscale-0 md:grayscale opacity-100 md:opacity-90 md:group-hover:grayscale-0 md:group-hover:opacity-100 transition-all duration-700 ease-in-out md:group-hover:scale-105"
+                    className="w-full h-full object-cover transition-all duration-700 ease-in-out md:group-hover:scale-105"
                   />
                 )}
-
                 <div className="absolute inset-0 bg-neutral-200 dark:bg-neutral-800 -z-10"></div>
                 <div className="absolute bottom-0 left-0 w-full p-4 sm:p-5 pt-12 transform translate-y-0 md:translate-y-6 md:group-hover:translate-y-0 transition-transform duration-500 ease-out bg-gradient-to-t from-black/95 to-transparent">
                   <h4 className="text-lg sm:text-xl font-anton font-normal text-white uppercase tracking-wide transform opacity-100 md:opacity-90 md:group-hover:opacity-100 transition-opacity duration-300">
@@ -283,7 +282,6 @@ export default function Clients() {
               >
                 <X size={20} strokeWidth={2.5} />
               </button>
-
               <AnimatePresence mode="wait">
                 <motion.div
                   key={collabWorkIndex}
@@ -317,7 +315,6 @@ export default function Clients() {
                 </motion.div>
               </AnimatePresence>
 
-              {/* OPTIMIZED DESCRIPTION SECTION */}
               <div className="p-4 sm:p-6 overflow-y-auto flex flex-col md:flex-row gap-4 sm:gap-6 justify-between items-start flex-1 min-h-[120px]">
                 <div className="flex-1 flex flex-col h-full">
                   <h3 className="text-2xl sm:text-3xl font-anton font-normal text-white uppercase tracking-wide leading-tight mb-1 sm:mb-2">
@@ -340,7 +337,6 @@ export default function Clients() {
                     </motion.p>
                   )}
                 </div>
-
                 <div className="w-full md:w-auto flex-shrink-0 flex flex-col gap-3 sm:gap-4 items-start md:items-end justify-between h-full mt-2 md:mt-0">
                   {currentWork.linkUrl && (
                     <a
@@ -352,7 +348,6 @@ export default function Clients() {
                       Visit External Link <ExternalLink size={14} />
                     </a>
                   )}
-
                   {totalWorks > 1 && (
                     <div className="flex items-center justify-between w-full md:w-auto gap-4 mt-auto pt-3 sm:pt-4 md:border-t-0 border-t border-neutral-800">
                       <span className="text-[10px] sm:text-xs font-spartan font-bold tracking-widest text-neutral-400">
