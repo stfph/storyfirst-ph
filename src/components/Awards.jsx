@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Award, ExternalLink, ChevronLeft, ChevronRight } from "lucide-react";
+import { Award, ChevronLeft, ChevronRight } from "lucide-react";
 import { client, urlFor } from "../sanityClient";
 
 export default function Awards() {
@@ -109,56 +109,72 @@ export default function Awards() {
           className="relative max-w-4xl mx-auto min-h-[450px] flex flex-col justify-center"
         >
           <AnimatePresence mode="wait">
-            <motion.div
-              key={currentAward._id || currentIndex}
-              variants={slideVariants}
-              initial="hidden"
-              animate="show"
-              exit="exit"
-              className="bg-neutral-50 dark:bg-[#0a0a0a] border border-neutral-200 dark:border-neutral-800 p-8 sm:p-14 shadow-[0_0_30px_rgba(234,179,8,0.05)] hover:shadow-[0_0_50px_rgba(234,179,8,0.2)] hover:border-yellow-500/30 transition-shadow duration-700 relative flex flex-col md:flex-row items-center gap-10 rounded-xl"
-            >
-              <div className="w-full md:w-1/2 flex flex-col items-center justify-center p-8 bg-yellow-500/85 hover:bg-yellow-500 transition-colors duration-500 rounded-xl min-h-[240px] group">
-                {currentAward.logo ? (
-                  <img
-                    src={urlFor(currentAward.logo).url()}
-                    alt={`${currentAward.title} logo`}
-                    className="max-h-36 max-w-full object-contain transition-transform duration-500 group-hover:scale-105"
-                  />
-                ) : (
-                  <div className="text-black transition-transform duration-500 group-hover:scale-105">
-                    <Award size={72} strokeWidth={1} />
+            {(() => {
+              const cardContent = (
+                <>
+                  <div className="w-full md:w-1/2 flex flex-col items-center justify-center p-8 bg-yellow-500/85 md:group-hover:bg-yellow-500 transition-colors duration-500 rounded-xl min-h-[240px]">
+                    {currentAward.logo ? (
+                      <img
+                        src={urlFor(currentAward.logo).url()}
+                        alt={`${currentAward.title} logo`}
+                        className="max-h-36 max-w-full object-contain transition-transform duration-500 md:group-hover:scale-105"
+                      />
+                    ) : (
+                      <div className="text-black transition-transform duration-500 md:group-hover:scale-105">
+                        <Award size={72} strokeWidth={1} />
+                      </div>
+                    )}
                   </div>
-                )}
-                {currentAward.verificationLink && (
-                  <a
+                  <div className="w-full md:w-1/2 flex flex-col text-left">
+                    <span className="text-yellow-600 dark:text-yellow-500 text-xs font-spartan font-bold tracking-[0.2em] uppercase mb-3 block">
+                      {currentAward.recognition}
+                    </span>
+                    <h3 className="text-2xl sm:text-3xl font-anton font-normal text-neutral-900 dark:text-white uppercase leading-[1.1] tracking-wide mb-6">
+                      {currentAward.title}
+                    </h3>
+                    <div className="pt-6 border-t border-neutral-200 dark:border-neutral-800 space-y-2">
+                      <p className="text-sm font-spartan font-bold text-neutral-900 dark:text-white uppercase tracking-widest">
+                        {currentAward.project}
+                      </p>
+                      <p className="text-sm font-montserrat font-light text-neutral-500 dark:text-neutral-400">
+                        Role: {currentAward.role}
+                      </p>
+                    </div>
+                  </div>
+                </>
+              );
+
+              if (currentAward.verificationLink) {
+                return (
+                  <motion.a
                     href={currentAward.verificationLink}
                     target="_blank"
                     rel="noreferrer"
-                    className="mt-6 text-xs font-spartan font-bold uppercase tracking-widest text-black/70 hover:text-black flex items-center gap-2 transition-colors"
+                    key={currentAward._id || currentIndex}
+                    variants={slideVariants}
+                    initial="hidden"
+                    animate="show"
+                    exit="exit"
+                    className="group bg-neutral-50 dark:bg-[#0a0a0a] border border-neutral-200 dark:border-neutral-800 p-8 sm:p-14 shadow-[0_0_30px_rgba(234,179,8,0.05)] hover:shadow-[0_0_50px_rgba(234,179,8,0.2)] hover:border-yellow-500/30 transition-shadow duration-700 relative flex flex-col md:flex-row items-center gap-10 rounded-xl cursor-pointer block w-full"
                   >
-                    {settings.verifyButtonText || "Verify Recognition"}{" "}
-                    <ExternalLink size={14} />
-                  </a>
-                )}
-              </div>
+                    {cardContent}
+                  </motion.a>
+                );
+              }
 
-              <div className="w-full md:w-1/2 flex flex-col text-left">
-                <span className="text-yellow-600 dark:text-yellow-500 text-xs font-spartan font-bold tracking-[0.2em] uppercase mb-3 block">
-                  {currentAward.recognition}
-                </span>
-                <h3 className="text-2xl sm:text-3xl font-anton font-normal text-neutral-900 dark:text-white uppercase leading-[1.1] tracking-wide mb-6">
-                  {currentAward.title}
-                </h3>
-                <div className="pt-6 border-t border-neutral-200 dark:border-neutral-800 space-y-2">
-                  <p className="text-sm font-spartan font-bold text-neutral-900 dark:text-white uppercase tracking-widest">
-                    {currentAward.project}
-                  </p>
-                  <p className="text-sm font-montserrat font-light text-neutral-500 dark:text-neutral-400">
-                    Role: {currentAward.role}
-                  </p>
-                </div>
-              </div>
-            </motion.div>
+              return (
+                <motion.div
+                  key={currentAward._id || currentIndex}
+                  variants={slideVariants}
+                  initial="hidden"
+                  animate="show"
+                  exit="exit"
+                  className="group bg-neutral-50 dark:bg-[#0a0a0a] border border-neutral-200 dark:border-neutral-800 p-8 sm:p-14 shadow-[0_0_30px_rgba(234,179,8,0.05)] hover:shadow-[0_0_50px_rgba(234,179,8,0.2)] transition-shadow duration-700 relative flex flex-col md:flex-row items-center gap-10 rounded-xl w-full"
+                >
+                  {cardContent}
+                </motion.div>
+              );
+            })()}
           </AnimatePresence>
 
           <div className="flex justify-between items-center mt-8 px-4">
