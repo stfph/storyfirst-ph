@@ -10,10 +10,15 @@ export default {
       initialValue: false,
     },
     { name: "order", title: "Sort Order", type: "number" },
-    { name: "name", title: "Author Name", type: "string" },
+    {
+      name: "image",
+      title: "Testimonial Screenshot",
+      type: "image",
+      options: { hotspot: true },
+    },
+    { name: "name", title: "Author Name / Reference", type: "string" },
     { name: "position", title: "Job Position", type: "string" },
     { name: "company", title: "Company", type: "string" },
-    { name: "quote", title: "Quote", type: "text", rows: 4 },
     {
       name: "linkUrl",
       title: "External Link / Reference",

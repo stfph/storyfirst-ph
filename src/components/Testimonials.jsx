@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Quote } from "lucide-react";
-import { client } from "../sanityClient";
+import { client, urlFor } from "../sanityClient";
 
 export default function Testimonials() {
   const [data, setData] = useState({ settings: null, testimonials: [] });
@@ -84,36 +83,58 @@ export default function Testimonials() {
           className="flex md:flex-wrap md:justify-center overflow-x-auto md:overflow-x-visible snap-x md:snap-none hide-scrollbar gap-6 md:gap-8 pb-8 md:pb-0"
         >
           {testimonials.map((testimonial) => {
-            const Card = testimonial.linkUrl ? motion.a : motion.div;
-            return (
-              <Card
-                href={testimonial.linkUrl}
-                target={testimonial.linkUrl ? "_blank" : undefined}
-                rel={testimonial.linkUrl ? "noreferrer" : undefined}
-                variants={itemVariants}
-                key={testimonial._id}
-                className={`bg-white dark:bg-neutral-950 p-10 border border-neutral-200 dark:border-neutral-800 flex flex-col justify-between shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 shrink-0 w-[85vw] sm:w-[60vw] md:w-[calc(50%-16px)] lg:w-[calc(33.333%-22px)] snap-center md:snap-align-none ${
-                  testimonial.linkUrl ? "cursor-pointer" : "cursor-default"
-                }`}
-              >
-                <div>
-                  <Quote size={40} className="text-yellow-500/30 mb-6" />
-                  <p className="text-neutral-700 dark:text-neutral-300 text-base leading-relaxed mb-8 font-montserrat font-light italic">
-                    "{testimonial.quote}"
-                  </p>
+            const content = (
+              <>
+                <div className="w-full mb-8 flex-1">
+                  {testimonial.image && (
+                    <img
+                      src={urlFor(testimonial.image).url()}
+                      alt={testimonial.name || "Testimonial screenshot"}
+                      className="w-full h-auto object-cover rounded-md shadow-sm border border-neutral-200 dark:border-neutral-800"
+                    />
+                  )}
                 </div>
                 <div className="border-t border-neutral-100 dark:border-neutral-800 pt-6 mt-auto">
                   <p className="text-neutral-900 dark:text-white font-spartan font-bold uppercase tracking-widest text-sm">
                     {testimonial.name}
                   </p>
-                  <p className="text-yellow-600 dark:text-yellow-500 text-[10px] font-spartan font-bold uppercase tracking-[0.15em] mt-1">
-                    {testimonial.position}
-                  </p>
-                  <p className="text-neutral-500 dark:text-neutral-500 text-xs font-montserrat font-light mt-2">
-                    {testimonial.company}
-                  </p>
+                  {testimonial.position && (
+                    <p className="text-yellow-600 dark:text-yellow-500 text-[10px] font-spartan font-bold uppercase tracking-[0.15em] mt-1">
+                      {testimonial.position}
+                    </p>
+                  )}
+                  {testimonial.company && (
+                    <p className="text-neutral-500 dark:text-neutral-500 text-xs font-montserrat font-light mt-2">
+                      {testimonial.company}
+                    </p>
+                  )}
                 </div>
-              </Card>
+              </>
+            );
+
+            if (testimonial.linkUrl) {
+              return (
+                <motion.a
+                  href={testimonial.linkUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  variants={itemVariants}
+                  key={testimonial._id}
+                  className="bg-white dark:bg-neutral-950 p-8 sm:p-10 border border-neutral-200 dark:border-neutral-800 flex flex-col justify-between shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 shrink-0 w-[85vw] sm:w-[60vw] md:w-[calc(50%-16px)] lg:w-[calc(33.333%-22px)] snap-center md:snap-align-none cursor-pointer block"
+                >
+                  {content}
+                </motion.a>
+              );
+            }
+
+            return (
+              <motion.div
+                variants={itemVariants}
+                key={testimonial._id}
+                className="bg-white dark:bg-neutral-950 p-8 sm:p-10 border border-neutral-200 dark:border-neutral-800 flex flex-col justify-between shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 shrink-0 w-[85vw] sm:w-[60vw] md:w-[calc(50%-16px)] lg:w-[calc(33.333%-22px)] snap-center md:snap-align-none cursor-default"
+              >
+                {content}
+              </motion.div>
             );
           })}
         </motion.div>
