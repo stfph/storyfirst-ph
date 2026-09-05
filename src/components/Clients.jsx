@@ -180,7 +180,7 @@ export default function Clients() {
                   href={clientData.websiteUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="group relative flex flex-col items-center justify-center p-8 bg-yellow-500 hover:bg-yellow-400 shadow-md dark:shadow-[0_10px_40px_rgba(0,0,0,0.6)] border border-yellow-600/30 dark:border-neutral-800 transition-all duration-300 cursor-pointer h-40 shrink-0 w-[65vw] sm:w-[45vw] md:w-[calc(20%-16px)] snap-center md:snap-align-none rounded-lg overflow-hidden"
+                  className="group relative flex flex-col items-center justify-center p-8 bg-yellow-500/85 hover:bg-yellow-500 shadow-[0_0_15px_rgba(234,179,8,0.1)] hover:shadow-[0_0_35px_rgba(234,179,8,0.4)] border border-transparent hover:border-yellow-300 transition-all duration-300 cursor-pointer h-40 shrink-0 w-[65vw] sm:w-[45vw] md:w-[calc(20%-16px)] snap-center md:snap-align-none rounded-lg overflow-hidden"
                   title={clientData.name}
                 >
                   {clientData.logo ? (
